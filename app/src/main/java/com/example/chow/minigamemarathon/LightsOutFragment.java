@@ -21,7 +21,6 @@ public class LightsOutFragment extends Fragment{
         //test to change if TextView works
         TextView text = rootView.findViewById(R.id.current_game_view);
         text.setText("Changed");
-
         return rootView;
     }
 }

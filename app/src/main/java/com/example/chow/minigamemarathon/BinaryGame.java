@@ -7,6 +7,9 @@ import java.util.Random;
  */
 
 public class BinaryGame {
+    public BinaryGame(){
+
+    }
     public String getBinaryString(){
         final String CHARS = "01";
         StringBuilder sb = new StringBuilder();
