@@ -8,7 +8,7 @@
 
     <include layout="@layout/complete_layout_basic"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="8dp"
@@ -21,23 +21,16 @@
         app:layout_constraintHorizontal_bias="0.0" />
 
     <GridView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/displayed_lights_gridview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include"
-        app:layout_constraintVertical_bias="1.0" />
-    <!--
-    <GridView
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteY="0dp"
-        tools:layout_editor_absoluteX="8dp"></GridView>
-    -->
+        app:layout_constraintTop_toBottomOf="@+id/include" />
+
 </android.support.constraint.ConstraintLayout>
