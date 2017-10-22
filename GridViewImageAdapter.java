@@ -43,7 +43,7 @@ public class GridViewImageAdapter extends BaseAdapter {
         ImageView imageView;
         if (convertView == null)
         {
-            imageView = new ImageView(context);
+            imageView = translatedLights.get(position);
             imageView.setLayoutParams(new GridView.LayoutParams(185, 185)); //could be a problem
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
             imageView.setPadding(5, 5, 5, 5);
