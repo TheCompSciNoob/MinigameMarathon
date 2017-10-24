@@ -47,7 +47,6 @@ public class LightsOutFragment extends Fragment {
                 Toast.makeText(getActivity(), "item clicked", Toast.LENGTH_SHORT).show();
             }
         });
-
         return rootView;
     }
 
