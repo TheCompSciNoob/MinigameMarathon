@@ -39,7 +39,7 @@ public class LightsOut{
         }
         try
         {
-            grid[row][col+1] = !grid[row+1][col+1];
+            grid[row][col+1] = !grid[row][col+1];
         }
         catch (Exception e)
         {

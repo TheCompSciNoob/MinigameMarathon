@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -44,7 +43,6 @@ public class LightsOutFragment extends Fragment {
                 translatedList.clear();
                 translatedList.addAll(convertTo1D(grid));
                 adapter.notifyDataSetChanged();
-                Toast.makeText(getActivity(), "item clicked", Toast.LENGTH_SHORT).show();
             }
         });
 
