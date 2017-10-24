@@ -45,7 +45,6 @@ public class LightsOutFragment extends Fragment {
                 adapter.notifyDataSetChanged();
             }
         });
-
         return rootView;
     }
 
