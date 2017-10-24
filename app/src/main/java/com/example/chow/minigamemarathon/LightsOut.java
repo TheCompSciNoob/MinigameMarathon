@@ -14,9 +14,9 @@ public class LightsOut{
     private OnGridChangeListener listener;
     private final String TAG = "LightsOut Game";
 
-    public LightsOut(int width, int height)
+    public LightsOut(int height, int width)
     {
-        grid = new boolean[width][height];
+        grid = new boolean[height][width];
     }
 
     public void randomize()
@@ -61,6 +61,11 @@ public class LightsOut{
     public boolean[][] getGrid()
     {
         return grid;
+    }
+
+    public void setGrid(boolean[][] newGrid)
+    {
+        grid = newGrid;
     }
 
     public boolean isSolved()
