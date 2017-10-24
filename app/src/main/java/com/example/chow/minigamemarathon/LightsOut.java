@@ -1,5 +1,7 @@
 package com.example.chow.minigamemarathon;
 
+import android.util.Log;
+
 import java.util.Random;
 
 /**
@@ -8,13 +10,13 @@ import java.util.Random;
 
 public class LightsOut{
     private boolean[][] grid;
-    private final int RANDOMIZE_TIMES = 2;
+    private final int RANDOMIZE_TIMES = 10;
     private OnGridChangeListener listener;
+    private final String TAG = "LightsOut Game";
 
     public LightsOut(int width, int height)
     {
         grid = new boolean[width][height];
-        grid[3][2] = true;
     }
 
     public void randomize()
@@ -22,45 +24,34 @@ public class LightsOut{
         for (int i = 0; i < RANDOMIZE_TIMES; i++)
         {
             Random ran = new Random();
-            flipSwitch(ran.nextInt(grid.length), ran.nextInt(grid[0].length));
+            int ranRow = ran.nextInt(grid.length);
+            int ranCol = ran.nextInt(grid[0].length);
+            flipSwitch(ranRow, ranCol);
+            Log.d(TAG, "randomize: row:" + ranRow + " col:" + ranCol);
         }
     }
 
     public void flipSwitch(int row, int col)
     {
         grid[row][col] = !grid[row][col];
-        try
+
+        if (row+1 < grid.length)
         {
             grid[row+1][col] = !grid[row+1][col];
         }
-        catch (Exception e)
-        {
-
-        }
-        try
-        {
-            grid[row][col+1] = !grid[row][col+1];
-        }
-        catch (Exception e)
-        {
-
-        }
-        try
+        if (row-1 >= 0)
         {
             grid[row-1][col] = !grid[row-1][col];
         }
-        catch (Exception e)
+        if (col+1 < grid[0].length)
         {
-
+            grid[row][col+1] = !grid[row][col+1];
         }
-        try
+        if (col-1 >= 0)
         {
             grid[row][col-1] = !grid[row][col-1];
         }
-        catch (Exception e)
-        {
-
-        }
+        //call listener
         if (listener != null)
         {
             listener.onGridChange();
