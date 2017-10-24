@@ -1,4 +1,4 @@
-package com.example.kyros.gridviewtest;
+package com.example.chow.minigamemarathon;
 
 import android.content.Context;
 import android.view.View;
@@ -8,11 +8,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import java.util.ArrayList;
-
-/**
- * Created by Kyros on 10/22/2017.
- */
-
 public class GridViewImageAdapter extends BaseAdapter {
 
     private Context context;

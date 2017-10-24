@@ -1,4 +1,4 @@
-package com.example.kyros.gridviewtest;
+package com.example.chow.minigamemarathon;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -7,13 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -24,7 +20,7 @@ public class LightsOutFragment extends Fragment {
 
     private View rootView;
     private GridView displayedLights;
-    GridViewImageAdapter adapter;
+    private GridViewImageAdapter adapter;
     ArrayList<Boolean> translatedList;
     private LightsOut game;
 
@@ -37,7 +33,7 @@ public class LightsOutFragment extends Fragment {
         game.randomize();
         translatedList = new ArrayList<>(convertTo1D(game.getGrid()));
         adapter = new GridViewImageAdapter(getActivity(), translatedList);
-        displayedLights = rootView.findViewById(R.id.lights_out_grid);
+        displayedLights = rootView.findViewById(R.id.displayed_lights_gridview);
         displayedLights.setNumColumns(game.getGrid()[0].length);
         displayedLights.setAdapter(adapter);
         displayedLights.setOnItemClickListener(new AdapterView.OnItemClickListener() {
