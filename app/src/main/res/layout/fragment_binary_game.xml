@@ -37,7 +37,7 @@
         app:layout_constraintVertical_bias="0.547" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/button_left"
         android:layout_width="142dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
@@ -52,7 +52,7 @@
         app:layout_constraintVertical_bias="0.857" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/button_right"
         android:layout_width="142dp"
         android:layout_height="45dp"
         android:layout_marginBottom="8dp"
