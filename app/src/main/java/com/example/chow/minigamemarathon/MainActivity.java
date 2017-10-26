@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.display_frame, new LightsOutFragment()).commit();
+        fm.beginTransaction().replace(R.id.display_frame, new LightsOutGameFragment()).commit();
         if(findViewById(R.id.drawer_layout) != null) {
             if (savedInstanceState != null)
                 return;

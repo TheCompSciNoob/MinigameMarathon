@@ -2,6 +2,7 @@ package com.example.chow.minigamemarathon;
 
 import android.util.Log;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -13,6 +14,7 @@ public class LightsOut{
     private final int RANDOMIZE_TIMES = 10;
     private OnGridChangeListener listener;
     private final String TAG = "LightsOut Game";
+    private double flipMaxScore = 100, numGeneratePuzzleMaxScore = 50, totalScore = flipMaxScore + numGeneratePuzzleMaxScore;
 
     public LightsOut(int height, int width)
     {
@@ -58,6 +60,16 @@ public class LightsOut{
         }
     }
 
+    public static boolean[][] makeCopyOf(boolean[][] oldArray)
+    {
+        boolean[][] newArray = new boolean[oldArray.length][oldArray[0].length];
+        for (int i = 0; i < newArray.length; i++)
+        {
+            newArray[i] = Arrays.copyOf(oldArray[i], oldArray[i].length);
+        }
+        return newArray;
+    }
+
     public boolean[][] getGrid()
     {
         return grid;
@@ -65,7 +77,7 @@ public class LightsOut{
 
     public void setGrid(boolean[][] newGrid)
     {
-        grid = newGrid;
+        grid = makeCopyOf(newGrid);
     }
 
     public boolean isSolved()
@@ -87,5 +99,14 @@ public class LightsOut{
     public void setConGridChangeListener(OnGridChangeListener listener)
     {
         this.listener = listener;
+    }
+
+    public double getPercentScore(int numSwitchFlipped, int numTries)
+    {
+        int extraSwitches = numSwitchFlipped - RANDOMIZE_TIMES, extraPuzzles = numTries - 1;
+        final double switchDepletion = 0.995, generatePuzzleDepletion = .70;
+        double flipScore = flipMaxScore * Math.pow(switchDepletion, extraSwitches);
+        double puzzleScore = numGeneratePuzzleMaxScore * Math.pow(generatePuzzleDepletion, extraPuzzles);
+        return (flipScore + puzzleScore) / totalScore * 100;
     }
 }

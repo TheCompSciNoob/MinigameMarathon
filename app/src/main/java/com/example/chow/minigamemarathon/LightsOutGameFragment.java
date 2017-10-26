@@ -2,7 +2,6 @@ package com.example.chow.minigamemarathon;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +11,12 @@ import android.widget.GridView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Kyros on 10/22/2017.
  */
 
-public class LightsOutFragment extends Fragment implements View.OnClickListener{
+public class LightsOutGameFragment extends GameFragment implements View.OnClickListener{
 
     private View rootView;
     private GridView displayedLights;
@@ -27,6 +25,7 @@ public class LightsOutFragment extends Fragment implements View.OnClickListener{
     private LightsOut game;
     private boolean[][] originalGrid;
     private final int HEIGHT = 5, WIDTH = 5;
+    private int numSwitchFlipped = 0, numPuzzlesGenerated = 1;
 
     @Nullable
     @Override
@@ -35,7 +34,7 @@ public class LightsOutFragment extends Fragment implements View.OnClickListener{
         rootView = inflater.inflate(R.layout.lights_out_layout, container, false);
         game = new LightsOut(HEIGHT, WIDTH);
         game.randomize();
-        originalGrid = Arrays.copyOf(game.getGrid(), game.getGrid().length);
+        originalGrid = LightsOut.makeCopyOf(game.getGrid());
         translatedList = new ArrayList<>(convertTo1D(game.getGrid()));
         adapter = new GridViewImageAdapter(getActivity(), translatedList);
         displayedLights = rootView.findViewById(R.id.displayed_lights_gridview);
@@ -49,6 +48,7 @@ public class LightsOutFragment extends Fragment implements View.OnClickListener{
                 translatedList.clear();
                 translatedList.addAll(convertTo1D(grid));
                 adapter.notifyDataSetChanged();
+                numSwitchFlipped++;
             }
         });
         Button generateNewPuzzle = rootView.findViewById(R.id.generate_new_puzzle);
@@ -79,10 +79,11 @@ public class LightsOutFragment extends Fragment implements View.OnClickListener{
             case R.id.generate_new_puzzle:
                 game = new LightsOut(HEIGHT, WIDTH);
                 game.randomize();
-                originalGrid = Arrays.copyOf(game.getGrid(), game.getGrid().length);
+                originalGrid = LightsOut.makeCopyOf(game.getGrid());
                 translatedList.clear();
                 translatedList.addAll(convertTo1D(game.getGrid()));
                 adapter.notifyDataSetChanged();
+                numPuzzlesGenerated++;
                 break;
             case R.id.reset_current_puzzle:
                 game.setGrid(originalGrid);
@@ -93,5 +94,15 @@ public class LightsOutFragment extends Fragment implements View.OnClickListener{
             default:
                 Toast.makeText(getActivity(), "defaulted", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public double getPercentScore() {
+        return game.getPercentScore(numSwitchFlipped, numPuzzlesGenerated);
+    }
+
+    @Override
+    public boolean isSolved() {
+        return game.isSolved();
     }
 }
