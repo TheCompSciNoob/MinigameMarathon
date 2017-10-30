@@ -17,11 +17,14 @@ public class GameFragmentManager {
     private AppCompatActivity activity;
     private ArrayList<Fragment> displayedFragments;
     private StartFragment startScreen;
+    private long totalTimeElapsed;
 
     public GameFragmentManager(AppCompatActivity activity, ArrayList<GameFragment> gameFragments)
     {
         this.activity = activity;
         this.gameFragments = gameFragments;
+        totalTimeElapsed = 0;
+        fragmentPosition = -1;
         makeStartAndEndScreens();
         makeListenersForGameFragments();
         displayedFragments = new ArrayList<>();
@@ -37,6 +40,8 @@ public class GameFragmentManager {
                 public void onGameStateUpdate() {
                     if (gameFragment.isSolved())
                     {
+                        gameFragment.stopTimer();
+                        totalTimeElapsed += gameFragment.getSectionTimeElapsed();
                         displayNextFragment();
                     }
                 }
@@ -61,7 +66,12 @@ public class GameFragmentManager {
         if (fragmentPosition < displayedFragments.size())
         {
             FragmentManager fm = activity.getSupportFragmentManager();
-            fm.beginTransaction().replace(R.id.display_frame,gameFragments.get(fragmentPosition)).commit();
+            Fragment displayFragment = displayedFragments.get(fragmentPosition);
+            if (displayFragment instanceof GameFragment)
+            {
+                ((GameFragment) displayFragment).setTotalTimeElapsed(totalTimeElapsed);
+            }
+            fm.beginTransaction().replace(R.id.display_frame,displayFragment).commit();
         }
     }
 

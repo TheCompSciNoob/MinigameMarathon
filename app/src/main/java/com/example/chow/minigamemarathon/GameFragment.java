@@ -30,17 +30,16 @@ public abstract class GameFragment extends Fragment {
             public void onTick(long timeElapsed) {
                 sectionTime.setText(formatMillisToMMSSMSMS(timeElapsed));
                 totalTime.setText(formatMillisToMMSSMSMS(totalTimeElapsed + timeElapsed));
-                if (listener != null)
-                {
-                    listener.onGameStateUpdate();
-                }
                 if (isSolved())
                 {
                     sectionStopWatch.pause();
                 }
+                if (listener != null)
+                {
+                    listener.onGameStateUpdate();
+                }
             }
         };
-        sectionStopWatch.start();
     }
 
     private String formatMillisToMMSSMSMS(long millisTime)
@@ -54,15 +53,26 @@ public abstract class GameFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        sectionStopWatch.start();
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
         sectionStopWatch.pause();
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        sectionStopWatch.resume();
+    public void onStop() {
+        super.onStop();
+        sectionStopWatch.pause();
+    }
+
+    public void stopTimer()
+    {
+        sectionStopWatch.pause();
     }
 
     public void setTotalTimeElapsed(long totalTimeElapsedMillis)

@@ -1,6 +1,7 @@
 package com.example.chow.minigamemarathon;
 
 import android.os.CountDownTimer;
+import android.util.Log;
 
 /**
  * Created by Kyros on 10/25/2017.
@@ -23,6 +24,7 @@ public abstract class StopWatch {
 
     private void initTimer()
     {
+        Log.d(TAG, "initTimer: timer initialized");
         if (timer != null)
         {
             timer.cancel();
@@ -46,6 +48,7 @@ public abstract class StopWatch {
 
     public void start()
     {
+        Log.d(TAG, "start: start() is called");
         initTimer();
         timer.start();
     }
@@ -59,6 +62,7 @@ public abstract class StopWatch {
     {
         initTimer();
         timer.start();
+        Log.d(TAG, "resume: resumed");
     }
 
     public void stop()

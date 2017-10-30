@@ -2,7 +2,6 @@ package com.example.chow.minigamemarathon;
 
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -10,6 +9,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -30,12 +31,11 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.display_frame, new LightsOutGameFragment()).commit();
-        if(findViewById(R.id.drawer_layout) != null) {
-            if (savedInstanceState != null)
-                return;
-        }
+        ArrayList<GameFragment> gameFragments = new ArrayList<>();
+        //gameFragments.add(new LightsOutGameFragment());
+        gameFragments.add(new BinaryGameFragment());
+        GameFragmentManager manager = new GameFragmentManager(this, gameFragments);
+        manager.displayNextFragment();
     }
 
     @Override
