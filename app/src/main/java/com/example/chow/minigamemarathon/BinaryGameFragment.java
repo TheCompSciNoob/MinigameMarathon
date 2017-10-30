@@ -35,6 +35,8 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
     private int leftNumber = 0;
     private int rightNumber = 1;
     private boolean buttonPressed = false;
+    private int score;
+    private boolean done;
 
     public BinaryGameFragment() {
         // Required empty public constructor
@@ -84,15 +86,27 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
         binaryText.setText(gameText);
         buttonLeft.setText(leftNumber);
         buttonRight.setText(rightNumber);
-        boolean done = false;
+
+        done = false;
+        score = 0;
         while(!done){
             int currentIndex = 0;
             if(currentIndex <= gameText.length() - 1){
-                if(numberClicked == leftNumber){
-                    if(leftNumber == Integer.parseInt(gameText.substring(currentIndex, currentIndex + 1))){
+                if(numberClicked == Integer.parseInt(gameText.substring(currentIndex, currentIndex + 1))){
                         b.append(gameText);
-
-                    }
+                        String toReplace = "<font color=#d6d6d6" + gameText.substring(currentIndex, currentIndex + 1) + "</font>";
+                        b.deleteCharAt(currentIndex);
+                        b.insert(currentIndex,toReplace);
+                        currentIndex += toReplace.length() - 1;
+                        score++;
+                        if((int) (Math.random() * 100 + 1) < 36){
+                            buttonRight.setText(leftNumber);
+                            buttonLeft.setText(rightNumber);
+                        }
+                        else{
+                            buttonRight.setText (rightNumber);
+                            buttonLeft.setText(leftNumber);
+                        }
                 }
                 else{
 
@@ -145,12 +159,12 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
 
     @Override
     public double getPercentScore() {
-        return 0;
+        return (double) (score/50);
     }
 
     @Override
     public boolean isSolved() {
-        return false;
+        return done;
     }
 
     /**
