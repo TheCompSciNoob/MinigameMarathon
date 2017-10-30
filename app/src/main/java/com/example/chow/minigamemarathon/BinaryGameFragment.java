@@ -4,9 +4,11 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 
@@ -18,7 +20,7 @@ import android.widget.TextView;
  * Use the {@link BinaryGameFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BinaryGameFragment extends Fragment {
+public class BinaryGameFragment extends Fragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -29,6 +31,10 @@ public class BinaryGameFragment extends Fragment {
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
+    private int numberClicked;
+    private int leftNumber = 0;
+    private int rightNumber = 1;
+    private boolean buttonPressed = false;
 
     public BinaryGameFragment() {
         // Required empty public constructor
@@ -66,9 +72,26 @@ public class BinaryGameFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_binary_game, container, false);
+
         BinaryGame game = new BinaryGame();
+        String gameText = game.getBinaryString();
+        StringBuilder b = new StringBuilder(gameText);
         TextView binaryText = v.findViewById(R.id.binary_view);
-        binaryText.setText(game.getBinaryString());
+        Button buttonLeft = v.findViewById(R.id.button_left);
+        Button buttonRight = v.findViewById(R.id.button_right);
+        buttonLeft.setOnClickListener(this);
+        buttonRight.setOnClickListener(this);
+        binaryText.setText(gameText);
+        buttonLeft.setText(leftNumber);
+        buttonRight.setText(rightNumber);
+        for(int i = 0; i < binaryText.length(); i++){
+            if(numberClicked == Integer.parseInt(gameText.substring(i,i+1)) && buttonPressed == true){
+                //TODO: Change color of char
+            }
+            else {
+                //TODO: Change color of char
+            }
+        }
         return v;
     }
 
@@ -89,11 +112,28 @@ public class BinaryGameFragment extends Fragment {
                     + " must implement OnFragmentInteractionListener");
         }
     }
-
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch(view.getId()){
+            case R.id.button_left:
+                numberClicked = leftNumber;
+                buttonPressed = true;
+                break;
+            case R.id.button_right:
+                numberClicked = rightNumber;
+                buttonPressed = true;
+                break;
+            default:
+                Log.wtf("BinaryGameFragment","You should not see this.");
+                buttonPressed = false;
+                break;
+        }
     }
 
     /**
