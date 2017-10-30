@@ -32,7 +32,7 @@ public abstract class GameFragment extends Fragment {
                 totalTime.setText(formatMillisToMMSSMSMS(totalTimeElapsed + timeElapsed));
                 if (isSolved())
                 {
-                    sectionStopWatch.pause();
+                    stopTimer();
                 }
                 if (listener != null)
                 {

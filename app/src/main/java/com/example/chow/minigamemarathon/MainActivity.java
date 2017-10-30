@@ -32,8 +32,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         ArrayList<GameFragment> gameFragments = new ArrayList<>();
-        //gameFragments.add(new LightsOutGameFragment());
-        gameFragments.add(new BinaryGameFragment());
+        gameFragments.add(new LightsOutGameFragment());
+        gameFragments.add(new LightsOutGameFragment());
         GameFragmentManager manager = new GameFragmentManager(this, gameFragments);
         manager.displayNextFragment();
     }

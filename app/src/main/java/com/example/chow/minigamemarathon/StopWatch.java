@@ -56,6 +56,7 @@ public abstract class StopWatch {
     public void pause()
     {
         timer.cancel();
+        Log.d(TAG, "pause: paused");
     }
 
     public void resume()

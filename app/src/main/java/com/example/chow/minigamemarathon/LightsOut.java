@@ -93,6 +93,7 @@ public class LightsOut{
                 }
             }
         }
+        Log.d(TAG, "isSolved: " + solved);
         return solved;
     }
 
