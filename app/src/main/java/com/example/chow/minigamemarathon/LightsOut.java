@@ -11,10 +11,10 @@ import java.util.Random;
 
 public class LightsOut{
     private boolean[][] grid;
-    private final int RANDOMIZE_TIMES = 10;
+    private static final int RANDOMIZE_TIMES = 10;
     private OnGridChangeListener listener;
     private final String TAG = "LightsOut Game";
-    private double flipMaxScore = 100, numGeneratePuzzleMaxScore = 50, totalScore = flipMaxScore + numGeneratePuzzleMaxScore;
+    private static double flipMaxScore = 100, numGeneratePuzzleMaxScore = 50, totalScore = flipMaxScore + numGeneratePuzzleMaxScore;
 
     public LightsOut(int height, int width)
     {
@@ -101,7 +101,7 @@ public class LightsOut{
         this.listener = listener;
     }
 
-    public double getPercentScore(int numSwitchFlipped, int numTries)
+    public static double getPercentScore(int numSwitchFlipped, int numTries)
     {
         int extraSwitches = numSwitchFlipped - RANDOMIZE_TIMES, extraPuzzles = numTries - 1;
         final double switchDepletion = 0.995, generatePuzzleDepletion = .70;
