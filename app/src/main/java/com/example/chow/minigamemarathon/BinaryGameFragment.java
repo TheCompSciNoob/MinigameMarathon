@@ -20,7 +20,7 @@ import android.widget.TextView;
  * Use the {@link BinaryGameFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BinaryGameFragment extends Fragment implements View.OnClickListener{
+public class BinaryGameFragment extends GameFragment implements View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -84,12 +84,19 @@ public class BinaryGameFragment extends Fragment implements View.OnClickListener
         binaryText.setText(gameText);
         buttonLeft.setText(leftNumber);
         buttonRight.setText(rightNumber);
-        for(int i = 0; i < binaryText.length(); i++){
-            if(numberClicked == Integer.parseInt(gameText.substring(i,i+1)) && buttonPressed == true){
-                //TODO: Change color of char
-            }
-            else {
-                //TODO: Change color of char
+        boolean done = false;
+        while(!done){
+            int currentIndex = 0;
+            if(currentIndex <= gameText.length() - 1){
+                if(numberClicked == leftNumber){
+                    if(leftNumber == Integer.parseInt(gameText.substring(currentIndex, currentIndex + 1))){
+                        b.append(gameText);
+
+                    }
+                }
+                else{
+
+                }
             }
         }
         return v;
@@ -134,6 +141,16 @@ public class BinaryGameFragment extends Fragment implements View.OnClickListener
                 buttonPressed = false;
                 break;
         }
+    }
+
+    @Override
+    public double getPercentScore() {
+        return 0;
+    }
+
+    @Override
+    public boolean isSolved() {
+        return false;
     }
 
     /**
