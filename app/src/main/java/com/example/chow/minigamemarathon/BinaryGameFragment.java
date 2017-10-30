@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
     private boolean buttonPressed = false;
     private int score;
     private boolean done;
+    private String gameText;
 
     public BinaryGameFragment() {
         // Required empty public constructor
@@ -76,7 +78,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
         View v = inflater.inflate(R.layout.fragment_binary_game, container, false);
 
         BinaryGame game = new BinaryGame();
-        String gameText = game.getBinaryString();
+        gameText = game.getBinaryString();
         StringBuilder b = new StringBuilder(gameText);
         TextView binaryText = v.findViewById(R.id.binary_view);
         Button buttonLeft = v.findViewById(R.id.button_left);
@@ -98,6 +100,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
                         b.deleteCharAt(currentIndex);
                         b.insert(currentIndex,toReplace);
                         currentIndex += toReplace.length() - 1;
+                        binaryText.setText(Html.fromHtml(b.toString()));
                         score++;
                         if((int) (Math.random() * 100 + 1) < 36){
                             buttonRight.setText(leftNumber);
@@ -109,8 +112,24 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
                         }
                 }
                 else{
-
+                    b.append(gameText);
+                    String toReplace = "<font color=#d81c1c" + gameText.substring(currentIndex, currentIndex + 1) + "</font>";
+                    b.deleteCharAt(currentIndex);
+                    b.insert(currentIndex,toReplace);
+                    currentIndex += toReplace.length() - 1;
+                    binaryText.setText(Html.fromHtml(b.toString()));
+                    if((int) (Math.random() * 100 + 1) < 36){
+                        buttonRight.setText(leftNumber);
+                        buttonLeft.setText(rightNumber);
+                    }
+                    else{
+                        buttonRight.setText (rightNumber);
+                        buttonLeft.setText(leftNumber);
+                    }
                 }
+            }
+            else{
+                done = true;
             }
         }
         return v;
