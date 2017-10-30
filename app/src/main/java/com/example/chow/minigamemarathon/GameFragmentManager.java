@@ -3,6 +3,9 @@ package com.example.chow.minigamemarathon;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
@@ -12,12 +15,15 @@ import java.util.ArrayList;
 
 public class GameFragmentManager {
 
+    private String TAG = "GameFragmentManager";
+
     private ArrayList<GameFragment> gameFragments;
     private int fragmentPosition;
     private AppCompatActivity activity;
     private ArrayList<Fragment> displayedFragments;
     private StartFragment startScreen;
     private long totalTimeElapsed;
+    private Button startButton;
 
     public GameFragmentManager(AppCompatActivity activity, ArrayList<GameFragment> gameFragments)
     {
@@ -25,10 +31,9 @@ public class GameFragmentManager {
         this.gameFragments = gameFragments;
         totalTimeElapsed = 0;
         fragmentPosition = -1;
-        makeStartAndEndScreens();
         makeListenersForGameFragments();
         displayedFragments = new ArrayList<>();
-        displayedFragments.add(startScreen);
+        displayedFragments.add(new StartFragment());
         displayedFragments.addAll(gameFragments);
     }
 
@@ -43,22 +48,12 @@ public class GameFragmentManager {
                         gameFragment.stopTimer();
                         totalTimeElapsed += gameFragment.getSectionTimeElapsed();
                         displayNextFragment();
+                        Log.d(TAG, "onGameStateUpdate: next fragment displayed");
                     }
                 }
             });
         }
     }
-
-    private void makeStartAndEndScreens() {
-        startScreen = new StartFragment();
-        startScreen.setOnStartListener(new GameStateUpdateListener() {
-            @Override
-            public void onGameStateUpdate() {
-                displayNextFragment();
-            }
-        });
-    }
-
 
     public void displayNextFragment()
     {
@@ -72,6 +67,16 @@ public class GameFragmentManager {
                 ((GameFragment) displayFragment).setTotalTimeElapsed(totalTimeElapsed);
             }
             fm.beginTransaction().replace(R.id.display_frame,displayFragment).commit();
+        }
+        if (fragmentPosition == 0)
+        {
+            startButton = displayedFragments.get(0).getView().findViewById(R.id.button_start);
+            startButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    displayNextFragment();
+                }
+            });
         }
     }
 
