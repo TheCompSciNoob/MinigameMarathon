@@ -76,7 +76,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_binary_game, container, false);
-
+        //Wires widgets
         BinaryGame game = new BinaryGame();
         gameText = game.getBinaryString();
         StringBuilder b = new StringBuilder(gameText);
@@ -99,9 +99,11 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
                         String toReplace = "<font color=#d6d6d6" + gameText.substring(currentIndex, currentIndex + 1) + "</font>";
                         b.deleteCharAt(currentIndex);
                         b.insert(currentIndex,toReplace);
+                        //TODO: Figure out if this is actually the right way to do it
                         currentIndex += toReplace.length() - 1;
                         binaryText.setText(Html.fromHtml(b.toString()));
                         score++;
+                        //Random number test for switching buttons
                         if((int) (Math.random() * 100 + 1) < 36){
                             buttonRight.setText(leftNumber);
                             buttonLeft.setText(rightNumber);
