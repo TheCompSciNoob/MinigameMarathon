@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 
 import java.util.ArrayList;
@@ -31,10 +30,21 @@ public class GameFragmentManager {
         this.gameFragments = gameFragments;
         totalTimeElapsed = 0;
         fragmentPosition = -1;
+        makeTransitionFragments();
         makeListenersForGameFragments();
         displayedFragments = new ArrayList<>();
-        displayedFragments.add(new StartFragment());
+        displayedFragments.add(startScreen);
         displayedFragments.addAll(gameFragments);
+    }
+
+    private void makeTransitionFragments() {
+        startScreen = new StartFragment();
+        startScreen.setOnStartListener(new GameStateUpdateListener() {
+            @Override
+            public void onGameStateUpdate() {
+                displayNextFragment();
+            }
+        });
     }
 
     private void makeListenersForGameFragments() {
@@ -45,7 +55,6 @@ public class GameFragmentManager {
                 public void onGameStateUpdate() {
                     if (gameFragment.isSolved())
                     {
-                        gameFragment.stopTimer();
                         totalTimeElapsed += gameFragment.getSectionTimeElapsed();
                         displayNextFragment();
                         Log.d(TAG, "onGameStateUpdate: next fragment displayed");
@@ -67,16 +76,6 @@ public class GameFragmentManager {
                 ((GameFragment) displayFragment).setTotalTimeElapsed(totalTimeElapsed);
             }
             fm.beginTransaction().replace(R.id.display_frame,displayFragment).commit();
-        }
-        if (fragmentPosition == 0)
-        {
-            startButton = displayedFragments.get(0).getView().findViewById(R.id.button_start);
-            startButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    displayNextFragment();
-                }
-            });
         }
     }
 

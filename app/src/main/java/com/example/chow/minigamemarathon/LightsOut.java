@@ -12,7 +12,6 @@ import java.util.Random;
 public class LightsOut{
     private boolean[][] grid;
     private static final int RANDOMIZE_TIMES = 1;
-    private OnGridChangeListener listener;
     private final String TAG = "LightsOut Game";
     private static double flipMaxScore = 100, numGeneratePuzzleMaxScore = 50, totalScore = flipMaxScore + numGeneratePuzzleMaxScore;
 
@@ -53,11 +52,6 @@ public class LightsOut{
         {
             grid[row][col-1] = !grid[row][col-1];
         }
-        //call listener
-        if (listener != null)
-        {
-            listener.onGridChange();
-        }
     }
 
     public static boolean[][] makeCopyOf(boolean[][] oldArray)
@@ -95,11 +89,6 @@ public class LightsOut{
         }
         Log.d(TAG, "isSolved: " + solved);
         return solved;
-    }
-
-    public void setConGridChangeListener(OnGridChangeListener listener)
-    {
-        this.listener = listener;
     }
 
     public static double getPercentScore(int numSwitchFlipped, int numTries)

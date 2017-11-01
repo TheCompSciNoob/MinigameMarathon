@@ -32,7 +32,7 @@ public abstract class GameFragment extends Fragment {
                 totalTime.setText(formatMillisToMMSSMSMS(totalTimeElapsed + timeElapsed));
                 if (isSolved())
                 {
-                    stopTimer();
+                    sectionStopWatch.pause();
                 }
                 if (listener != null)
                 {
@@ -40,6 +40,7 @@ public abstract class GameFragment extends Fragment {
                 }
             }
         };
+        sectionStopWatch.start();
     }
 
     private String formatMillisToMMSSMSMS(long millisTime)
@@ -50,29 +51,6 @@ public abstract class GameFragment extends Fragment {
         seconds = seconds % 60;
         millis = millis % 1000;
         return String.format("%02d:%02d.%03d", minutes, seconds, millis);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        sectionStopWatch.start();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        sectionStopWatch.pause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        sectionStopWatch.pause();
-    }
-
-    public void stopTimer()
-    {
-        sectionStopWatch.pause();
     }
 
     public void setTotalTimeElapsed(long totalTimeElapsedMillis)

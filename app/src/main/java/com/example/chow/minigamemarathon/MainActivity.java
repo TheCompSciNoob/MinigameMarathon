@@ -37,11 +37,19 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
         ArrayList<GameFragment> gameFragments = new ArrayList<>();
         gameFragments.add(new LightsOutGameFragment());
         gameFragments.add(new LightsOutGameFragment());
         GameFragmentManager manager = new GameFragmentManager(this, gameFragments);
         manager.displayNextFragment();
+
+
+        /*
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction().replace(R.id.display_frame, new LightsOutGameFragment()).commit();
+        */
+
     }
 
     @Override
