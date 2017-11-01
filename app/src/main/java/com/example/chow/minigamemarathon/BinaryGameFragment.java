@@ -121,12 +121,12 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
                     currentIndex += toReplace.length() - 1;
                     binaryText.setText(Html.fromHtml(b.toString()));
                     if((int) (Math.random() * 100 + 1) < 36){
-                        buttonRight.setText(leftNumber);
-                        buttonLeft.setText(rightNumber);
+                        buttonRight.setText(leftNumber + "");
+                        buttonLeft.setText(rightNumber + "");
                     }
                     else{
-                        buttonRight.setText (rightNumber);
-                        buttonLeft.setText(leftNumber);
+                        buttonRight.setText (rightNumber + "");
+                        buttonLeft.setText(leftNumber + "");
                     }
                 }
             }
