@@ -32,7 +32,7 @@ public abstract class GameFragment extends Fragment {
                 totalTime.setText(formatMillisToMMSSMSMS(totalTimeElapsed + timeElapsed));
                 if (isSolved())
                 {
-                    sectionStopWatch.pause();
+                    this.pause(); //changed from sectionstopwatch to this
                 }
                 if (listener != null)
                 {
@@ -66,6 +66,17 @@ public abstract class GameFragment extends Fragment {
     public void setGameStateUpdateListener(GameStateUpdateListener listener)
     {
         this.listener = listener;
+    }
+    public void setRound(int round)
+    {
+        TextView roundView = getView().findViewById(R.id.current_game_view);
+        roundView.setText("" + round);
+    }
+
+    public void setScore(int score)
+    {
+        TextView scoreView = getView().findViewById(R.id.current_score_view);
+        scoreView.setText("" + score);
     }
 
     public abstract double getPercentScore();
