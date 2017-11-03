@@ -59,6 +59,11 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         return rootView;
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
     private ArrayList<Boolean> convertTo1D(boolean[][] grid)
     {
         ArrayList<Boolean> convertedList = new ArrayList<>();

@@ -23,7 +23,7 @@ import android.widget.TextView;
  * Use the {@link BinaryGameFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BinaryGameFragment extends GameFragment implements View.OnClickListener{
+public class BinaryGameFragment extends GameFragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -46,6 +46,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
     private ForegroundColorSpan textColor;
     private int currentIndex;
     private int score;
+
     public BinaryGameFragment() {
         // Required empty public constructor
         super();
@@ -67,6 +68,11 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
         args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 
     @Override
@@ -115,6 +121,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
                     + " must implement OnFragmentInteractionListener");
         }
     }
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -123,7 +130,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        switch(view.getId()){
+        switch (view.getId()) {
             case R.id.button_left:
                 numberClicked = numberLeft;
                 break;
@@ -131,25 +138,24 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
                 numberClicked = numberRight;
                 break;
             default:
-                Log.wtf("BinaryGameFragment","You should not see this.");
+                Log.wtf("BinaryGameFragment", "You should not see this.");
                 break;
         }
-        if(textColor != null){
+        if (textColor != null) {
             gameText.removeSpan(textColor);
         }
-        if(!isSolved()){
-            if(numberClicked == gameText.charAt(currentIndex)){
+        if (!isSolved()) {
+            if (numberClicked == gameText.charAt(currentIndex)) {
                 currentIndex++;
                 score++;
                 textColor = new ForegroundColorSpan(Color.RED);
-                gameText.setSpan(textColor,0,currentIndex,0);
-                binaryText.setText(gameText,TextView.BufferType.SPANNABLE);
-            }
-            else{
+                gameText.setSpan(textColor, 0, currentIndex, 0);
+                binaryText.setText(gameText, TextView.BufferType.SPANNABLE);
+            } else {
                 currentIndex = 0;
                 binaryText.setText(gameText);
             }
-            if(Math.random() < 0.36){
+            if (Math.random() < 0.36) {
                 swap();
             }
         }
@@ -205,7 +211,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
 
     @Override
     public double getPercentScore() {
-        return (double) (score/50);
+        return (double) (score / 50);
     }
 
     @Override
