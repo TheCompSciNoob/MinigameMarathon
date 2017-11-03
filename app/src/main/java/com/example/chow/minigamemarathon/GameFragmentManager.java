@@ -3,8 +3,6 @@ package com.example.chow.minigamemarathon;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.widget.Button;
 
 import java.util.ArrayList;
 
@@ -22,7 +20,7 @@ public class GameFragmentManager {
     private ArrayList<Fragment> displayedFragments;
     private StartFragment startScreen;
     private long totalTimeElapsed;
-    private Button startButton;
+    private StopWatch timer;
 
     public GameFragmentManager(AppCompatActivity activity, ArrayList<GameFragment> gameFragments)
     {
@@ -30,38 +28,41 @@ public class GameFragmentManager {
         this.gameFragments = gameFragments;
         totalTimeElapsed = 0;
         fragmentPosition = -1;
+        timer = new StopWatch(5);
         makeTransitionFragments();
-        makeListenersForGameFragments();
+        makeListenersForGames();
         displayedFragments = new ArrayList<>();
         displayedFragments.add(startScreen);
         displayedFragments.addAll(gameFragments);
     }
 
-    private void makeTransitionFragments() {
-        startScreen = new StartFragment();
-        startScreen.setOnStartListener(new GameStateUpdateListener() {
-            @Override
-            public void onGameStateUpdate() {
-                displayNextFragment();
-            }
-        });
-    }
-
-    private void makeListenersForGameFragments() {
+    private void makeListenersForGames() {
         for (final GameFragment gameFragment : gameFragments)
         {
-            gameFragment.setGameStateUpdateListener(new GameStateUpdateListener() {
+            gameFragment.setGameStateUpdateListener(new GameFragment.OnGameStateUpdateListener() {
                 @Override
-                public void onGameStateUpdate() {
-                    if (gameFragment.isSolved())
-                    {
-                        totalTimeElapsed += gameFragment.getSectionTimeElapsed();
-                        displayNextFragment();
-                        Log.d(TAG, "onGameStateUpdate: next fragment displayed");
-                    }
+                public void onGameSolved() {
+                    timer.pause();
+                    timer.lap();
+                    displayNextFragment();
+                }
+
+                @Override
+                public void onGameStart() {
+                    timer.start();
                 }
             });
         }
+    }
+
+    private void makeTransitionFragments() {
+        startScreen = new StartFragment();
+        startScreen.setOnStartListener(new StartFragment.OnStartListener() {
+            @Override
+            public void onStart() {
+                displayNextFragment();
+            }
+        });
     }
 
     public void displayNextFragment()
@@ -73,9 +74,19 @@ public class GameFragmentManager {
             Fragment displayFragment = displayedFragments.get(fragmentPosition);
             if (displayFragment instanceof GameFragment)
             {
-                ((GameFragment) displayFragment).setTotalTimeElapsed(totalTimeElapsed);
+                GameFragment nextFragment = (GameFragment) displayFragment;
+                nextFragment.setStartTotalTime(timer.getTotalTimeElapsed());
+                timer.setOnTickListener(nextFragment);
+            }
+            else
+            {
+                timer.setOnTickListener(null);
             }
             fm.beginTransaction().replace(R.id.display_frame,displayFragment).commit();
+        }
+        else
+        {
+            timer.setOnTickListener(null);
         }
     }
 

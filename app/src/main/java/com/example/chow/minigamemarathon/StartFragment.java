@@ -15,7 +15,7 @@ import android.widget.Button;
 public class StartFragment extends Fragment {
 
     private Button startButton;
-    private GameStateUpdateListener listener;
+    private OnStartListener listener;
 
     @Nullable
     @Override
@@ -28,15 +28,20 @@ public class StartFragment extends Fragment {
             public void onClick(View view) {
                 if (listener != null)
                 {
-                    listener.onGameStateUpdate();
+                    listener.onStart();
                 }
             }
         });
         return rootView;
     }
 
-    public void setOnStartListener(GameStateUpdateListener listener)
+    public void setOnStartListener(OnStartListener listener)
     {
         this.listener = listener;
+    }
+
+    public interface OnStartListener
+    {
+        public void onStart();
     }
 }
