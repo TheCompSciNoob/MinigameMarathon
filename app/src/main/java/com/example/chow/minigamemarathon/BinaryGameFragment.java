@@ -46,7 +46,6 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
     private ForegroundColorSpan textColor;
     private int currentIndex;
     private int score;
-
     public BinaryGameFragment() {
         // Required empty public constructor
         super();

@@ -16,6 +16,7 @@ public abstract class GameFragment extends Fragment {
     private TextView sectionTime, totalTime;
     private long totalTimeElapsed;
     private GameStateUpdateListener listener;
+    private boolean isPaused;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -30,21 +31,20 @@ public abstract class GameFragment extends Fragment {
             public void onTick(long timeElapsed) {
                 sectionTime.setText(formatMillisToMMSSMSMS(timeElapsed));
                 totalTime.setText(formatMillisToMMSSMSMS(totalTimeElapsed + timeElapsed));
-                if (isSolved())
-                {
-                    this.pause(); //changed from sectionstopwatch to this
-                }
-                if (listener != null)
-                {
-                    listener.onGameStateUpdate();
+                if (!isPaused) {
+                    if (isSolved()) {
+                        this.pause(); //changed from sectionstopwatch to this
+                    }
+                    if (listener != null) {
+                        listener.onGameStateUpdate();
+                    }
                 }
             }
         };
         sectionStopWatch.start();
     }
 
-    private String formatMillisToMMSSMSMS(long millisTime)
-    {
+    private String formatMillisToMMSSMSMS(long millisTime) {
         long millis = millisTime;
         long seconds = millis / 1000;
         long minutes = seconds / 60;
@@ -53,30 +53,32 @@ public abstract class GameFragment extends Fragment {
         return String.format("%02d:%02d.%03d", minutes, seconds, millis);
     }
 
-    public void setTotalTimeElapsed(long totalTimeElapsedMillis)
-    {
+    public void setTotalTimeElapsed(long totalTimeElapsedMillis) {
         totalTimeElapsed = totalTimeElapsedMillis;
     }
 
-    public long getSectionTimeElapsed()
-    {
+    public long getSectionTimeElapsed() {
         return sectionStopWatch.getTimeElapsed();
     }
 
-    public void setGameStateUpdateListener(GameStateUpdateListener listener)
-    {
+    public void setGameStateUpdateListener(GameStateUpdateListener listener) {
         this.listener = listener;
     }
-    public void setRound(int round)
-    {
+
+    public void setRound(int round) {
         TextView roundView = getView().findViewById(R.id.current_game_view);
         roundView.setText("" + round);
     }
 
-    public void setScore(int score)
-    {
+    public void setScore(int score) {
         TextView scoreView = getView().findViewById(R.id.current_score_view);
         scoreView.setText("" + score);
+    }
+
+    @Override
+    public void onPause() {
+        isPaused = false;
+        super.onPause();
     }
 
     public abstract double getPercentScore();
