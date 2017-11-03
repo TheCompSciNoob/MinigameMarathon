@@ -28,6 +28,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "BinaryGameFragment";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -210,6 +211,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
 
     @Override
     public boolean isSolved() {
+        Log.d(TAG, "isSolved: " + (currentIndex >= gameText.length()));
         return currentIndex >= gameText.length();
     }
 
