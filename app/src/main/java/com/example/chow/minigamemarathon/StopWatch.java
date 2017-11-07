@@ -42,7 +42,7 @@ public class StopWatch {
                 lastUpdateTime = millisUntilFinished;
                 if (listener != null)
                 {
-                    listener.onTick(lapTimeElapsed, totalTimeElapsed);
+                    listener.onTick(lapTimeElapsed, totalTimeElapsed + lapTimeElapsed);
                 }
             }
 

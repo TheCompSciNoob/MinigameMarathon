@@ -78,16 +78,7 @@ public class GameFragmentManager {
                 nextFragment.setStartTotalTime(timer.getTotalTimeElapsed());
                 timer.setOnTickListener(nextFragment);
             }
-            else
-            {
-                timer.setOnTickListener(null);
-            }
             fm.beginTransaction().replace(R.id.display_frame,displayFragment).commit();
         }
-        else
-        {
-            timer.setOnTickListener(null);
-        }
     }
-
 }

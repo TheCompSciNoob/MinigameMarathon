@@ -64,7 +64,11 @@ public abstract class GameFragment extends Fragment implements StopWatch.OnTickL
     public void onTick(long lapTimeElapsed, long totalTimeElapsed) {
         sectionTime.setText(formatMillisToMMSSMSMS(lapTimeElapsed));
         totalTime.setText(formatMillisToMMSSMSMS(totalTimeElapsed));
-        if (isSolved() && listener != null)
+    }
+
+    public void notifyGameEnd()
+    {
+        if (listener != null)
         {
             listener.onGameSolved();
         }

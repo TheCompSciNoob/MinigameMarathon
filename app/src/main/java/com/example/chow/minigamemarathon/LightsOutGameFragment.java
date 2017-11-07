@@ -49,6 +49,10 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
                 translatedList.addAll(convertTo1D(grid));
                 adapter.notifyDataSetChanged();
                 numSwitchFlipped++;
+                if (isSolved())
+                {
+                    LightsOutGameFragment.this.notifyGameEnd();
+                }
             }
         });
         Button generateNewPuzzle = rootView.findViewById(R.id.generate_new_puzzle);
@@ -57,11 +61,6 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         resetCurrentPuzzle.setOnClickListener(this);
 
         return rootView;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
     }
 
     private ArrayList<Boolean> convertTo1D(boolean[][] grid)

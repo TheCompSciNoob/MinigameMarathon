@@ -145,13 +145,20 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
             gameText.removeSpan(textColor);
         }
         if (!isSolved()) {
+            //correct button pressed
             if (numberClicked == gameText.charAt(currentIndex)) {
                 currentIndex++;
                 score++;
                 textColor = new ForegroundColorSpan(Color.RED);
                 gameText.setSpan(textColor, 0, currentIndex, 0);
                 binaryText.setText(gameText, TextView.BufferType.SPANNABLE);
+                //manually tell timer to stop
+                if (isSolved())
+                {
+                    notifyGameEnd();
+                }
             } else {
+                //incorrect button pressed
                 currentIndex = 0;
                 binaryText.setText(gameText);
             }
