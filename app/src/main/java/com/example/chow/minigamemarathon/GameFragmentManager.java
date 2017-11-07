@@ -54,6 +54,11 @@ public class GameFragmentManager {
         }
     }
 
+    public void stopTimer()
+    {
+        timer.stop();
+    }
+
     private void makeTransitionFragments() {
         startScreen = new StartFragment();
         startScreen.setOnStartListener(new StartFragment.OnStartListener() {

@@ -16,6 +16,8 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, BinaryGameFragment.OnFragmentInteractionListener {
 
+    private GameFragmentManager manager;
+
     @Override
     public void onFragmentInteraction(Uri uri) {
 
@@ -37,14 +39,9 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
-        ArrayList<GameFragment> gameFragments = new ArrayList<>();
-        gameFragments.add(new LightsOutGameFragment());
-        gameFragments.add(new BinaryGameFragment());
-        GameFragmentManager manager = new GameFragmentManager(this,gameFragments);
-        manager.displayNextFragment();
-
+        startGame();
     }
+
 
     @Override
     public void onBackPressed() {
@@ -84,23 +81,28 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-        } else if (id == R.id.nav_gallery) {
+        if (id == R.id.game_new) {
+            startGame();
+        } else if (id == R.id.score_high) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.settings) {
 
         }
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
+    private void startGame() {
+        if (manager != null)
+        {
+            manager.stopTimer();
+        }
+        ArrayList<GameFragment> gameFragments = new ArrayList<>();
+        gameFragments.add(new LightsOutGameFragment());
+        gameFragments.add(new BinaryGameFragment());
+        manager = new GameFragmentManager(this,gameFragments);
+        manager.displayNextFragment();
+    }
 
 }
