@@ -29,6 +29,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "BinaryGameFragment";
+    private static final int WORDS_PER_CHECKPOINT = 10;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -98,6 +99,8 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
         buttonLeft.setOnClickListener(this);
         buttonRight.setOnClickListener(this);
         binaryText.setText(gameText, TextView.BufferType.SPANNABLE);
+        binaryText.setBackgroundColor(Color.BLACK);
+        binaryText.setTextColor(Color.WHITE);
         buttonLeft.setText(numberLeft + "");
         buttonRight.setText(numberRight + "");
         currentIndex = 0;
@@ -149,7 +152,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
             if (numberClicked == gameText.charAt(currentIndex)) {
                 currentIndex++;
                 score++;
-                textColor = new ForegroundColorSpan(Color.RED);
+                textColor = new ForegroundColorSpan(Color.GREEN);
                 gameText.setSpan(textColor, 0, currentIndex, 0);
                 binaryText.setText(gameText, TextView.BufferType.SPANNABLE);
                 //manually tell timer to stop
@@ -206,6 +209,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
 //            done = true;
 //        }
     }
+
 
     private void swap() {
         char temp = numberLeft;

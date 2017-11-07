@@ -44,12 +44,6 @@ public class MainActivity extends AppCompatActivity
         GameFragmentManager manager = new GameFragmentManager(this,gameFragments);
         manager.displayNextFragment();
 
-
-        /*
-        FragmentManager fm = getSupportFragmentManager();
-        fm.beginTransaction().replace(R.id.display_frame, new LightsOutGameFragment()).commit();
-        */
-
     }
 
     @Override
@@ -107,4 +101,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }

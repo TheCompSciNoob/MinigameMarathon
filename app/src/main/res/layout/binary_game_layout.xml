@@ -22,6 +22,8 @@
         app:layout_constraintHorizontal_bias="0.0" />
 
     <TextView
+        android:textAlignment="center"
+        android:fontFamily="serif-monospace"
         android:id="@+id/binary_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
