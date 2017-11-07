@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class LightsOut{
     private boolean[][] grid;
-    private static final int RANDOMIZE_TIMES = 1;
+    private static final int RANDOMIZE_TIMES = 10;
     private final String TAG = "LightsOut Game";
     private static double flipMaxScore = 100, numGeneratePuzzleMaxScore = 50, totalScore = flipMaxScore + numGeneratePuzzleMaxScore;
 
