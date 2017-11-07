@@ -15,6 +15,7 @@ public abstract class GameFragment extends Fragment implements StopWatch.OnTickL
     private TextView sectionTime, totalTime;
     private long startTotalTime;
     private OnGameStateUpdateListener listener;
+    private int round, score;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -23,9 +24,14 @@ public abstract class GameFragment extends Fragment implements StopWatch.OnTickL
         sectionTime.setText(formatMillisToMMSSMSMS(0));
         totalTime = getView().findViewById(R.id.total_time_status);
         totalTime.setText(formatMillisToMMSSMSMS(startTotalTime));
+        //from previous game
+        TextView roundView = getView().findViewById(R.id.current_game_view);
+        roundView.setText("" + round);
+        TextView scoreView = getView().findViewById(R.id.current_score_view);
+        scoreView.setText("" + score);
         if (listener != null)
         {
-            listener.onGameStart();
+            listener.onGameStart(this);
         }
     }
 
@@ -50,14 +56,12 @@ public abstract class GameFragment extends Fragment implements StopWatch.OnTickL
     }
     public void setRound(int round)
     {
-        TextView roundView = getView().findViewById(R.id.current_game_view);
-        roundView.setText("" + round);
+        this.round = round;
     }
 
     public void setScore(int score)
     {
-        TextView scoreView = getView().findViewById(R.id.current_score_view);
-        scoreView.setText("" + score);
+        this.score = score;
     }
 
     @Override
@@ -70,7 +74,7 @@ public abstract class GameFragment extends Fragment implements StopWatch.OnTickL
     {
         if (listener != null)
         {
-            listener.onGameSolved();
+            listener.onGameSolved(this);
         }
     }
 
@@ -80,8 +84,8 @@ public abstract class GameFragment extends Fragment implements StopWatch.OnTickL
 
     public interface OnGameStateUpdateListener
     {
-        public void onGameSolved();
+        public void onGameSolved(GameFragment solvedFragment);
 
-        public void onGameStart();
+        public void onGameStart(GameFragment startingFragment);
     }
 }

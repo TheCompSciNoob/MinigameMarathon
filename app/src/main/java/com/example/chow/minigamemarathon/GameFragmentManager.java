@@ -15,18 +15,16 @@ public class GameFragmentManager {
     private String TAG = "GameFragmentManager";
 
     private ArrayList<GameFragment> gameFragments;
-    private int fragmentPosition;
+    private int fragmentPosition, scorePerGame = 10000, totalScore;
     private AppCompatActivity activity;
     private ArrayList<Fragment> displayedFragments;
     private StartFragment startScreen;
-    private long totalTimeElapsed;
     private StopWatch timer;
 
     public GameFragmentManager(AppCompatActivity activity, ArrayList<GameFragment> gameFragments)
     {
         this.activity = activity;
         this.gameFragments = gameFragments;
-        totalTimeElapsed = 0;
         fragmentPosition = -1;
         timer = new StopWatch(5);
         makeTransitionFragments();
@@ -41,14 +39,15 @@ public class GameFragmentManager {
         {
             gameFragment.setGameStateUpdateListener(new GameFragment.OnGameStateUpdateListener() {
                 @Override
-                public void onGameSolved() {
+                public void onGameSolved(GameFragment solvedFragment) {
                     timer.pause();
                     timer.lap();
+                    totalScore += (int) (solvedFragment.getPercentScore() * scorePerGame);
                     displayNextFragment();
                 }
 
                 @Override
-                public void onGameStart() {
+                public void onGameStart(GameFragment startingFragment) {
                     timer.start();
                 }
             });
@@ -76,6 +75,8 @@ public class GameFragmentManager {
             {
                 GameFragment nextFragment = (GameFragment) displayFragment;
                 nextFragment.setStartTotalTime(timer.getTotalTimeElapsed());
+                nextFragment.setRound(fragmentPosition + 1 - (displayedFragments.size() - gameFragments.size()));
+                nextFragment.setScore(totalScore);
                 timer.setOnTickListener(nextFragment);
             }
             fm.beginTransaction().replace(R.id.display_frame,displayFragment).commit();
