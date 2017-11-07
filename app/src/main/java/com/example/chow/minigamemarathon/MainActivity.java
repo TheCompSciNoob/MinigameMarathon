@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity
         ArrayList<GameFragment> gameFragments = new ArrayList<>();
         gameFragments.add(new LightsOutGameFragment());
         gameFragments.add(new BinaryGameFragment());
+        gameFragments.add(new MathGameFragment());
         GameFragmentManager manager = new GameFragmentManager(this,gameFragments);
         manager.displayNextFragment();
 
