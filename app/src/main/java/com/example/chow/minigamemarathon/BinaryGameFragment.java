@@ -1,10 +1,12 @@
 package com.example.chow.minigamemarathon;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,32 +23,33 @@ import android.widget.TextView;
  * Use the {@link BinaryGameFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BinaryGameFragment extends GameFragment implements View.OnClickListener{
+public class BinaryGameFragment extends GameFragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String TAG = "BinaryGameFragment";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
     private OnFragmentInteractionListener mListener;
-    private int numberClicked;
-    private int leftNumber = 0;
-    private int rightNumber = 1;
-    private boolean buttonPressed = false;
-    private int score;
-    private boolean done;
-    private String gameText;
+    private char numberClicked;
+    private char numberLeft = '0';
+    private char numberRight = '1';
+    private SpannableStringBuilder gameText;
     private BinaryGame game;
-    private StringBuilder b;
     private TextView binaryText;
     private Button buttonLeft;
     private Button buttonRight;
+    private ForegroundColorSpan textColor;
+    private int currentIndex;
+    private int score;
 
     public BinaryGameFragment() {
         // Required empty public constructor
+        super();
     }
 
     /**
@@ -68,6 +71,11 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
@@ -80,19 +88,19 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_binary_game, container, false);
+        View v = inflater.inflate(R.layout.binary_game_layout, container, false);
         //Wires widgets
         game = new BinaryGame();
-        gameText = game.getBinaryString();
-        b = new StringBuilder(gameText);
+        gameText = new SpannableStringBuilder(game.getBinaryString());
         binaryText = v.findViewById(R.id.binary_view);
         buttonLeft = v.findViewById(R.id.button_left);
         buttonRight = v.findViewById(R.id.button_right);
         buttonLeft.setOnClickListener(this);
         buttonRight.setOnClickListener(this);
-        binaryText.setText(gameText);
-        buttonLeft.setText(leftNumber + "");
-        buttonRight.setText(rightNumber + "");
+        binaryText.setText(gameText, TextView.BufferType.SPANNABLE);
+        buttonLeft.setText(numberLeft + "");
+        buttonRight.setText(numberRight + "");
+        currentIndex = 0;
         return v;
     }
 
@@ -113,6 +121,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
                     + " must implement OnFragmentInteractionListener");
         }
     }
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -121,71 +130,94 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        switch(view.getId()){
+        switch (view.getId()) {
             case R.id.button_left:
-                numberClicked = leftNumber;
-                buttonPressed = true;
+                numberClicked = numberLeft;
                 break;
             case R.id.button_right:
-                numberClicked = rightNumber;
-                buttonPressed = true;
+                numberClicked = numberRight;
                 break;
             default:
-                Log.wtf("BinaryGameFragment","You should not see this.");
-                buttonPressed = false;
+                Log.wtf("BinaryGameFragment", "You should not see this.");
                 break;
         }
-        int currentIndex = 0;
-        done = false;
-        score = 0;
-        if (currentIndex <= gameText.length() - 1) {
-            if (numberClicked == Integer.parseInt(gameText.substring(currentIndex, currentIndex + 1))) {
-                b.append(gameText);
-                String toReplace = "<font color=#d6d6d6" + gameText.substring(currentIndex, currentIndex + 1) + "</font>";
-                b.deleteCharAt(currentIndex);
-                //TODO: Fix offset bug
-                b.insert(currentIndex + 1, toReplace);
-                //TODO: Figure out if this is actually the right way to do it
-                currentIndex += toReplace.length() - 1;
-                binaryText.setText(Html.fromHtml(b.toString()));
-                score++;
-                //Random number test for switching buttons
-                if ((int) (Math.random() * 100 + 1) < 36) {
-                    buttonRight.setText(leftNumber + "");
-                    buttonLeft.setText(rightNumber + "");
-                } else {
-                    buttonRight.setText(rightNumber + "");
-                    buttonLeft.setText(leftNumber + "");
-                }
-            } else {
-                b.append(gameText);
-                String toReplace = "<font color=#d81c1c" + gameText.substring(currentIndex, currentIndex + 1) + "</font>";
-                b.deleteCharAt(currentIndex);
-                b.insert(currentIndex + 1, toReplace);
-                currentIndex += toReplace.length() - 1;
-                binaryText.setText(Html.fromHtml(b.toString()));
-                if ((int) (Math.random() * 100 + 1) < 36) {
-                    buttonRight.setText(leftNumber + "");
-                    buttonLeft.setText(rightNumber + "");
-                } else {
-                    buttonRight.setText(rightNumber + "");
-                    buttonLeft.setText(leftNumber + "");
-                }
-            }
-        } else {
-            done = true;
+        if (textColor != null) {
+            gameText.removeSpan(textColor);
         }
+        if (!isSolved()) {
+            if (numberClicked == gameText.charAt(currentIndex)) {
+                currentIndex++;
+                score++;
+                textColor = new ForegroundColorSpan(Color.RED);
+                gameText.setSpan(textColor, 0, currentIndex, 0);
+                binaryText.setText(gameText, TextView.BufferType.SPANNABLE);
+            } else {
+                currentIndex = 0;
+                binaryText.setText(gameText);
+            }
+            if (Math.random() < 0.36) {
+                swap();
+            }
+        }
+//        done = false;
+//        score = 0;
+//        if (currentIndex <= gameText.length() - 1) {
+//            if (numberClicked == Integer.parseInt(gameText.substring(currentIndex, currentIndex + 1))) {
+//                b.append(gameText);
+//                String toReplace = "<font color=#d6d6d6" + gameText.substring(currentIndex, currentIndex + 1) + "</font>";
+//                b.deleteCharAt(currentIndex);
+//                //TODO: Fix offset bug
+//                b.insert(currentIndex + 1, toReplace);
+//                //TODO: Figure out if this is actually the right way to do it
+//                currentIndex += toReplace.length() - 1;
+//                binaryText.setText(Html.fromHtml(b.toString()));
+//                score++;
+//                //Random number test for switching buttons
+//                if ((int) (Math.random() * 100 + 1) < 36) {
+//                    buttonRight.setText(numberLeft + "");
+//                    buttonLeft.setText(numberRight + "");
+//                } else {
+//                    buttonRight.setText(numberRight + "");
+//                    buttonLeft.setText(numberLeft + "");
+//                }
+//            } else {
+//                b.append(gameText);
+//                String toReplace = "<font color=#d81c1c" + gameText.substring(currentIndex, currentIndex + 1) + "</font>";
+//                b.deleteCharAt(currentIndex);
+//                b.insert(currentIndex + 1, toReplace);
+//                currentIndex += toReplace.length() - 1;
+//                binaryText.setText(Html.fromHtml(b.toString()));
+//                if ((int) (Math.random() * 100 + 1) < 36) {
+//                    buttonRight.setText(numberLeft + "");
+//                    buttonLeft.setText(numberRight + "");
+//                } else {
+//                    buttonRight.setText(numberRight + "");
+//                    buttonLeft.setText(numberLeft + "");
+//                }
+//            }
+//        } else {
+//            done = true;
+//        }
+    }
+
+    private void swap() {
+        char temp = numberLeft;
+        numberLeft = numberRight;
+        numberRight = temp;
+        buttonLeft.setText(numberLeft + "");
+        buttonRight.setText(numberRight + "");
     }
 
 
     @Override
     public double getPercentScore() {
-        return (double) (score/50);
+        return (double) (score / 50);
     }
 
     @Override
     public boolean isSolved() {
-        return done;
+        Log.d(TAG, "isSolved: " + (currentIndex >= gameText.length()));
+        return currentIndex >= gameText.length();
     }
 
     /**
