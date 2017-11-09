@@ -1,107 +1,148 @@
 package com.example.chow.minigamemarathon;
 
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.GridView;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link MathGameFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link MathGameFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class MathGameFragment extends GameFragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class MathGameFragment extends GameFragment implements View.OnClickListener {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
-
-    public MathGameFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment MathGameFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static MathGameFragment newInstance(String param1, String param2) {
-        MathGameFragment fragment = new MathGameFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    //ArrayLists for numbersGridView and operatorsListView
+    private static final int RESET = 10001, ADD = 10002, SUBTRACT = 10003, MULTIPLY = 10004, DIVIDE = 10005;
+    private ArrayList<String> numberOptions;
+    private ArrayList<Integer> operatorOptions;
+    //widgets in layout
+    private View rootView;
+    private GridView numbersGridView; //use string
+    private ListView operatorsListView; //use imagebuttons
+    private TextView question, expression, hint;
+    private BaseAdapter operatorAdapter, numberOptionAdapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.math_game_layout, container, false);
-        return v;
+        rootView = inflater.inflate(R.layout.math_game_layout, container, false);
+        makeArrayLists();
+        wireWidgets();
+        setListeners();
+        return rootView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    //TODO: initialize the numbers
+    private void makeArrayLists() {
+        operatorOptions = new ArrayList<>();
+        operatorOptions.add(RESET);
+        operatorOptions.add(ADD);
+        operatorOptions.add(SUBTRACT);
+        operatorOptions.add(MULTIPLY);
+        operatorOptions.add(DIVIDE);
+    }
+
+    private void setListeners() {
+        operatorAdapter = new BaseAdapter() {
+            @Override
+            public int getCount() {
+                return operatorOptions.size();
+            }
+
+            @Override
+            public Object getItem(int i) {
+                return operatorOptions.get(i);
+            }
+
+            @Override
+            public long getItemId(int i) {
+                return i;
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                ImageButton imageButton;
+                if (convertView == null)
+                {
+                    imageButton = makeOperator(operatorOptions.get(position));
+                }
+                else
+                {
+                    imageButton = (ImageButton) convertView;
+                }
+                return imageButton;
+            }
+        };
+        operatorsListView.setAdapter(operatorAdapter);
+    }
+
+    private ImageButton makeOperator(int operatorType) {
+        ImageButton operatorButton = new ImageButton(getActivity());
+        operatorButton.setOnClickListener(this);
+        switch (operatorType)
+        {
+            case RESET:
+                operatorButton.setImageResource(R.drawable.ic_autorenew_black_24dp);
+                break;
+            case ADD:
+                operatorButton.setImageResource(R.drawable.ic_add_black_24dp);
+                break;
+            case SUBTRACT:
+                operatorButton.setImageResource(R.drawable.ic_subtract_black_24dp);
+                break;
+            case MULTIPLY:
+                operatorButton.setImageResource(R.drawable.ic_multiply_black_24dp);
+                break;
+            case DIVIDE:
+                operatorButton.setImageResource(R.drawable.ic_divide_black_24dp);
+                break;
+            default:
+                Toast.makeText(getActivity(), "YOU SHOULD NOT SEE THIS", Toast.LENGTH_SHORT).show();
+        }
+        return operatorButton;
+    }
+
+    private void wireWidgets() {
+        numbersGridView = rootView.findViewById(R.id.number_options);
+        operatorsListView = rootView.findViewById(R.id.operators);
+        question = rootView.findViewById(R.id.question_number);
+        expression = rootView.findViewById(R.id.expression_input);
+        hint = rootView.findViewById(R.id.hint);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId())
+        {
+            case RESET:
+                break;
+            case ADD:
+                break;
+            case SUBTRACT:
+                break;
+            case MULTIPLY:
+                break;
+            case DIVIDE:
+                break;
+            default:
+                Toast.makeText(getActivity(), "YOU SHOULD NOT SEE THIS", Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    @Override
     public double getPercentScore() {
+        //TODO: return score
         return 0;
     }
 
     @Override
     public boolean isSolved() {
+        //TODO: return true if game is finished
         return false;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

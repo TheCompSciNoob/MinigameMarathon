@@ -5,7 +5,7 @@ package com.example.chow.minigamemarathon;
  */
 
 public class MathGame {
-    private int problem;
+    private int problem; //answer
     private int[] numbers;
     protected int num1;
     protected int num2;
