@@ -1,12 +1,14 @@
 package com.example.chow.minigamemarathon;
 
+import java.util.ArrayList;
+
 /**
  * Created by per6 on 11/7/17.
  */
 
 public class MathGame {
     private int problem; //answer
-    private int[] numbers;
+    private ArrayList<Integer> numbers;
     protected int num1;
     protected int num2;
     protected int num3;
@@ -20,11 +22,11 @@ public class MathGame {
         num2 = (int) (Math.random() * 8 + 1);
         num3 = (int) (Math.random() * 8 + 1);
         num4 = (int) (Math.random() * 8 + 1);
-        numbers = new int[4];
-        numbers[0] = num1;
-        numbers[1] = num2;
-        numbers[2] = num3;
-        numbers[3] = num4;
+        numbers = new ArrayList<>();
+        numbers.add(num1);
+        numbers.add(num2);
+        numbers.add(num3);
+        numbers.add(num4);
         double percent = Math.random();
         if(percent < .25)
             problem = num1 + num2;
@@ -36,7 +38,11 @@ public class MathGame {
             problem = num1 / num2;
     }
 
-    public static double eval(final String str) {
+    public ArrayList<Integer> getNumbers() {
+        return numbers;
+    }
+
+    protected static double eval(final String str) {
         return new Object() {
             int pos = -1, ch;
 
