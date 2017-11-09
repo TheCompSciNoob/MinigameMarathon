@@ -99,8 +99,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
         buttonLeft.setOnClickListener(this);
         buttonRight.setOnClickListener(this);
         binaryText.setText(gameText, TextView.BufferType.SPANNABLE);
-        binaryText.setBackgroundColor(Color.BLACK);
-        binaryText.setTextColor(Color.WHITE);
+        binaryText.setTextColor(Color.BLACK);
         buttonLeft.setText(numberLeft + "");
         buttonRight.setText(numberRight + "");
         currentIndex = 0;
@@ -169,45 +168,6 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
                 swap();
             }
         }
-//        done = false;
-//        score = 0;
-//        if (currentIndex <= gameText.length() - 1) {
-//            if (numberClicked == Integer.parseInt(gameText.substring(currentIndex, currentIndex + 1))) {
-//                b.append(gameText);
-//                String toReplace = "<font color=#d6d6d6" + gameText.substring(currentIndex, currentIndex + 1) + "</font>";
-//                b.deleteCharAt(currentIndex);
-//                //TODO: Fix offset bug
-//                b.insert(currentIndex + 1, toReplace);
-//                //TODO: Figure out if this is actually the right way to do it
-//                currentIndex += toReplace.length() - 1;
-//                binaryText.setText(Html.fromHtml(b.toString()));
-//                score++;
-//                //Random number test for switching buttons
-//                if ((int) (Math.random() * 100 + 1) < 36) {
-//                    buttonRight.setText(numberLeft + "");
-//                    buttonLeft.setText(numberRight + "");
-//                } else {
-//                    buttonRight.setText(numberRight + "");
-//                    buttonLeft.setText(numberLeft + "");
-//                }
-//            } else {
-//                b.append(gameText);
-//                String toReplace = "<font color=#d81c1c" + gameText.substring(currentIndex, currentIndex + 1) + "</font>";
-//                b.deleteCharAt(currentIndex);
-//                b.insert(currentIndex + 1, toReplace);
-//                currentIndex += toReplace.length() - 1;
-//                binaryText.setText(Html.fromHtml(b.toString()));
-//                if ((int) (Math.random() * 100 + 1) < 36) {
-//                    buttonRight.setText(numberLeft + "");
-//                    buttonLeft.setText(numberRight + "");
-//                } else {
-//                    buttonRight.setText(numberRight + "");
-//                    buttonLeft.setText(numberLeft + "");
-//                }
-//            }
-//        } else {
-//            done = true;
-//        }
     }
 
 

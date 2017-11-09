@@ -6,8 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -20,7 +22,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
 
     private View rootView;
     private GridView displayedLights;
-    private GridViewImageAdapter adapter;
+    private BaseAdapter adapter;
     ArrayList<Boolean> translatedList;
     private LightsOut game;
     private boolean[][] originalGrid;
@@ -36,7 +38,48 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         game.randomize();
         originalGrid = LightsOut.makeCopyOf(game.getGrid());
         translatedList = new ArrayList<>(convertTo1D(game.getGrid()));
-        adapter = new GridViewImageAdapter(getActivity(), translatedList);
+        adapter = new BaseAdapter() {
+            @Override
+            public int getCount() {
+                return translatedList.size();
+            }
+
+            @Override
+            public Object getItem(int i) {
+                return translatedList.get(i);
+            }
+
+            @Override
+            public long getItemId(int i) {
+                return i;
+            }
+
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent) {
+                ImageView imageView;
+                if (convertView == null)
+                {
+                    imageView = new ImageView(getActivity());
+                    imageView.setLayoutParams(new GridView.LayoutParams(185, 185));
+                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    imageView.setPadding(5, 5, 5, 5);
+                }
+                else
+                {
+                    imageView = (ImageView) convertView;
+                }
+                //put appropriate image into ImageView
+                if (translatedList.get(position))
+                {
+                    imageView.setImageResource(R.drawable.ic_add_circle_black_24dp);
+                }
+                else
+                {
+                    imageView.setImageResource(R.drawable.ic_add_circle_outline_black_24dp);
+                }
+                return imageView;
+            }
+        };
         displayedLights = rootView.findViewById(R.id.displayed_lights_gridview);
         displayedLights.setNumColumns(game.getGrid()[0].length);
         displayedLights.setAdapter(adapter);
