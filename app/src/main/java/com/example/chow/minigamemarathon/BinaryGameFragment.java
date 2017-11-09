@@ -160,6 +160,8 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
                     notifyGameEnd();
                 }
             } else {
+                //if current index is greater than words per checkpoint * current checkpoint
+                    //currentIndex = words per checkpoint
                 //incorrect button pressed
                 currentIndex = 0;
                 binaryText.setText(gameText);
