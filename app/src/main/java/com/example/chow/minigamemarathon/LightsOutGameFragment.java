@@ -61,7 +61,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
                 {
                     imageView = new ImageView(getActivity());
                     imageView.setLayoutParams(new GridView.LayoutParams(185, 185));
-                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     imageView.setPadding(5, 5, 5, 5);
                 }
                 else
@@ -145,7 +145,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
 
     @Override
     public double getPercentScore() {
-        return game.getPercentScore(numSwitchFlipped, numPuzzlesGenerated);
+        return LightsOut.getPercentScore(numSwitchFlipped, numPuzzlesGenerated);
     }
 
     @Override

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -84,6 +85,10 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
     private ImageButton makeOperator(int operatorType) {
         ImageButton operatorButton = new ImageButton(getActivity());
         operatorButton.setOnClickListener(this);
+        operatorButton.setLayoutParams(new ListView.LayoutParams(185, 185));
+        operatorButton.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        operatorButton.setPadding(20, 20, 20, 20);
+        operatorButton.setId(operatorType);
         switch (operatorType)
         {
             case RESET:
