@@ -1,5 +1,6 @@
 package com.example.chow.minigamemarathon;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -20,8 +22,6 @@ import java.util.ArrayList;
 
 public class LightsOutGameFragment extends GameFragment implements View.OnClickListener{
 
-    private View rootView;
-    private GridView displayedLights;
     private BaseAdapter adapter;
     ArrayList<Boolean> translatedList;
     private LightsOut game;
@@ -33,7 +33,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        rootView = inflater.inflate(R.layout.lights_out_layout, container, false);
+        View rootView = inflater.inflate(R.layout.lights_out_layout, container, false);
         game = new LightsOut(HEIGHT, WIDTH);
         game.randomize();
         originalGrid = LightsOut.makeCopyOf(game.getGrid());
@@ -59,8 +59,8 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
                 ImageView imageView;
                 if (convertView == null)
                 {
-                    imageView = new ImageView(getActivity());
-                    imageView.setLayoutParams(new GridView.LayoutParams(185, 185));
+                    imageView = new SquareImageView(getActivity());
+                    imageView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                     imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     imageView.setPadding(5, 5, 5, 5);
                 }
@@ -80,7 +80,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
                 return imageView;
             }
         };
-        displayedLights = rootView.findViewById(R.id.displayed_lights_gridview);
+        GridView displayedLights = rootView.findViewById(R.id.displayed_lights_gridview);
         displayedLights.setNumColumns(game.getGrid()[0].length);
         displayedLights.setAdapter(adapter);
         displayedLights.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -102,6 +102,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         generateNewPuzzle.setOnClickListener(this);
         Button resetCurrentPuzzle = rootView.findViewById(R.id.reset_current_puzzle);
         resetCurrentPuzzle.setOnClickListener(this);
+
 
         return rootView;
     }
@@ -151,5 +152,19 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
     @Override
     public boolean isSolved() {
         return game.isSolved();
+    }
+
+    private class SquareImageView extends android.support.v7.widget.AppCompatImageView
+    {
+        public SquareImageView(Context context)
+        {
+            super(context);
+        }
+
+        @Override
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            int dimension = Math.max(widthMeasureSpec, heightMeasureSpec);
+            super.onMeasure(dimension, dimension);
+        }
     }
 }

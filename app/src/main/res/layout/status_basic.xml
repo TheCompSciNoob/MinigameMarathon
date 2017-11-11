@@ -9,9 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:text="best"
         android:textAlignment="center"
-        android:textSize="36sp"
-        android:text="best score" />
+        android:textSize="36sp" />
 
     <TextView
         android:id="@+id/current_game_view"

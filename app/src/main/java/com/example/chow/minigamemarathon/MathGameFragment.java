@@ -4,10 +4,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,9 +47,18 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
         operatorOptions.add(SUBTRACT);
         operatorOptions.add(MULTIPLY);
         operatorOptions.add(DIVIDE);
+        //TODO: put actual numbers from game object into the arraylist
+        numberOptions = new ArrayList<>();
+        numberOptions.add("1");
+        numberOptions.add("2");
+        numberOptions.add("3");
+        numberOptions.add("4");
+        numberOptions.add("5");
+        numberOptions.add("6");
     }
 
     private void setListeners() {
+        //adapter for the operators on the right
         operatorAdapter = new BaseAdapter() {
             @Override
             public int getCount() {
@@ -80,13 +90,30 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
             }
         };
         operatorsListView.setAdapter(operatorAdapter);
+
+        //adapters for number options on the left
+        numberOptionAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_expandable_list_item_1, numberOptions);
+        numbersGridView.setAdapter(numberOptionAdapter);
+        numbersGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                //replace numbers to "" when clicked so that user doesn't see it
+                String numberChosen = numberOptions.get(position);
+                if (!numberChosen.equals(""))
+                {
+                    expression.append(numberChosen + " ");
+                    numberOptions.set(position, "");
+                }
+                numberOptionAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     private ImageButton makeOperator(int operatorType) {
         ImageButton operatorButton = new ImageButton(getActivity());
         operatorButton.setOnClickListener(this);
         operatorButton.setLayoutParams(new ListView.LayoutParams(185, 185));
-        operatorButton.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        operatorButton.setScaleType(ImageButton.ScaleType.CENTER_CROP);
         operatorButton.setPadding(20, 20, 20, 20);
         operatorButton.setId(operatorType);
         switch (operatorType)
