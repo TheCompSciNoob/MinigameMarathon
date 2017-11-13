@@ -56,27 +56,30 @@ public class StopWatch {
 
     public void start()
     {
-        Log.d(TAG, "start: start() is called");
         initTimer();
         timer.start();
     }
 
     public void pause()
     {
-        timer.cancel();
-        Log.d(TAG, "pause: paused");
+        if (timer != null)
+        {
+            timer.cancel();
+        }
     }
 
     public void resume()
     {
         initTimer();
         timer.start();
-        Log.d(TAG, "resume: resumed");
     }
 
     public void stop()
     {
-        timer.cancel();
+        if (timer != null)
+        {
+            timer.cancel();
+        }
         lapTimeElapsed = 0;
     }
 
