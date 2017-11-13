@@ -28,13 +28,14 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
     private boolean[][] originalGrid;
     private final int HEIGHT = 5, WIDTH = 5;
     private int numSwitchFlipped = 0, numPuzzlesGenerated = 1;
+    private LightsOut.GameMode gameMode = LightsOut.GameMode.DEBUG;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.lights_out_layout, container, false);
-        game = new LightsOut(HEIGHT, WIDTH);
+        game = new LightsOut(HEIGHT, WIDTH, gameMode);
         game.randomize();
         originalGrid = LightsOut.makeCopyOf(game.getGrid());
         translatedList = new ArrayList<>(convertTo1D(game.getGrid()));
@@ -125,7 +126,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         switch (view.getId())
         {
             case R.id.generate_new_puzzle:
-                game = new LightsOut(HEIGHT, WIDTH);
+                game = new LightsOut(HEIGHT, WIDTH, gameMode);
                 game.randomize();
                 originalGrid = LightsOut.makeCopyOf(game.getGrid());
                 translatedList.clear();
@@ -146,7 +147,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
 
     @Override
     public double getPercentScore() {
-        return LightsOut.getPercentScore(numSwitchFlipped, numPuzzlesGenerated);
+        return LightsOut.getPercentScore(numSwitchFlipped, numPuzzlesGenerated, gameMode);
     }
 
     @Override

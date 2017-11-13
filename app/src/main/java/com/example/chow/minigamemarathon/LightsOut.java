@@ -1,6 +1,7 @@
 package com.example.chow.minigamemarathon;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.Random;
@@ -11,18 +12,35 @@ import java.util.Random;
 
 public class LightsOut{
     private boolean[][] grid;
-    private static final int RANDOMIZE_TIMES = 1;
+    private int randomizeTimes;
+    private static final int RANDOMIZE_TIMES_EASY = 10, RANDOMIZE_TIMES_HARD = 20, RANDOMIZE_TIMES_DEBUG = 1;
     private final String TAG = "LightsOut Game";
     private static double flipMaxScore = 100, numGeneratePuzzleMaxScore = 50, totalScore = flipMaxScore + numGeneratePuzzleMaxScore;
 
-    public LightsOut(int height, int width)
+    public LightsOut(int height, int width, GameMode gameMode)
     {
         grid = new boolean[height][width];
+        randomizeTimes = getRandomTimes(gameMode);
+    }
+
+    private static int getRandomTimes(GameMode gameMode)
+    {
+        switch (gameMode)
+        {
+            case EASY:
+                return RANDOMIZE_TIMES_EASY;
+            case DIFFICULT:
+                return RANDOMIZE_TIMES_HARD;
+            case DEBUG:
+                return RANDOMIZE_TIMES_DEBUG;
+            default:
+        }
+        return -1;
     }
 
     public void randomize()
     {
-        for (int i = 0; i < RANDOMIZE_TIMES; i++)
+        for (int i = 0; i < randomizeTimes; i++)
         {
             Random ran = new Random();
             int ranRow = ran.nextInt(grid.length);
@@ -91,12 +109,17 @@ public class LightsOut{
         return solved;
     }
 
-    public static double getPercentScore(int numSwitchFlipped, int numTries)
+    public static double getPercentScore(int numSwitchFlipped, int numTries, GameMode gameMode)
     {
-        int extraSwitches = numSwitchFlipped - RANDOMIZE_TIMES, extraPuzzles = numTries - 1;
+        int extraSwitches = numSwitchFlipped - getRandomTimes(gameMode), extraPuzzles = numTries - 1;
         final double switchDepletion = 0.995, generatePuzzleDepletion = .70;
         double flipScore = flipMaxScore * Math.pow(switchDepletion, extraSwitches);
         double puzzleScore = numGeneratePuzzleMaxScore * Math.pow(generatePuzzleDepletion, extraPuzzles);
         return (flipScore + puzzleScore) / totalScore;
+    }
+
+    public enum GameMode
+    {
+        EASY, DIFFICULT, DEBUG;
     }
 }
