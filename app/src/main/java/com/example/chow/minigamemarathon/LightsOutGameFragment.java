@@ -81,7 +81,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
                 return imageView;
             }
         };
-        GridView displayedLights = rootView.findViewById(R.id.displayed_lights_gridview);
+        GridView displayedLights = new SquareGridView(getActivity());
         displayedLights.setNumColumns(game.getGrid()[0].length);
         displayedLights.setAdapter(adapter);
         displayedLights.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -99,6 +99,8 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
                 }
             }
         });
+        LinearLayout gridViewContainer = rootView.findViewById(R.id.displayed_lights_gridview_container);
+        gridViewContainer.addView(displayedLights, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         Button generateNewPuzzle = rootView.findViewById(R.id.generate_new_puzzle);
         generateNewPuzzle.setOnClickListener(this);
         Button resetCurrentPuzzle = rootView.findViewById(R.id.reset_current_puzzle);
@@ -165,6 +167,18 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         @Override
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             int dimension = Math.max(widthMeasureSpec, heightMeasureSpec);
+            super.onMeasure(dimension, dimension);
+        }
+    }
+
+    private class SquareGridView extends GridView {
+        public SquareGridView(Context context) {
+            super(context);
+        }
+
+        @Override
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            int dimension = Math.min(widthMeasureSpec, heightMeasureSpec);
             super.onMeasure(dimension, dimension);
         }
     }

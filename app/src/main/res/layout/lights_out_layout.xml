@@ -20,8 +20,8 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <GridView
-        android:id="@+id/displayed_lights_gridview"
+    <LinearLayout
+        android:id="@+id/displayed_lights_gridview_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
@@ -31,7 +31,8 @@
         app:layout_constraintBottom_toTopOf="@+id/reset_current_puzzle"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include" />
+        app:layout_constraintTop_toBottomOf="@+id/include"
+        android:orientation="vertical" />
 
     <Button
         android:id="@+id/generate_new_puzzle"
