@@ -56,7 +56,10 @@ public class GameFragmentManager {
 
     public void stopTimer()
     {
-        timer.stop();
+        if (timer != null)
+        {
+            timer.stop();
+        }
     }
 
     private void makeTransitionFragments() {
