@@ -12,10 +12,12 @@ import android.widget.TextView;
 
 public abstract class GameFragment extends Fragment implements StopWatch.OnTickListener {
 
+    public static final String SPLIT = "<split>";
     private TextView sectionTime, totalTime;
     private long startTotalTime;
     private OnGameStateUpdateListener listener;
     private int round, score;
+    protected GameMode gameMode;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -29,14 +31,12 @@ public abstract class GameFragment extends Fragment implements StopWatch.OnTickL
         roundView.setText("" + round);
         TextView scoreView = getView().findViewById(R.id.current_score_view);
         scoreView.setText("" + score);
-        if (listener != null)
-        {
+        if (listener != null) {
             listener.onGameStart(this);
         }
     }
 
-    private String formatMillisToMMSSMSMS(long millisTime)
-    {
+    public static String formatMillisToMMSSMSMS(long millisTime) {
         long millis = millisTime;
         long seconds = millis / 1000;
         long minutes = seconds / 60;
@@ -45,22 +45,19 @@ public abstract class GameFragment extends Fragment implements StopWatch.OnTickL
         return String.format("%02d:%02d.%03d", minutes, seconds, millis);
     }
 
-    public void setStartTotalTime(long totalTimeElapsedMillis)
-    {
+    public void setStartTotalTime(long totalTimeElapsedMillis) {
         startTotalTime = totalTimeElapsedMillis;
     }
 
-    public void setGameStateUpdateListener(OnGameStateUpdateListener listener)
-    {
+    public void setGameStateUpdateListener(OnGameStateUpdateListener listener) {
         this.listener = listener;
     }
-    public void setRound(int round)
-    {
+
+    public void setRound(int round) {
         this.round = round;
     }
 
-    public void setScore(int score)
-    {
+    public void setScore(int score) {
         this.score = score;
     }
 
@@ -70,22 +67,54 @@ public abstract class GameFragment extends Fragment implements StopWatch.OnTickL
         totalTime.setText(formatMillisToMMSSMSMS(totalTimeElapsed));
     }
 
-    public void notifyGameEnd()
-    {
-        if (listener != null)
-        {
+    public void notifyGameEnd() {
+        if (listener != null) {
             listener.onGameSolved(this);
         }
     }
 
+    public String getLevelData(int scorePerGame, long millis)
+    {
+        return getGameName() + SPLIT + millis + SPLIT + (int) (scorePerGame * getPercentScore());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (listener != null)
+        {
+            listener.onGamePaused(this);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (listener != null)
+        {
+            listener.onGameResume(this);
+        }
+    }
+
+    public abstract String getGameName();
+
     public abstract double getPercentScore();
 
     public abstract boolean isSolved();
+
+    public void setGameMode(GameMode gameMode)
+    {
+        this.gameMode = gameMode;
+    }
 
     public interface OnGameStateUpdateListener
     {
         public void onGameSolved(GameFragment solvedFragment);
 
         public void onGameStart(GameFragment startingFragment);
+
+        public void onGamePaused(GameFragment pausedFragment);
+
+        public void onGameResume(GameFragment resumeFragment);
     }
 }

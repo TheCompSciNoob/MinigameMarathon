@@ -167,6 +167,11 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
     }
 
     @Override
+    public String getGameName() {
+        return "Can You Math?";
+    }
+
+    @Override
     public double getPercentScore() {
         //TODO: return score
         return 0;

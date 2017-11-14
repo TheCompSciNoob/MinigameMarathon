@@ -26,16 +26,19 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
     ArrayList<Boolean> translatedList;
     private LightsOut game;
     private boolean[][] originalGrid;
-    private final int HEIGHT = 5, WIDTH = 5;
     private int numSwitchFlipped = 0, numPuzzlesGenerated = 1;
-    private LightsOut.GameMode gameMode = LightsOut.GameMode.DEBUG;
+    private View rootView;
 
-    @Nullable
-    @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.lights_out_layout, container, false);
-        game = new LightsOut(HEIGHT, WIDTH, gameMode);
+        rootView = inflater.inflate(R.layout.lights_out_layout, container, false);
+        return rootView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        game = new LightsOut(gameMode);
         game.randomize();
         originalGrid = LightsOut.makeCopyOf(game.getGrid());
         translatedList = new ArrayList<>(convertTo1D(game.getGrid()));
@@ -105,9 +108,6 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         generateNewPuzzle.setOnClickListener(this);
         Button resetCurrentPuzzle = rootView.findViewById(R.id.reset_current_puzzle);
         resetCurrentPuzzle.setOnClickListener(this);
-
-
-        return rootView;
     }
 
     private ArrayList<Boolean> convertTo1D(boolean[][] grid)
@@ -128,7 +128,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         switch (view.getId())
         {
             case R.id.generate_new_puzzle:
-                game = new LightsOut(HEIGHT, WIDTH, gameMode);
+                game = new LightsOut(gameMode);
                 game.randomize();
                 originalGrid = LightsOut.makeCopyOf(game.getGrid());
                 translatedList.clear();
@@ -145,6 +145,11 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
             default:
                 Toast.makeText(getActivity(), "defaulted", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public String getGameName() {
+        return "Lights Out";
     }
 
     @Override

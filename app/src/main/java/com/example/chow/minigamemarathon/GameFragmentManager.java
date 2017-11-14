@@ -3,6 +3,7 @@ package com.example.chow.minigamemarathon;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -19,19 +20,25 @@ public class GameFragmentManager {
     private AppCompatActivity activity;
     private ArrayList<Fragment> displayedFragments;
     private StartFragment startScreen;
+    private EndFragment endScreen;
     private StopWatch timer;
+    private ArrayList<String> gameDataSets;
+    private GameMode gameMode;
 
-    public GameFragmentManager(AppCompatActivity activity, ArrayList<GameFragment> gameFragments)
+    public GameFragmentManager(AppCompatActivity activity, ArrayList<GameFragment> gameFragments, GameMode gameMode)
     {
+        this.gameMode = gameMode;
         this.activity = activity;
         this.gameFragments = gameFragments;
         fragmentPosition = -1;
         timer = new StopWatch(5);
         makeTransitionFragments();
         makeListenersForGames();
+        gameDataSets = new ArrayList<>();
         displayedFragments = new ArrayList<>();
         displayedFragments.add(startScreen);
         displayedFragments.addAll(gameFragments);
+        displayedFragments.add(endScreen);
     }
 
     private void makeListenersForGames() {
@@ -41,14 +48,26 @@ public class GameFragmentManager {
                 @Override
                 public void onGameSolved(GameFragment solvedFragment) {
                     timer.pause();
-                    timer.lap();
                     totalScore += (int) (solvedFragment.getPercentScore() * scorePerGame);
+                    gameDataSets.add(solvedFragment.getLevelData(scorePerGame, timer.getLapTimeElapsed()));
+                    timer.lap();
                     displayNextFragment();
+                    Log.d(TAG, "onGameSolved: " + gameDataSets.toString());
                 }
 
                 @Override
                 public void onGameStart(GameFragment startingFragment) {
                     timer.start();
+                }
+
+                @Override
+                public void onGamePaused(GameFragment pausedFragment) {
+                    timer.pause();
+                }
+
+                @Override
+                public void onGameResume(GameFragment resumeFragment) {
+                    timer.resume();
                 }
             });
         }
@@ -70,6 +89,7 @@ public class GameFragmentManager {
                 displayNextFragment();
             }
         });
+        endScreen = new EndFragment();
     }
 
     public void displayNextFragment()
@@ -82,10 +102,16 @@ public class GameFragmentManager {
             if (displayFragment instanceof GameFragment)
             {
                 GameFragment nextFragment = (GameFragment) displayFragment;
+                nextFragment.setGameMode(gameMode);
                 nextFragment.setStartTotalTime(timer.getTotalTimeElapsed());
                 nextFragment.setRound(fragmentPosition + 1 - (displayedFragments.size() - gameFragments.size()));
                 nextFragment.setScore(totalScore);
                 timer.setOnTickListener(nextFragment);
+            }
+            else if (displayFragment instanceof EndFragment)
+            {
+                EndFragment nextFragment = (EndFragment) displayFragment;
+                nextFragment.setDataSet(gameDataSets);
             }
             fm.beginTransaction().replace(R.id.display_frame,displayFragment).commit();
         }

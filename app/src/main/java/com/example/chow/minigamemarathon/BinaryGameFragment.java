@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -47,6 +48,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
     private ForegroundColorSpan textColor;
     private int currentIndex;
     private int score;
+    private GameMode gameMode;
 
     public BinaryGameFragment() {
         // Required empty public constructor
@@ -90,12 +92,17 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.binary_game_layout, container, false);
-        //Wires widgets
-        game = new BinaryGame();
+        return v;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        //wire widgets
         gameText = new SpannableStringBuilder(game.getBinaryString());
-        binaryText = v.findViewById(R.id.binary_view);
-        buttonLeft = v.findViewById(R.id.button_left);
-        buttonRight = v.findViewById(R.id.button_right);
+        binaryText = getView().findViewById(R.id.binary_view);
+        buttonLeft = getView().findViewById(R.id.button_left);
+        buttonRight = getView().findViewById(R.id.button_right);
         buttonLeft.setOnClickListener(this);
         buttonRight.setOnClickListener(this);
         binaryText.setText(gameText, TextView.BufferType.SPANNABLE);
@@ -103,7 +110,12 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
         buttonLeft.setText(numberLeft + "");
         buttonRight.setText(numberRight + "");
         currentIndex = 0;
-        return v;
+    }
+
+    @Override
+    public void setGameMode(GameMode gameMode) {
+        super.setGameMode(gameMode);
+        game = new BinaryGame(gameMode);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -183,13 +195,17 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
 
 
     @Override
+    public String getGameName() {
+        return "Binary";
+    }
+
+    @Override
     public double getPercentScore() {
         return (double) (score / 50);
     }
 
     @Override
     public boolean isSolved() {
-        Log.d(TAG, "isSolved: " + (currentIndex >= gameText.length()));
         return currentIndex >= gameText.length();
     }
 

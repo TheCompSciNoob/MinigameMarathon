@@ -13,29 +13,31 @@ import java.util.Random;
 public class LightsOut{
     private boolean[][] grid;
     private int randomizeTimes;
-    private static final int RANDOMIZE_TIMES_EASY = 10, RANDOMIZE_TIMES_HARD = 20, RANDOMIZE_TIMES_DEBUG = 1;
+    private static final int RANDOMIZE_TIMES_EASY = 10, RANDOMIZE_TIMES_HARD = 30, RANDOMIZE_TIMES_DEBUG = 1;
     private final String TAG = "LightsOut Game";
     private static double flipMaxScore = 100, numGeneratePuzzleMaxScore = 50, totalScore = flipMaxScore + numGeneratePuzzleMaxScore;
 
-    public LightsOut(int height, int width, GameMode gameMode)
-    {
-        grid = new boolean[height][width];
-        randomizeTimes = getRandomTimes(gameMode);
-    }
-
-    private static int getRandomTimes(GameMode gameMode)
+    public LightsOut(GameMode gameMode)
     {
         switch (gameMode)
         {
             case EASY:
-                return RANDOMIZE_TIMES_EASY;
-            case DIFFICULT:
-                return RANDOMIZE_TIMES_HARD;
+                grid = new boolean[5][5];
+                Log.d(TAG, "LightsOut: EASY");
+                randomizeTimes = RANDOMIZE_TIMES_EASY;
+                break;
+            case HARD:
+                grid = new boolean[8][8];
+                Log.d(TAG, "LightsOut: HARD");
+                randomizeTimes = RANDOMIZE_TIMES_HARD;
+                break;
             case DEBUG:
-                return RANDOMIZE_TIMES_DEBUG;
+                grid = new boolean[5][5];
+                Log.d(TAG, "LightsOut: DEBUG");
+                randomizeTimes = RANDOMIZE_TIMES_DEBUG;
+                break;
             default:
         }
-        return -1;
     }
 
     public void randomize()
@@ -111,15 +113,23 @@ public class LightsOut{
 
     public static double getPercentScore(int numSwitchFlipped, int numTries, GameMode gameMode)
     {
-        int extraSwitches = numSwitchFlipped - getRandomTimes(gameMode), extraPuzzles = numTries - 1;
+        int RANDOMIZE_TIMES = 0;
+        switch (gameMode)
+        {
+            case EASY:
+                RANDOMIZE_TIMES = RANDOMIZE_TIMES_EASY;
+                break;
+            case HARD:
+                RANDOMIZE_TIMES = RANDOMIZE_TIMES_HARD;
+                break;
+            case DEBUG:
+                RANDOMIZE_TIMES = RANDOMIZE_TIMES_DEBUG;
+                break;
+        }
+        int extraSwitches = numSwitchFlipped - RANDOMIZE_TIMES, extraPuzzles = numTries - 1;
         final double switchDepletion = 0.995, generatePuzzleDepletion = .70;
         double flipScore = flipMaxScore * Math.pow(switchDepletion, extraSwitches);
         double puzzleScore = numGeneratePuzzleMaxScore * Math.pow(generatePuzzleDepletion, extraPuzzles);
         return (flipScore + puzzleScore) / totalScore;
-    }
-
-    public enum GameMode
-    {
-        EASY, DIFFICULT, DEBUG;
     }
 }
