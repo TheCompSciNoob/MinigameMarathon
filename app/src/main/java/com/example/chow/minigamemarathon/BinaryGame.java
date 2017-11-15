@@ -1,11 +1,7 @@
 package com.example.chow.minigamemarathon;
 
 
-import android.util.Log;
-
 import java.util.Random;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by per6 on 10/20/17.
@@ -19,7 +15,7 @@ public class BinaryGame {
         numChars = getNumChars(gameMode);
     }
 
-    private int getNumChars(GameMode gameMode)
+    public int getNumChars(GameMode gameMode)
     {
         switch (gameMode)
         {

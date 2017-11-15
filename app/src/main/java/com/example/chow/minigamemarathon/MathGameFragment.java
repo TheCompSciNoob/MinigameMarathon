@@ -152,8 +152,10 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
         switch (view.getId())
         {
             case RESET:
+                generateProblem();
                 break;
             case ADD:
+                //view.setText(+)
                 break;
             case SUBTRACT:
                 break;
@@ -164,6 +166,9 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
             default:
                 Toast.makeText(getActivity(), "YOU SHOULD NOT SEE THIS", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private int generateProblem() {
     }
 
     @Override

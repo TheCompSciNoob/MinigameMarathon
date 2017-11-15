@@ -42,7 +42,7 @@ public class MathGame {
         return numbers;
     }
 
-    protected static double eval(final String str) {
+    public static double eval(final String str) throws RuntimeException {
         return new Object() {
             int pos = -1, ch;
 
