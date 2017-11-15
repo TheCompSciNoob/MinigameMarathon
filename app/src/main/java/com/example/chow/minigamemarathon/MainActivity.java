@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity
         gameFragments.add(new LightsOutGameFragment());
         gameFragments.add(new BinaryGameFragment());
         //gameFragments.add(new MathGameFragment());
-        manager = new GameFragmentManager(this, gameFragments, GameMode.DEBUG);
+        manager = new GameFragmentManager(this, gameFragments);
         manager.displayNextFragment();
     }
 

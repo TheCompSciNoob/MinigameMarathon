@@ -23,11 +23,10 @@ public class GameFragmentManager {
     private EndFragment endScreen;
     private StopWatch timer;
     private ArrayList<String> gameDataSets;
-    private GameMode gameMode;
+    private GameMode gameMode = GameMode.EASY;
 
-    public GameFragmentManager(AppCompatActivity activity, ArrayList<GameFragment> gameFragments, GameMode gameMode)
+    public GameFragmentManager(AppCompatActivity activity, ArrayList<GameFragment> gameFragments)
     {
-        this.gameMode = gameMode;
         this.activity = activity;
         this.gameFragments = gameFragments;
         fragmentPosition = -1;
@@ -85,7 +84,8 @@ public class GameFragmentManager {
         startScreen = new StartFragment();
         startScreen.setOnStartListener(new StartFragment.OnStartListener() {
             @Override
-            public void onStart() {
+            public void onStart(GameMode gameMode) {
+                GameFragmentManager.this.gameMode = gameMode;
                 displayNextFragment();
             }
         });
