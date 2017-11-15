@@ -201,7 +201,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
 
     @Override
     public double getPercentScore() {
-        return (double) (score / 50);
+        return (double) (score / game.getNumChars(gameMode));
     }
 
     @Override
