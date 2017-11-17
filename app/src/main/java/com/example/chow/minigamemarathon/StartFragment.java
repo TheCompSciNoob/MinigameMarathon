@@ -1,5 +1,7 @@
 package com.example.chow.minigamemarathon;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,12 +21,7 @@ public class StartFragment extends Fragment {
     private OnStartListener listener;
     private NumberPicker gamemodeChooser;
     private GameMode chosenGameMode;
-
-    public StartFragment()
-    {
-        super();
-        chosenGameMode = GameMode.EASY;
-    }
+    private String LAST_DIFFICULTY_KEY = "previous chosen difficulty";
 
     @Nullable
     @Override
@@ -41,15 +38,23 @@ public class StartFragment extends Fragment {
                 }
             }
         });
+        final SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        final int lastValue = preferences.getInt(LAST_DIFFICULTY_KEY, 0);
         final GameMode[] gameModes = {GameMode.EASY, GameMode.HARD, GameMode.DEBUG};
+        chosenGameMode = gameModes[lastValue];
         gamemodeChooser = rootView.findViewById(R.id.gamemode_chooser);
         gamemodeChooser.setMinValue(0);
         gamemodeChooser.setMaxValue(gameModes.length-1);
+        gamemodeChooser.setValue(lastValue);
         gamemodeChooser.setDisplayedValues(getNames(gameModes));
         gamemodeChooser.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int oldValue, int newValue) {
                 chosenGameMode = gameModes[newValue];
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.remove(LAST_DIFFICULTY_KEY);
+                editor.putInt(LAST_DIFFICULTY_KEY, newValue);
+                editor.apply();
             }
         });
 
