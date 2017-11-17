@@ -17,7 +17,6 @@ public abstract class GameFragment extends Fragment implements StopWatch.OnTickL
     private long startTotalTime;
     private OnGameStateUpdateListener listener;
     private int round, score;
-    protected GameMode gameMode;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -102,10 +101,7 @@ public abstract class GameFragment extends Fragment implements StopWatch.OnTickL
 
     public abstract boolean isSolved();
 
-    public void setGameMode(GameMode gameMode)
-    {
-        this.gameMode = gameMode;
-    }
+    public abstract void setGameMode(GameMode gameMode);
 
     public interface OnGameStateUpdateListener
     {

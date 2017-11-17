@@ -169,6 +169,7 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
     }
 
     private int generateProblem() {
+        return 0;
     }
 
     @Override
@@ -186,5 +187,10 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
     public boolean isSolved() {
         //TODO: return true if game is finished
         return false;
+    }
+
+    @Override
+    public void setGameMode(GameMode gameMode) {
+        //TODO: set the game mode
     }
 }

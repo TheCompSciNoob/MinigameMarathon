@@ -4,6 +4,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -86,7 +87,10 @@ public class GameFragmentManager {
             @Override
             public void onStart(GameMode gameMode) {
                 GameFragmentManager.this.gameMode = gameMode;
-                displayNextFragment();
+                if (gameMode != null)
+                {
+                    displayNextFragment();
+                }
             }
         });
         endScreen = new EndFragment();

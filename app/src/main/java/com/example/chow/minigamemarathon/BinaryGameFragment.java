@@ -114,8 +114,8 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
 
     @Override
     public void setGameMode(GameMode gameMode) {
-        super.setGameMode(gameMode);
         game = new BinaryGame(gameMode);
+        this.gameMode = gameMode;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

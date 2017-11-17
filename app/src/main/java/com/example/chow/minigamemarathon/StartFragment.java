@@ -18,7 +18,13 @@ public class StartFragment extends Fragment {
     private Button startButton;
     private OnStartListener listener;
     private NumberPicker gamemodeChooser;
-    private GameMode choosenGameMode;
+    private GameMode chosenGameMode;
+
+    public StartFragment()
+    {
+        super();
+        chosenGameMode = GameMode.EASY;
+    }
 
     @Nullable
     @Override
@@ -31,7 +37,7 @@ public class StartFragment extends Fragment {
             public void onClick(View view) {
                 if (listener != null)
                 {
-                    listener.onStart(choosenGameMode);
+                    listener.onStart(chosenGameMode);
                 }
             }
         });
@@ -43,7 +49,7 @@ public class StartFragment extends Fragment {
         gamemodeChooser.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int oldValue, int newValue) {
-                choosenGameMode = gameModes[newValue];
+                chosenGameMode = gameModes[newValue];
             }
         });
 

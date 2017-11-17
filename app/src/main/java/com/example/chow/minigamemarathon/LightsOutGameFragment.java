@@ -1,8 +1,10 @@
 package com.example.chow.minigamemarathon;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import static android.content.ContentValues.TAG;
+
 /**
  * Created by Kyros on 10/22/2017.
  */
@@ -28,6 +32,8 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
     private boolean[][] originalGrid;
     private int numSwitchFlipped = 0, numPuzzlesGenerated = 1;
     private View rootView;
+    private GameMode gameMode;
+    private Context context;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -35,9 +41,51 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         return rootView;
     }
 
+    private ArrayList<Boolean> convertTo1D(boolean[][] grid)
+    {
+        ArrayList<Boolean> convertedList = new ArrayList<>();
+        for (boolean[] row : grid)
+        {
+            for (boolean col : row)
+            {
+                convertedList.add(col);
+            }
+        }
+        return convertedList;
+    }
+
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void onClick(View view) {
+        switch (view.getId())
+        {
+            case R.id.generate_new_puzzle:
+                game = new LightsOut(gameMode);
+                game.randomize();
+                originalGrid = LightsOut.makeCopyOf(game.getGrid());
+                translatedList.clear();
+                translatedList.addAll(convertTo1D(game.getGrid()));
+                adapter.notifyDataSetChanged();
+                numPuzzlesGenerated++;
+                break;
+            case R.id.reset_current_puzzle:
+                game.setGrid(originalGrid);
+                translatedList.clear();
+                translatedList.addAll(convertTo1D(game.getGrid()));
+                adapter.notifyDataSetChanged();
+                break;
+            default:
+                Toast.makeText(getActivity(), "defaulted", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //wire widgets here
+        if (gameMode != null)
+        {
+            Log.d(TAG, "setGameMode: " + gameMode.toString());
+        }
         game = new LightsOut(gameMode);
         game.randomize();
         originalGrid = LightsOut.makeCopyOf(game.getGrid());
@@ -84,7 +132,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
                 return imageView;
             }
         };
-        GridView displayedLights = new SquareGridView(getActivity());
+        GridView displayedLights = new SquareGridView(context);
         displayedLights.setNumColumns(game.getGrid()[0].length);
         displayedLights.setAdapter(adapter);
         displayedLights.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -110,43 +158,6 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         resetCurrentPuzzle.setOnClickListener(this);
     }
 
-    private ArrayList<Boolean> convertTo1D(boolean[][] grid)
-    {
-        ArrayList<Boolean> convertedList = new ArrayList<>();
-        for (boolean[] row : grid)
-        {
-            for (boolean col : row)
-            {
-                convertedList.add(col);
-            }
-        }
-        return convertedList;
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId())
-        {
-            case R.id.generate_new_puzzle:
-                game = new LightsOut(gameMode);
-                game.randomize();
-                originalGrid = LightsOut.makeCopyOf(game.getGrid());
-                translatedList.clear();
-                translatedList.addAll(convertTo1D(game.getGrid()));
-                adapter.notifyDataSetChanged();
-                numPuzzlesGenerated++;
-                break;
-            case R.id.reset_current_puzzle:
-                game.setGrid(originalGrid);
-                translatedList.clear();
-                translatedList.addAll(convertTo1D(game.getGrid()));
-                adapter.notifyDataSetChanged();
-                break;
-            default:
-                Toast.makeText(getActivity(), "defaulted", Toast.LENGTH_SHORT).show();
-        }
-    }
-
     @Override
     public String getGameName() {
         return "Lights Out";
@@ -160,6 +171,11 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
     @Override
     public boolean isSolved() {
         return game.isSolved();
+    }
+
+    @Override
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
     }
 
     private class SquareImageView extends android.support.v7.widget.AppCompatImageView
@@ -186,5 +202,11 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
             int dimension = Math.min(widthMeasureSpec, heightMeasureSpec);
             super.onMeasure(dimension, dimension);
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context = context;
     }
 }
