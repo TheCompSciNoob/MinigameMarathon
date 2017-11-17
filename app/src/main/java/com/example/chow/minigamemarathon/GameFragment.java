@@ -72,9 +72,9 @@ public abstract class GameFragment extends Fragment implements StopWatch.OnTickL
         }
     }
 
-    public String getLevelData(int scorePerGame, long millis)
+    public String[] getLevelData(int scorePerGame, long millis)
     {
-        return getGameName() + SPLIT + millis + SPLIT + (int) (scorePerGame * getPercentScore());
+        return new String[] {getGameName(), millis + "", (int) (scorePerGame * getPercentScore()) + ""};
     }
 
     @Override

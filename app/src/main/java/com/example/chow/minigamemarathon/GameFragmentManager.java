@@ -4,7 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -23,7 +22,7 @@ public class GameFragmentManager {
     private StartFragment startScreen;
     private EndFragment endScreen;
     private StopWatch timer;
-    private ArrayList<String> gameDataSets;
+    private String[][] gameDataSets;
     private GameMode gameMode = GameMode.EASY;
 
     public GameFragmentManager(AppCompatActivity activity, ArrayList<GameFragment> gameFragments)
@@ -34,7 +33,7 @@ public class GameFragmentManager {
         timer = new StopWatch(5);
         makeTransitionFragments();
         makeListenersForGames();
-        gameDataSets = new ArrayList<>();
+        gameDataSets = new String[gameFragments.size()][];
         displayedFragments = new ArrayList<>();
         displayedFragments.add(startScreen);
         displayedFragments.addAll(gameFragments);
@@ -49,7 +48,7 @@ public class GameFragmentManager {
                 public void onGameSolved(GameFragment solvedFragment) {
                     timer.pause();
                     totalScore += (int) (solvedFragment.getPercentScore() * scorePerGame);
-                    gameDataSets.add(solvedFragment.getLevelData(scorePerGame, timer.getLapTimeElapsed()));
+                    gameDataSets[fragmentPosition + 1 - (displayedFragments.size() - gameFragments.size())] = solvedFragment.getLevelData(scorePerGame, timer.getLapTimeElapsed());
                     timer.lap();
                     displayNextFragment();
                     Log.d(TAG, "onGameSolved: " + gameDataSets.toString());
@@ -108,7 +107,7 @@ public class GameFragmentManager {
                 GameFragment nextFragment = (GameFragment) displayFragment;
                 nextFragment.setGameMode(gameMode);
                 nextFragment.setStartTotalTime(timer.getTotalTimeElapsed());
-                nextFragment.setRound(fragmentPosition + 1 - (displayedFragments.size() - gameFragments.size()));
+                nextFragment.setRound(fragmentPosition + 2 - (displayedFragments.size() - gameFragments.size()));
                 nextFragment.setScore(totalScore);
                 timer.setOnTickListener(nextFragment);
             }
