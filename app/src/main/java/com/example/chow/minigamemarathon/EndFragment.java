@@ -22,7 +22,6 @@ import android.widget.TextView;
 
 public class EndFragment extends Fragment {
 
-    public static final String DIVIDER = "<divide>", STORE_TAG = "store in shared preferences";
     private ListView gameDataSummary;
     private BaseAdapter adapter;
     private String[][] levelDataSets;
@@ -47,6 +46,7 @@ public class EndFragment extends Fragment {
                 AlertDialog.Builder saveDialog = new AlertDialog.Builder(getActivity());
                 View dialogView = inflater.inflate(R.layout.save_data_dialog, null);
                 saveDialog.setView(dialogView);
+                saveDialog.setCancelable(false);
                 final AlertDialog alertDialog = saveDialog.create();
                 final EditText playerName = dialogView.findViewById(R.id.player_name_input);
                 Button saveButton = dialogView.findViewById(R.id.button_save_dialog);
@@ -56,7 +56,8 @@ public class EndFragment extends Fragment {
                     public void onClick(View view) {
                         if (!playerName.getText().toString().equals(""))
                         {
-                            //TODO: save the data
+                            //TODO: save the data in storeGameData
+                            storeGameData();
                             alertDialog.dismiss();
                             saveRunButton.setEnabled(false);
                         }

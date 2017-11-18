@@ -17,9 +17,7 @@ import android.widget.NumberPicker;
 
 public class StartFragment extends Fragment {
 
-    private Button startButton;
     private OnStartListener listener;
-    private NumberPicker gamemodeChooser;
     private GameMode chosenGameMode;
     private String LAST_DIFFICULTY_KEY = "previous chosen difficulty";
 
@@ -28,7 +26,7 @@ public class StartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.start_screen_layout, container, false);
-        startButton = rootView.findViewById(R.id.button_start);
+        Button startButton = rootView.findViewById(R.id.button_start);
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,7 +40,7 @@ public class StartFragment extends Fragment {
         final int lastValue = preferences.getInt(LAST_DIFFICULTY_KEY, 0);
         final GameMode[] gameModes = {GameMode.EASY, GameMode.HARD, GameMode.DEBUG};
         chosenGameMode = gameModes[lastValue];
-        gamemodeChooser = rootView.findViewById(R.id.gamemode_chooser);
+        NumberPicker gamemodeChooser = rootView.findViewById(R.id.gamemode_chooser);
         gamemodeChooser.setMinValue(0);
         gamemodeChooser.setMaxValue(gameModes.length-1);
         gamemodeChooser.setValue(lastValue);

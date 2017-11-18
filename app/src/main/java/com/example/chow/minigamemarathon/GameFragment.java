@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 public abstract class GameFragment extends Fragment implements StopWatch.OnTickListener {
 
-    public static final String SPLIT = "<split>";
     private TextView sectionTime, totalTime;
     private long startTotalTime;
     private OnGameStateUpdateListener listener;
