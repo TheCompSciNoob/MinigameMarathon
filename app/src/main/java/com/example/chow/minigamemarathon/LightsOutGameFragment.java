@@ -84,7 +84,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         //wire widgets here
         if (gameMode != null)
         {
-            Log.d(TAG, "setGameMode: " + gameMode.toString());
+            Log.d(TAG, "set_gameMode: " + gameMode.toString());
         }
         game = new LightsOut(gameMode);
         game.randomize();

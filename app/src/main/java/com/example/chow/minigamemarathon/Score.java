@@ -10,6 +10,8 @@ public class Score {
     String _score;
     String _time;
 
+    GameMode _gameMode; //temporarily added alex you have to put this in the database
+
     public Score() {
 
     }
@@ -22,9 +24,31 @@ public class Score {
     }
 
     public Score(String _name, String _score, String _time) {
+        this(0, _name, _score, _time);
+    }
+
+    //temporarily added alex you have to put this in the database
+    public Score(String _name, String _score, String _time, GameMode _gameMode) {
         this._name = _name;
         this._score = _score;
         this._time = _time;
+        this._gameMode = _gameMode;
+    }
+
+    //temporarily added alex you have to put this in the database
+    public Score(String _name, int _score, long _time, GameMode _gameMode)
+    {
+        this(_name, _score + "", _time + "", _gameMode);
+    }
+
+    //temporarily added alex you have to put this in the database
+    public GameMode get_gameMode() {
+        return _gameMode;
+    }
+
+    //temporarily added alex you have to put this in the database
+    public void set_gameMode(GameMode _gameMode) {
+        this._gameMode = _gameMode;
     }
 
     public int get_id() {
