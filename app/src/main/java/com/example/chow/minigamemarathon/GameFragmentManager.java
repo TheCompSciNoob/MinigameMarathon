@@ -29,7 +29,20 @@ public class GameFragmentManager {
     {
         this.activity = activity;
         this.gameFragments = gameFragments;
+    }
+
+    public void start()
+    {
+        restart();
+    }
+
+    public void restart()
+    {
         fragmentPosition = -1;
+        if (timer != null)
+        {
+            timer.stop();
+        }
         timer = new StopWatch(5);
         makeTransitionFragments();
         makeListenersForGames();
@@ -38,6 +51,7 @@ public class GameFragmentManager {
         displayedFragments.add(startScreen);
         displayedFragments.addAll(gameFragments);
         displayedFragments.add(endScreen);
+        displayNextFragment();
     }
 
     private void makeListenersForGames() {
@@ -69,14 +83,6 @@ public class GameFragmentManager {
                     timer.resume();
                 }
             });
-        }
-    }
-
-    public void stopTimer()
-    {
-        if (timer != null)
-        {
-            timer.stop();
         }
     }
 

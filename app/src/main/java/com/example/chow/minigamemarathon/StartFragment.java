@@ -38,7 +38,7 @@ public class StartFragment extends Fragment {
         });
         final SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         final int lastValue = preferences.getInt(LAST_DIFFICULTY_KEY, 0);
-        final GameMode[] gameModes = {GameMode.EASY, GameMode.HARD, GameMode.DEBUG};
+        final GameMode[] gameModes = GameMode.AVAILABLE_GAME_MODES;
         chosenGameMode = gameModes[lastValue];
         NumberPicker gamemodeChooser = rootView.findViewById(R.id.gamemode_chooser);
         gamemodeChooser.setMinValue(0);

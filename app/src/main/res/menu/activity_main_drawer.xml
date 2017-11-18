@@ -9,11 +9,11 @@
         <item
             android:id="@+id/score_high"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="High Scores" />
+            android:title="Leader Board" />
         <item
-            android:id="@+id/settings"
+            android:id="@+id/practice"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Settings" />
+            android:title="Train" />
     </group>
 
 </menu>

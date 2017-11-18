@@ -3,6 +3,8 @@ package com.example.chow.minigamemarathon;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -39,7 +41,13 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        startGame();
+        //start game
+        ArrayList<GameFragment> gameFragments = new ArrayList<>();
+        gameFragments.add(new LightsOutGameFragment());
+        gameFragments.add(new BinaryGameFragment());
+        //gameFragments.add(new MathGameFragment());
+        manager = new GameFragmentManager(this, gameFragments);
+        manager.start();
     }
 
 
@@ -53,27 +61,27 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.filter_scores, menu);
+//        return true;
+//    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+////        if (id == R.id.action_settings) {
+////            return true;
+////        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -81,29 +89,23 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        Fragment fragment = null;
         if (id == R.id.game_new) {
-            startGame();
+            manager.restart();
         } else if (id == R.id.score_high) {
+            fragment = new HighScoreFragment();
+        } else if (id == R.id.practice) {
 
-        } else if (id == R.id.settings) {
+        }
+        if (fragment != null)
+        {
 
+            FragmentManager manager = getSupportFragmentManager();
+            manager.beginTransaction().replace(R.id.display_frame, fragment).commit();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-
-    private void startGame() {
-        if (manager != null)
-        {
-            manager.stopTimer();
-        }
-        ArrayList<GameFragment> gameFragments = new ArrayList<>();
-        gameFragments.add(new LightsOutGameFragment());
-        gameFragments.add(new BinaryGameFragment());
-        //gameFragments.add(new MathGameFragment());
-        manager = new GameFragmentManager(this, gameFragments);
-        manager.displayNextFragment();
     }
 
 }

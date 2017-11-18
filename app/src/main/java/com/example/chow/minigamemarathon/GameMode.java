@@ -5,5 +5,8 @@ package com.example.chow.minigamemarathon;
  */
 
 public enum GameMode {
+
     EASY, HARD, DEBUG;
+
+    public static final GameMode[] AVAILABLE_GAME_MODES = {EASY, HARD, DEBUG};
 }

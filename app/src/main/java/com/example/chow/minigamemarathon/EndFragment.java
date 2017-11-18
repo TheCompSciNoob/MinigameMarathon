@@ -57,7 +57,7 @@ public class EndFragment extends Fragment {
                         if (!playerName.getText().toString().equals(""))
                         {
                             //TODO: save the data in storeGameData
-                            storeGameData();
+                            storeGameData(playerName.getText().toString());
                             alertDialog.dismiss();
                             saveRunButton.setEnabled(false);
                         }
@@ -78,7 +78,6 @@ public class EndFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        storeGameData();
         showResults();
     }
 
@@ -140,8 +139,9 @@ public class EndFragment extends Fragment {
         gameDataSummary.setAdapter(adapter);
     }
 
-    private void storeGameData() {
-        //TODO: store game data here
+    private void storeGameData(String playerName) {
+        //TODO: store the score object
+        Score score = new Score(playerName, getTotalScore() + "", getTotalTime() + "");
     }
 
     public void setDataSet(String[][] levelDataSets)
