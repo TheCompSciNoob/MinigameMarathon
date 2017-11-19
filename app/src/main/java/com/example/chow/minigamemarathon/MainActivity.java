@@ -18,8 +18,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, BinaryGameFragment.OnFragmentInteractionListener {
 
-    private GameFragmentManager manager;
-
     @Override
     public void onFragmentInteraction(Uri uri) {
 
@@ -40,16 +38,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        //start game
-        ArrayList<GameFragment> gameFragments = new ArrayList<>();
-        gameFragments.add(new LightsOutGameFragment());
-        gameFragments.add(new BinaryGameFragment());
-        //gameFragments.add(new MathGameFragment());
-        manager = new GameFragmentManager(this, gameFragments);
-        manager.start();
+        onNavigationItemSelected(navigationView.getMenu().getItem(0));
     }
-
 
     @Override
     public void onBackPressed() {
@@ -69,7 +59,10 @@ public class MainActivity extends AppCompatActivity
 
         Fragment fragment = null;
         if (id == R.id.game_new) {
-            manager.restart();
+            GameFragment[] gameFragments = {new LightsOutGameFragment(), new BinaryGameFragment()};
+            GameContainerFragment gameContainerFragment = new GameContainerFragment();
+            gameContainerFragment.setArguments(gameFragments);
+            fragment = gameContainerFragment;
         } else if (id == R.id.score_high) {
             fragment = new HighScoreFragment();
         } else if (id == R.id.practice) {
@@ -77,10 +70,10 @@ public class MainActivity extends AppCompatActivity
         }
         if (fragment != null)
         {
-
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction().replace(R.id.display_frame, fragment).commit();
         }
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

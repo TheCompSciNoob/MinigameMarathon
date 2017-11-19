@@ -96,8 +96,13 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
+    }
+
+    @Override
+    public void initializeVariables() {
+        game = new BinaryGame(gameMode);
         //wire widgets
         gameText = new SpannableStringBuilder(game.getBinaryString());
         binaryText = getView().findViewById(R.id.binary_view);
@@ -110,12 +115,6 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
         buttonLeft.setText(numberLeft + "");
         buttonRight.setText(numberRight + "");
         currentIndex = 0;
-    }
-
-    @Override
-    public void setGameMode(GameMode gameMode) {
-        game = new BinaryGame(gameMode);
-        this.gameMode = gameMode;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

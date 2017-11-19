@@ -75,12 +75,6 @@ public class EndFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        showResults();
-    }
-
     private void showResults() {
         adapter = new BaseAdapter() {
             @Override
@@ -108,7 +102,14 @@ public class EndFragment extends Fragment {
                     TextView gameName = displayLayout.findViewById(R.id.game_name);
                     TextView gameTime = displayLayout.findViewById(R.id.game_time);
                     TextView gameScore = displayLayout.findViewById(R.id.game_score);
-                    if (position == levelDataSets.length)
+                    if (position < levelDataSets.length)
+                    {
+                        String[] levelData = levelDataSets[position];
+                        gameName.setText(levelData[0]);
+                        gameTime.append(GameFragment.formatMillisToMMSSMSMS(Long.parseLong(levelData[1])));
+                        gameScore.append(levelData[2]);
+                    }
+                    else
                     {
                         gameName.setTypeface(null, Typeface.BOLD);
                         gameTime.setTypeface(null, Typeface.BOLD);
@@ -119,13 +120,6 @@ public class EndFragment extends Fragment {
                         gameName.setText("Total");
                         gameTime.append(GameFragment.formatMillisToMMSSMSMS(getTotalTime()));
                         gameScore.append(getTotalScore() + "");
-                    }
-                    else
-                    {
-                        String[] levelData = levelDataSets[position];
-                        gameName.setText(levelData[0]);
-                        gameTime.append(GameFragment.formatMillisToMMSSMSMS(Long.parseLong(levelData[1])));
-                        gameScore.append(levelData[2]);
                     }
                 }
                 else
@@ -144,9 +138,10 @@ public class EndFragment extends Fragment {
         Score score = new Score(playerName, getTotalScore() + "", getTotalTime() + "");
     }
 
-    public void setDataSet(String[][] levelDataSets)
+    public void setArguments(String[][] levelDataSets)
     {
         this.levelDataSets = levelDataSets;
+        showResults();
     }
 
     private int getTotalScore()

@@ -33,9 +33,6 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView = inflater.inflate(R.layout.math_game_layout, container, false);
-        makeArrayLists();
-        wireWidgets();
-        setListeners();
         return rootView;
     }
 
@@ -192,5 +189,12 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
     @Override
     public void setGameMode(GameMode gameMode) {
         //TODO: set the game mode
+    }
+
+    @Override
+    public void initializeVariables() {
+        makeArrayLists();
+        wireWidgets();
+        setListeners();
     }
 }

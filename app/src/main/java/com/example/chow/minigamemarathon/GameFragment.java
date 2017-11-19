@@ -15,7 +15,7 @@ public abstract class GameFragment extends Fragment implements StopWatch.OnTickL
     private TextView sectionTime, totalTime;
     private long startTotalTime;
     private OnGameStateUpdateListener listener;
-    private int round, score;
+    private int round, currentTotalScore;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public abstract class GameFragment extends Fragment implements StopWatch.OnTickL
         TextView roundView = getView().findViewById(R.id.current_game_view);
         roundView.setText("" + round);
         TextView scoreView = getView().findViewById(R.id.current_score_view);
-        scoreView.setText("" + score);
+        scoreView.setText("" + currentTotalScore);
         if (listener != null) {
             listener.onGameStart(this);
         }
@@ -43,20 +43,8 @@ public abstract class GameFragment extends Fragment implements StopWatch.OnTickL
         return String.format("%02d:%02d.%03d", minutes, seconds, millis);
     }
 
-    public void setStartTotalTime(long totalTimeElapsedMillis) {
-        startTotalTime = totalTimeElapsedMillis;
-    }
-
     public void setGameStateUpdateListener(OnGameStateUpdateListener listener) {
         this.listener = listener;
-    }
-
-    public void setRound(int round) {
-        this.round = round;
-    }
-
-    public void setScore(int score) {
-        this.score = score;
     }
 
     @Override
@@ -101,6 +89,16 @@ public abstract class GameFragment extends Fragment implements StopWatch.OnTickL
     public abstract boolean isSolved();
 
     public abstract void setGameMode(GameMode gameMode);
+
+    public abstract void initializeVariables();
+
+    public void setArguments(int round, int currentTotalScore, long startTotalTime, GameMode gameMode)
+    {
+        this.round = round;
+        this.currentTotalScore = currentTotalScore;
+        this.startTotalTime = startTotalTime;
+        setGameMode(gameMode);
+    }
 
     public interface OnGameStateUpdateListener
     {

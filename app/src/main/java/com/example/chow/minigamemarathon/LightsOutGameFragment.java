@@ -38,6 +38,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         rootView = inflater.inflate(R.layout.lights_out_layout, container, false);
+
         return rootView;
     }
 
@@ -79,12 +80,31 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public String getGameName() {
+        return "Lights Out";
+    }
+
+    @Override
+    public double getPercentScore() {
+        return LightsOut.getPercentScore(numSwitchFlipped, numPuzzlesGenerated, gameMode);
+    }
+
+    @Override
+    public boolean isSolved() {
+        return game.isSolved();
+    }
+
+    @Override
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
+    }
+
+    @Override
+    public void initializeVariables() {
         //wire widgets here
-        if (gameMode != null)
+        if (gameMode == null)
         {
-            Log.d(TAG, "set_gameMode: " + gameMode.toString());
+            Log.d(TAG, "set_gameMode: gamemode is null");
         }
         game = new LightsOut(gameMode);
         game.randomize();
@@ -156,26 +176,6 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         generateNewPuzzle.setOnClickListener(this);
         Button resetCurrentPuzzle = rootView.findViewById(R.id.reset_current_puzzle);
         resetCurrentPuzzle.setOnClickListener(this);
-    }
-
-    @Override
-    public String getGameName() {
-        return "Lights Out";
-    }
-
-    @Override
-    public double getPercentScore() {
-        return LightsOut.getPercentScore(numSwitchFlipped, numPuzzlesGenerated, gameMode);
-    }
-
-    @Override
-    public boolean isSolved() {
-        return game.isSolved();
-    }
-
-    @Override
-    public void setGameMode(GameMode gameMode) {
-        this.gameMode = gameMode;
     }
 
     private class SquareImageView extends android.support.v7.widget.AppCompatImageView
