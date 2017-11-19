@@ -1,5 +1,7 @@
 package com.example.chow.minigamemarathon;
 
+import android.os.Parcelable;
+
 /**
  * Created by Kyros on 11/13/2017.
  */

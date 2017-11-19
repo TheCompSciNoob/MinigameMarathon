@@ -26,13 +26,22 @@ public class HighScoreTabFragment extends Fragment {
     private GameMode gameMode;
     private BaseAdapter adapter;
     private ArrayList<Score> database;
+    private ArrayList<Score> scores;
+    private static final String SCORE_KEY = "saved scores from savedInstanceState";
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.tab_high_score_layout, container, false);
-        final ArrayList<Score> scores = filterScoresFromDataBase(); //TODO: get scores from scores in the method
+        if (savedInstanceState != null)
+        {
+            scores = savedInstanceState.getParcelableArrayList(SCORE_KEY);
+        }
+        else
+        {
+            scores = filterScoresFromDataBase(); //TODO: get scores from scores in the method
+        }
         adapter = new BaseAdapter() {
             @Override
             public int getCount() {
@@ -88,6 +97,12 @@ public class HighScoreTabFragment extends Fragment {
         displayScoresListView.setAdapter(adapter);
 
         return rootView;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(SCORE_KEY, scores);
     }
 
     private ArrayList<Score> filterScoresFromDataBase() {

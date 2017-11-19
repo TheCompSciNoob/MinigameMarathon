@@ -1,10 +1,13 @@
 package com.example.chow.minigamemarathon;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by per6 on 11/17/17.
  */
 
-public class Score {
+public class Score implements Parcelable {
     int _id;
     String _name;
     String _score;
@@ -82,4 +85,39 @@ public class Score {
     public void set_time(String _time) {
         this._time = _time;
     }
+
+    protected Score(Parcel in) {
+        _id = in.readInt();
+        _name = in.readString();
+        _score = in.readString();
+        _time = in.readString();
+        _gameMode = GameMode.valueOf(in.readString());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(_id);
+        dest.writeString(_name);
+        dest.writeString(_score);
+        dest.writeString(_time);
+        dest.writeString(_gameMode.name());
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Score> CREATOR = new Parcelable.Creator<Score>() {
+        @Override
+        public Score createFromParcel(Parcel in) {
+            return new Score(in);
+        }
+
+        @Override
+        public Score[] newArray(int size) {
+            return new Score[size];
+        }
+    };
 }

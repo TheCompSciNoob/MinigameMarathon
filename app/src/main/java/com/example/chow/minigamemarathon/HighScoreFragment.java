@@ -8,10 +8,9 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -41,39 +40,31 @@ public class HighScoreFragment extends Fragment {
         Drawable changeIcon = ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.ic_sort_black_24dp);
         Toolbar activityToolbar = getActivity().findViewById(R.id.toolbar);
         activityToolbar.setOverflowIcon(changeIcon);
-
-        return rootView;
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        //GameMode[] gameModes = GameMode.AVAILABLE_GAME_MODES;
-        GameMode[] gameModes = {GameMode.EASY, GameMode.DEBUG, GameMode.HARD};
+        //nested fragments for different gamemodes
+        GameMode[] gameModes = GameMode.AVAILABLE_GAME_MODES;
         ViewPager viewPager = rootView.findViewById(R.id.view_pager_container);
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getChildFragmentManager(), gameModes);
         viewPager.setAdapter(adapter);
         tabLayout = new TabLayout(getActivity());
         tabLayout.setLayoutParams(new AppBarLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         tabLayout.setPadding(8, 8, 8, 8);
+        tabLayout.setupWithViewPager(viewPager);
         appBar = getActivity().findViewById(R.id.app_bar);
         appBar.addView(tabLayout);
-        tabLayout.setupWithViewPager(viewPager);
+
+        return rootView;
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        appBar.removeView(tabLayout);
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.filter_scores, menu);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (appBar != null && tabLayout != null)
-        {
-            appBar.removeView(tabLayout);
-        }
     }
 
     private String[] getNames(GameMode[] gameModes)
@@ -124,7 +115,7 @@ public class HighScoreFragment extends Fragment {
         return scores;
     }
 
-    private class SectionsPagerAdapter extends FragmentPagerAdapter
+    private class SectionsPagerAdapter extends FragmentStatePagerAdapter
     {
 
         private GameMode[] gameModes;
