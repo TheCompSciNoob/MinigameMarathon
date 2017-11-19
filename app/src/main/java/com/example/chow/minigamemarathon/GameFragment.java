@@ -24,14 +24,18 @@ public abstract class GameFragment extends Fragment implements StopWatch.OnTickL
         sectionTime.setText(formatMillisToMMSSMSMS(0));
         totalTime = getView().findViewById(R.id.total_time_status);
         totalTime.setText(formatMillisToMMSSMSMS(startTotalTime));
+        if (listener != null) {
+            listener.onGameStart(this);
+        }
+    }
+
+    public void displayInfo()
+    {
         //from previous game
         TextView roundView = getView().findViewById(R.id.current_game_view);
         roundView.setText("" + round);
         TextView scoreView = getView().findViewById(R.id.current_score_view);
         scoreView.setText("" + currentTotalScore);
-        if (listener != null) {
-            listener.onGameStart(this);
-        }
     }
 
     public static String formatMillisToMMSSMSMS(long millisTime) {

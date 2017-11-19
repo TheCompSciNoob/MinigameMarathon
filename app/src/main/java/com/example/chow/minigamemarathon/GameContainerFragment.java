@@ -132,6 +132,7 @@ public class GameContainerFragment extends Fragment {
                 gameFragment.setArguments(fragmentPosition + 2 - (displayedFragments.size() - gameDataSets.length),
                         totalScore, timer.getTotalTimeElapsed(), gameMode);
                 gameFragment.initializeVariables();
+                gameFragment.displayInfo();
                 timer.setOnTickListener(gameFragment);
             }
             else if (displayFragment instanceof EndFragment)
