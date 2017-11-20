@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by Kyros on 11/17/2017.
@@ -99,17 +100,17 @@ public class HighScoreFragment extends Fragment {
         scores.add(new Score("p2", 12014, 1010, GameMode.DEBUG));
 
 
-        /*String[] names = {"Player 1", "Player 2", "Player 3"};
+        String[] names = {"Player 1", "Player 2", "Player 3"};
         GameMode[] gameModes = GameMode.AVAILABLE_GAME_MODES;
         Random random = new Random();
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 10; i++)
         {
             String name = names[random.nextInt(names.length)];
             int score = random.nextInt(30000) + 20000;
             long time = random.nextInt(2000) + 1000;
             GameMode randomGameMode = gameModes[random.nextInt(gameModes.length)];
             scores.add(new Score(name, score, time, randomGameMode));
-        }*/
+        }
 
         return scores;
     }
