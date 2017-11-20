@@ -24,7 +24,7 @@ import static android.content.ContentValues.TAG;
 public class GameContainerFragment extends Fragment {
 
     private int fragmentPosition, totalScore;
-    private static final int SCORE_PER_GAME = 10000, VIEW_PAGER_ID = 10101;
+    private static final int SCORE_PER_GAME = 10000;
     private ArrayList<Fragment> displayedFragments = new ArrayList<>();
     private StopWatch timer;
     private String[][] gameDataSets;
@@ -40,23 +40,13 @@ public class GameContainerFragment extends Fragment {
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getChildFragmentManager(), displayedFragments);
         viewPager = rootView.findViewById(R.id.game_parent_container);
         viewPager.setAdapter(adapter);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                //nothing
-                //just for structure
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                //nothing
-                //just for structure
-            }
-
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener()
+        {
             @Override
             public void onPageScrollStateChanged(int state) {
                 if (state == ViewPager.SCROLL_STATE_IDLE && displayedFragments.get(fragmentPosition) instanceof GameFragment)
                 {
+                    Log.d(TAG, "onPageScrollStateChanged: timer is starting " + displayedFragments.get(fragmentPosition).toString());
                     timer.start();
                 }
             }
@@ -101,12 +91,16 @@ public class GameContainerFragment extends Fragment {
 
                 @Override
                 public void onGamePaused(GameFragment pausedFragment) {
-                    timer.pause();
+                    //nothing
+                    //just for structure
+                    //pause timer in onPause() of GameContainerFragment
                 }
 
                 @Override
                 public void onGameResume(GameFragment resumeFragment) {
-                    timer.resume();
+                    //nothing
+                    //just for structure
+                    //pause timer in onResume() of GameContainerFragment
                 }
             });
         }
@@ -152,6 +146,21 @@ public class GameContainerFragment extends Fragment {
         {
             timer.stop();
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (timer.getTotalTimeElapsed() != 0)
+        {
+            timer.resume();
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        timer.pause();
     }
 
     private class SectionsPagerAdapter extends FragmentStatePagerAdapter

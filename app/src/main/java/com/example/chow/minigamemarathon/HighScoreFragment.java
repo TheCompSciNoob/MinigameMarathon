@@ -1,6 +1,5 @@
 package com.example.chow.minigamemarathon;
 
-import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,7 +7,7 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
@@ -19,7 +18,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * Created by Kyros on 11/17/2017.
@@ -42,7 +40,8 @@ public class HighScoreFragment extends Fragment {
         activityToolbar.setOverflowIcon(changeIcon);
         //nested fragments for different gamemodes
         GameMode[] gameModes = GameMode.AVAILABLE_GAME_MODES;
-        ViewPager viewPager = rootView.findViewById(R.id.view_pager_container);
+        ViewPager viewPager = rootView.findViewById(R.id.view_pager_high_score_container);
+        viewPager.setOffscreenPageLimit(gameModes.length-1);
         SectionsPagerAdapter adapter = new SectionsPagerAdapter(getChildFragmentManager(), gameModes);
         viewPager.setAdapter(adapter);
         tabLayout = new TabLayout(getActivity());
@@ -115,7 +114,7 @@ public class HighScoreFragment extends Fragment {
         return scores;
     }
 
-    private class SectionsPagerAdapter extends FragmentStatePagerAdapter
+    private class SectionsPagerAdapter extends FragmentPagerAdapter
     {
 
         private GameMode[] gameModes;
@@ -133,7 +132,7 @@ public class HighScoreFragment extends Fragment {
         @Override
         public Fragment getItem(int position) {
             HighScoreTabFragment tabFragment = new HighScoreTabFragment();
-            tabFragment.setArguments(gameModes[position], retrieveScoresFromDatabase());
+            tabFragment.setArguments(gameModes[position], retrieveScoresFromDatabase(), position);
             return tabFragment;
         }
 

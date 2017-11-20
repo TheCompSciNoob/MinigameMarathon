@@ -7,6 +7,8 @@ import android.view.MotionEvent;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Scroller;
 
+import java.lang.reflect.Field;
+
 public class NonSwipeableViewPager extends ViewPager
 {
     public NonSwipeableViewPager(Context context) {
@@ -30,6 +32,14 @@ public class NonSwipeableViewPager extends ViewPager
     }
 
     private void setMyScroller() {
+        try {
+            Class<?> viewPager = ViewPager.class;
+            Field scroller = viewPager.getDeclaredField("mScroller");
+            scroller.setAccessible(true);
+            scroller.set(this, new MyScroller(getContext()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private class MyScroller extends Scroller

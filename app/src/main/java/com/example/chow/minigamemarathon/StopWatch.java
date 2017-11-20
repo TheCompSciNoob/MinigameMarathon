@@ -58,6 +58,7 @@ public class StopWatch {
     {
         initTimer();
         timer.start();
+        Log.d(TAG, "start: timer started");
     }
 
     public void pause()
