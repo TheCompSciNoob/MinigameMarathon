@@ -189,6 +189,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             int dimension = Math.max(widthMeasureSpec, heightMeasureSpec);
             super.onMeasure(dimension, dimension);
+            setMeasuredDimension(dimension, dimension);
         }
     }
 
@@ -201,6 +202,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             int dimension = Math.min(widthMeasureSpec, heightMeasureSpec);
             super.onMeasure(dimension, dimension);
+            setMeasuredDimension(dimension, dimension);
         }
     }
 

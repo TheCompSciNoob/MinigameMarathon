@@ -20,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -32,8 +33,8 @@ import java.util.Random;
 public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemClickListener {
 
     private AppBarLayout appBar;
-    View rootView;
-    private ConstraintLayout extraToolbar;
+    private View rootView;
+    private View extraToolbar;
     private SectionsPagerAdapter adapter;
 
     @Nullable
@@ -48,11 +49,10 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
         adapter = new SectionsPagerAdapter(getChildFragmentManager(), gameModes);
         viewPager.setAdapter(adapter);
         //add layout to toolbar of activity
-        extraToolbar = (ConstraintLayout) inflater.inflate(R.layout.high_score_tab_selection_layout, container, false);
+        extraToolbar = inflater.inflate(R.layout.high_score_tab_selection_layout, container, false);
         TabLayout tabLayout = extraToolbar.findViewById(R.id.tab_selection_tablayout);
         tabLayout.setupWithViewPager(viewPager);
         final ImageButton imageButton = extraToolbar.findViewById(R.id.sort_button);
-        //imageButton.setLayoutParams(new ConstraintLayout.LayoutParams(tabLayout.getHeight(), tabLayout.getHeight()));
         imageButton.setImageResource(R.drawable.ic_sort_black_24dp);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +79,7 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
     {
         //TODO: get scores from database in the method and return the list of scores; the following is only an example
         ArrayList<Score> scores = new ArrayList<>();
-        scores.add(new Score("p1", 15602, 1234, GameMode.EASY));
+        /*scores.add(new Score("p1", 15602, 1234, GameMode.EASY));
         scores.add(new Score("p2", 12345, 7855, GameMode.EASY));
         scores.add(new Score("p3", 45613, 3124, GameMode.EASY));
         scores.add(new Score("p1", 34561, 6451, GameMode.EASY));
@@ -95,13 +95,12 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
         scores.add(new Score("p2", 81534, 4512, GameMode.DEBUG));
         scores.add(new Score("p3", 45124, 2989, GameMode.DEBUG));
         scores.add(new Score("p1", 33654, 3364, GameMode.DEBUG));
-        scores.add(new Score("p2", 12014, 1010, GameMode.DEBUG));
-
+        scores.add(new Score("p2", 12014, 1010, GameMode.DEBUG));*/
 
         String[] names = {"Player 1", "Player 2", "Player 3"};
         GameMode[] gameModes = GameMode.AVAILABLE_GAME_MODES;
         Random random = new Random();
-        for (int i = 0; i < 30; i++)
+        for (int i = 0; i < 50; i++)
         {
             String name = names[random.nextInt(names.length)];
             int score = random.nextInt(30000) + 20000;
@@ -116,9 +115,11 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         Comparator<Score> scoreComparator = null;
+        boolean shouldColorCode = false;
         switch (item.getItemId())
         {
             case R.id.sort_a_to_z:
+                shouldColorCode = false;
                 scoreComparator = new Comparator<Score>() {
                     @Override
                     public int compare(Score score1, Score score2) {
@@ -127,6 +128,7 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
                 };
                 break;
             case R.id.sort_time:
+                shouldColorCode = true;
                 scoreComparator = new Comparator<Score>() {
                     @Override
                     public int compare(Score score1, Score score2) {
@@ -135,10 +137,11 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
                 };
                 break;
             case R.id.sort_score:
+                shouldColorCode = true;
                 scoreComparator = new Comparator<Score>() {
                     @Override
                     public int compare(Score score1, Score score2) {
-                        return Integer.parseInt(score1.get_score()) - Integer.parseInt(score2.get_score());
+                        return Integer.parseInt(score2.get_score()) - Integer.parseInt(score1.get_score());
                     }
                 };
                 break;
@@ -147,7 +150,7 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
         {
             for (HighScoreTabFragment fragment : adapter.getChildFragments())
             {
-                fragment.startSortTask(scoreComparator);
+                fragment.startSortTask(scoreComparator, shouldColorCode);
             }
         }
         return true;

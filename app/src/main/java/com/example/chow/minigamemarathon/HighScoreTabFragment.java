@@ -1,12 +1,16 @@
 package com.example.chow.minigamemarathon;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -62,16 +66,10 @@ public class HighScoreTabFragment extends Fragment {
         return rootView;
     }
 
-    public void startSortTask(final Comparator<Score> comparator)
+    public void startSortTask(Comparator<Score> comparator, boolean shouldColorCode)
     {
-        @SuppressLint("StaticFieldLeak") AsyncTask<Void, Void, Void> sortTask = new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                Collections.sort(filteredDatabase, comparator);
-                adapter.notifyDataSetChanged();
-                return null;
-            }
-        };
+        Collections.sort(filteredDatabase, comparator);
+        adapter.updateSortState(comparator, shouldColorCode);
     }
 
     private void startFilterTask(final ArrayList<Score> unfilteredDatabase)
@@ -118,7 +116,7 @@ public class HighScoreTabFragment extends Fragment {
         }
     }
 
-    public void setArguments(GameMode gameMode, ArrayList<Score> unfilteredDatabase, int positionInAdapter)
+    public void setArguments(GameMode gameMode, ArrayList<Score> unfilteredDatabase, final int positionInAdapter)
     {
         this.gameMode = gameMode;
         startFilterTask(unfilteredDatabase);
@@ -128,50 +126,85 @@ public class HighScoreTabFragment extends Fragment {
     private class ScoreAdapter extends RecyclerView.Adapter<ScoreViewHolder>
     {
         private ArrayList<Score> scores;
-        private ArrayList<TextSwitcher> switcherArrayList;
-        private ArrayList<String> values1, values2;
+        private ArrayList<Integer> ranks;
+        private ArrayList<MemoryTextSwitcher> switcherArrayList;
         private int detailPosition;
         private UpdateClock clock;
+        private int rankOffset;
+        private boolean isColorCodeEnabled;
+        private Comparator<Score> sortComparator;
+        //rank colors
+        private final int COLOR_HERE_I_AM = Color.BLACK,
+                COLOR_GOLD = Color.rgb(201, 137, 16),
+                COLOR_SILVER = Color.rgb(168, 168, 168),
+                COLOR_BRONZE = Color.rgb(150, 90, 56);
 
         public ScoreAdapter(ArrayList<Score> scores) {
             super();
             this.scores = scores;
+            ranks = new ArrayList<>();
             switcherArrayList = new ArrayList<>();
-            values1 = new ArrayList<>();
-            values2 = new ArrayList<>();
             detailPosition = 0;
+            rankOffset = 0;
         }
 
         @Override
         public ScoreViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-            LinearLayout displayLayout = (LinearLayout) inflater.inflate(R.layout.high_score_status_dsiplay_layout, parent, false);
-            ScoreViewHolder vh = new ScoreViewHolder(displayLayout);
-            return vh;
+            View displayLayout = inflater.inflate(R.layout.high_score_status_dsiplay_layout, parent, false);
+            return new ScoreViewHolder(displayLayout);
         }
 
         @Override
         public void onBindViewHolder(final ScoreViewHolder holder, final int position) {
-            holder.playerName.setText((position + 1) + ". " + scores.get(position).get_name());
-            holder.playerName.setTextColor(Color.BLACK);
-            Animation in = new AlphaAnimation(0.f, 1.f);
-            in.setDuration(1000);
-            Animation out = new AlphaAnimation(1.f, 0.f);
-            out.setDuration(1000);
-            holder.scoreDetails.setInAnimation(in);
-            holder.scoreDetails.setOutAnimation(out);/*
-            holder.scoreDetails.setFactory(new ViewSwitcher.ViewFactory() {
-                @Override
-                public View makeView() {
-                    TextView detail = new TextView(holder.scoreDetails.getContext());
-                    detail.setTextSize(24);
-                    return detail;
+            //reset
+            holder.playerName.setTextColor(COLOR_HERE_I_AM);
+            ((TextView) holder.scoreDetails.getCurrentView()).setTextColor(COLOR_HERE_I_AM);
+            ((TextView) holder.scoreDetails.getNextView()).setTextColor(COLOR_HERE_I_AM);
+            holder.playerRank.setTextColor(COLOR_HERE_I_AM);
+            holder.playerRank.setText(""); //empty in case there is no sort
+            //assign rank
+            int rank = -1;
+            if (ranks.size() == scores.size())
+            {
+                rank = ranks.get(position);
+                holder.playerRank.setText("#" + rank);
+            }
+            //assign colors
+            if (isColorCodeEnabled)
+            {
+                switch (rank)
+                {
+                    case 1:
+                        holder.playerName.setTextColor(COLOR_GOLD);
+                        ((TextView) holder.scoreDetails.getCurrentView()).setTextColor(COLOR_GOLD);
+                        ((TextView) holder.scoreDetails.getNextView()).setTextColor(COLOR_GOLD);
+                        holder.playerRank.setTextColor(COLOR_GOLD);
+                        break;
+                    case 2:
+                        holder.playerName.setTextColor(COLOR_SILVER);
+                        ((TextView) holder.scoreDetails.getCurrentView()).setTextColor(COLOR_SILVER);
+                        ((TextView) holder.scoreDetails.getNextView()).setTextColor(COLOR_SILVER);
+                        holder.playerRank.setTextColor(COLOR_SILVER);
+                        break;
+                    case 3:
+                        holder.playerName.setTextColor(COLOR_BRONZE);
+                        ((TextView) holder.scoreDetails.getCurrentView()).setTextColor(COLOR_BRONZE);
+                        ((TextView) holder.scoreDetails.getNextView()).setTextColor(COLOR_BRONZE);
+                        holder.playerRank.setTextColor(COLOR_BRONZE);
+                        break;
                 }
-            });*/
+            }
+            //player name
+            holder.playerName.setText(scores.get(position).get_name());
+            holder.playerName.setTypeface(null, Typeface.BOLD);
             //Strings to loop back and forth
             holder.timeDetail = "Time: " + GameFragment.formatMillisToMMSSMSMS(Long.parseLong(scores.get(position).get_time()));
             holder.scoreDetail = "Score: " + scores.get(position).get_score();
-            addSwitcher(holder.scoreDetails, holder.timeDetail, holder.scoreDetail);
+            holder.scoreDetails.clearText();
+            holder.scoreDetails.addText(holder.timeDetail);
+            holder.scoreDetails.addText(holder.scoreDetail);
+            addSwitcher(holder.scoreDetails);
         }
 
         @Override
@@ -185,18 +218,11 @@ public class HighScoreTabFragment extends Fragment {
             clock = new UpdateClock(4000) {
                 @Override
                 public void onUpdate() {
-                    Log.d(TAG, "onUpdate: clock updated");
+                    Log.d(TAG, "onUpdate: clock updated " + gameMode.toString());
                     detailPosition = (detailPosition + 1) % 2;
                     for (int i = 0; i < switcherArrayList.size(); i++)
                     {
-                        if (detailPosition == 0)
-                        {
-                            switcherArrayList.get(i).setText(values1.get(i));
-                        }
-                        else
-                        {
-                            switcherArrayList.get(i).setText(values2.get(i));
-                        }
+                        switcherArrayList.get(i).displayTextAtPosition(detailPosition);
                     }
                 }
             };
@@ -206,23 +232,12 @@ public class HighScoreTabFragment extends Fragment {
         public void onViewDetachedFromWindow(ScoreViewHolder holder) {
             super.onViewDetachedFromWindow(holder);
             switcherArrayList.remove(holder.scoreDetails);
-            values1.remove(holder.timeDetail);
-            values2.remove(holder.scoreDetail);
         }
 
-        private void addSwitcher(TextSwitcher newSwitcher, String newTimeDetail, String newScoreDetail)
+        private void addSwitcher(MemoryTextSwitcher newSwitcher)
         {
             switcherArrayList.add(newSwitcher);
-            values1.add(newTimeDetail);
-            values2.add(newScoreDetail);
-            if (detailPosition == 0)
-            {
-                newSwitcher.setText(newTimeDetail);
-            }
-            else
-            {
-                newSwitcher.setText(newScoreDetail);
-            }
+            newSwitcher.displayCurrentTextAtPosition(detailPosition);
         }
 
         private void stopClock()
@@ -233,6 +248,31 @@ public class HighScoreTabFragment extends Fragment {
         private void startClock()
         {
             clock.start();
+        }
+
+        public void updateSortState(Comparator<Score> sortComparator, boolean isColorCodeEnabled)
+        {
+            this.sortComparator = sortComparator;
+            this.isColorCodeEnabled = isColorCodeEnabled;
+            recalculateRanks();
+            adapter.notifyDataSetChanged();
+        }
+
+        private void recalculateRanks()
+        {
+            rankOffset = 0;
+            ranks.clear(); //clear ranks to recalculate
+            if (sortComparator != null && isColorCodeEnabled) //accounts for duplicating scores
+            {
+                for (int i = 0; i < scores.size(); i++)
+                {
+                    if (i != 0 && sortComparator.compare(scores.get(i), scores.get(i-1)) == 0) //duplicating scores
+                    {
+                        rankOffset++;
+                    }
+                    ranks.add(i - rankOffset + 1); //adds correct rank
+                }
+            }
         }
     }
 
@@ -270,14 +310,15 @@ public class HighScoreTabFragment extends Fragment {
     //ViewHolder for layout in recycler view
     private static class ScoreViewHolder extends RecyclerView.ViewHolder
     {
-        TextView playerName;
-        TextSwitcher scoreDetails;
+        TextView playerName, playerRank;
+        MemoryTextSwitcher scoreDetails;
         String timeDetail, scoreDetail;
 
-        public ScoreViewHolder(LinearLayout itemView) {
+        public ScoreViewHolder(View itemView) {
             super(itemView);
             playerName = itemView.findViewById(R.id.game_name);
             scoreDetails = itemView.findViewById(R.id.score_details_switcher);
+            playerRank = itemView.findViewById(R.id.player_rank);
         }
     }
 }
