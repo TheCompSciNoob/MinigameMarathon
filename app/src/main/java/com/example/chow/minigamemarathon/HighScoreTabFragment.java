@@ -23,6 +23,8 @@ import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import static android.content.ContentValues.TAG;
 
@@ -58,6 +60,18 @@ public class HighScoreTabFragment extends Fragment {
         drawerLayout.addDrawerListener(drawerListener);
 
         return rootView;
+    }
+
+    public void startSortTask(final Comparator<Score> comparator)
+    {
+        @SuppressLint("StaticFieldLeak") AsyncTask<Void, Void, Void> sortTask = new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... voids) {
+                Collections.sort(filteredDatabase, comparator);
+                adapter.notifyDataSetChanged();
+                return null;
+            }
+        };
     }
 
     private void startFilterTask(final ArrayList<Score> unfilteredDatabase)
@@ -145,7 +159,7 @@ public class HighScoreTabFragment extends Fragment {
             Animation out = new AlphaAnimation(1.f, 0.f);
             out.setDuration(1000);
             holder.scoreDetails.setInAnimation(in);
-            holder.scoreDetails.setOutAnimation(out);
+            holder.scoreDetails.setOutAnimation(out);/*
             holder.scoreDetails.setFactory(new ViewSwitcher.ViewFactory() {
                 @Override
                 public View makeView() {
@@ -153,7 +167,7 @@ public class HighScoreTabFragment extends Fragment {
                     detail.setTextSize(24);
                     return detail;
                 }
-            });
+            });*/
             //Strings to loop back and forth
             holder.timeDetail = "Time: " + GameFragment.formatMillisToMMSSMSMS(Long.parseLong(scores.get(position).get_time()));
             holder.scoreDetail = "Score: " + scores.get(position).get_score();
@@ -201,6 +215,14 @@ public class HighScoreTabFragment extends Fragment {
             switcherArrayList.add(newSwitcher);
             values1.add(newTimeDetail);
             values2.add(newScoreDetail);
+            if (detailPosition == 0)
+            {
+                newSwitcher.setText(newTimeDetail);
+            }
+            else
+            {
+                newSwitcher.setText(newScoreDetail);
+            }
         }
 
         private void stopClock()
@@ -218,7 +240,10 @@ public class HighScoreTabFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         drawerLayout.removeDrawerListener(drawerListener);
-        adapter.stopClock();
+        if (adapter != null)
+        {
+            adapter.stopClock();
+        }
     }
 
     private abstract class UpdateClock extends CountDownTimer

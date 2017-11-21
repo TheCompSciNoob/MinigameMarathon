@@ -3,6 +3,7 @@ package com.example.chow.minigamemarathon;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,47 +11,60 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Random;
 
 /**
  * Created by Kyros on 11/17/2017.
  */
 
-public class HighScoreFragment extends Fragment {
+public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemClickListener {
 
-    private TabLayout tabLayout;
     private AppBarLayout appBar;
     View rootView;
+    private ConstraintLayout extraToolbar;
+    private SectionsPagerAdapter adapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         rootView = inflater.inflate(R.layout.high_score_layout, container, false);
-        setHasOptionsMenu(true);
-        Drawable changeIcon = ContextCompat.getDrawable(getActivity().getApplicationContext(), R.drawable.ic_sort_black_24dp);
-        Toolbar activityToolbar = getActivity().findViewById(R.id.toolbar);
-        activityToolbar.setOverflowIcon(changeIcon);
         //nested fragments for different gamemodes
         GameMode[] gameModes = GameMode.AVAILABLE_GAME_MODES;
         ViewPager viewPager = rootView.findViewById(R.id.view_pager_high_score_container);
         viewPager.setOffscreenPageLimit(gameModes.length-1);
-        SectionsPagerAdapter adapter = new SectionsPagerAdapter(getChildFragmentManager(), gameModes);
+        adapter = new SectionsPagerAdapter(getChildFragmentManager(), gameModes);
         viewPager.setAdapter(adapter);
-        tabLayout = new TabLayout(getActivity());
-        tabLayout.setLayoutParams(new AppBarLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        tabLayout.setPadding(8, 8, 8, 8);
+        //add layout to toolbar of activity
+        extraToolbar = (ConstraintLayout) inflater.inflate(R.layout.high_score_tab_selection_layout, container, false);
+        TabLayout tabLayout = extraToolbar.findViewById(R.id.tab_selection_tablayout);
         tabLayout.setupWithViewPager(viewPager);
+        final ImageButton imageButton = extraToolbar.findViewById(R.id.sort_button);
+        //imageButton.setLayoutParams(new ConstraintLayout.LayoutParams(tabLayout.getHeight(), tabLayout.getHeight()));
+        imageButton.setImageResource(R.drawable.ic_sort_black_24dp);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(getActivity(), imageButton);
+                popupMenu.getMenuInflater().inflate(R.menu.filter_scores, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(HighScoreFragment.this);
+                popupMenu.show();
+            }
+        });
         appBar = getActivity().findViewById(R.id.app_bar);
-        appBar.addView(tabLayout);
+        appBar.addView(extraToolbar);
 
         return rootView;
     }
@@ -58,23 +72,7 @@ public class HighScoreFragment extends Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        appBar.removeView(tabLayout);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.filter_scores, menu);
-    }
-
-    private String[] getNames(GameMode[] gameModes)
-    {
-        String[] names = new String[gameModes.length];
-        for (int i = 0; i < names.length; i++)
-        {
-            names[i] = gameModes[i].toString();
-        }
-        return names;
+        appBar.removeView(extraToolbar);
     }
 
     private static ArrayList<Score> retrieveScoresFromDatabase()
@@ -103,7 +101,7 @@ public class HighScoreFragment extends Fragment {
         String[] names = {"Player 1", "Player 2", "Player 3"};
         GameMode[] gameModes = GameMode.AVAILABLE_GAME_MODES;
         Random random = new Random();
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 30; i++)
         {
             String name = names[random.nextInt(names.length)];
             int score = random.nextInt(30000) + 20000;
@@ -115,14 +113,60 @@ public class HighScoreFragment extends Fragment {
         return scores;
     }
 
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        Comparator<Score> scoreComparator = null;
+        switch (item.getItemId())
+        {
+            case R.id.sort_a_to_z:
+                scoreComparator = new Comparator<Score>() {
+                    @Override
+                    public int compare(Score score1, Score score2) {
+                        return score1.get_name().toLowerCase().compareTo(score2.get_name().toLowerCase());
+                    }
+                };
+                break;
+            case R.id.sort_time:
+                scoreComparator = new Comparator<Score>() {
+                    @Override
+                    public int compare(Score score1, Score score2) {
+                        return (int) (Long.parseLong(score1.get_time()) - Long.parseLong(score2.get_time()));
+                    }
+                };
+                break;
+            case R.id.sort_score:
+                scoreComparator = new Comparator<Score>() {
+                    @Override
+                    public int compare(Score score1, Score score2) {
+                        return Integer.parseInt(score1.get_score()) - Integer.parseInt(score2.get_score());
+                    }
+                };
+                break;
+        }
+        if (scoreComparator != null)
+        {
+            for (HighScoreTabFragment fragment : adapter.getChildFragments())
+            {
+                fragment.startSortTask(scoreComparator);
+            }
+        }
+        return true;
+    }
+
     private class SectionsPagerAdapter extends FragmentPagerAdapter
     {
-
+        private HighScoreTabFragment[] childFragments;
         private GameMode[] gameModes;
 
         public SectionsPagerAdapter(FragmentManager fm, GameMode[] gameModes) {
             super(fm);
             this.gameModes = gameModes;
+            childFragments = new HighScoreTabFragment[gameModes.length];
+        }
+
+        public HighScoreTabFragment[] getChildFragments()
+        {
+            return childFragments;
         }
 
         @Override
@@ -134,6 +178,7 @@ public class HighScoreFragment extends Fragment {
         public Fragment getItem(int position) {
             HighScoreTabFragment tabFragment = new HighScoreTabFragment();
             tabFragment.setArguments(gameModes[position], retrieveScoresFromDatabase(), position);
+            childFragments[position] = tabFragment;
             return tabFragment;
         }
 
