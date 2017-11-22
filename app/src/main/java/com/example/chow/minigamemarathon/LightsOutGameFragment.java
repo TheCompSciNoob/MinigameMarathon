@@ -143,11 +143,11 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
                 //put appropriate image into ImageView
                 if (translatedList.get(position))
                 {
-                    imageView.setImageResource(R.drawable.ic_add_circle_black_24dp);
+                    imageView.setImageResource(R.drawable.ic_lights_on_black_24dp);
                 }
                 else
                 {
-                    imageView.setImageResource(R.drawable.ic_add_circle_outline_black_24dp);
+                    imageView.setImageResource(R.drawable.ic_lights_off_black_24dp);
                 }
                 return imageView;
             }

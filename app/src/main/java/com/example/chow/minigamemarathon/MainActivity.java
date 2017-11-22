@@ -2,6 +2,8 @@ package com.example.chow.minigamemarathon;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,13 +12,18 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, BinaryGameFragment.OnFragmentInteractionListener {
+        implements NavigationView.OnNavigationItemSelectedListener, BinaryGameFragment.OnFragmentInteractionListener,
+        DrawerLayout.DrawerListener{
+
+    private int currentIDSelected = R.id.game_new; //startup fragment
 
     @Override
     public void onFragmentInteraction(Uri uri) {
@@ -38,7 +45,8 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        onNavigationItemSelected(navigationView.getMenu().getItem(0));
+
+        onDrawerClosed(null); //opens startup fragment
     }
 
     @Override
@@ -53,30 +61,58 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
+        //closes drawer first and then loads fragment
+        //avoids drawer lag
+        currentIDSelected = item.getItemId();
+        drawer.addDrawerListener(this);
+
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    @Override
+    public void onDrawerClosed(View drawerView) {
+        if (drawerView != null)
+        {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.removeDrawerListener(this);
+        }
         Fragment fragment = null;
-        if (id == R.id.game_new) {
+        if (currentIDSelected == R.id.game_new) {
             GameFragment[] gameFragments = {new LightsOutGameFragment(), new BinaryGameFragment()};
             GameContainerFragment gameContainerFragment = new GameContainerFragment();
             gameContainerFragment.setArguments(gameFragments);
             fragment = gameContainerFragment;
-        } else if (id == R.id.score_high) {
+        } else if (currentIDSelected == R.id.score_high) {
             fragment = new HighScoreFragment();
-        } else if (id == R.id.practice) {
+        } else if (currentIDSelected == R.id.practice) {
 
         }
         if (fragment != null)
         {
             FragmentManager manager = getSupportFragmentManager();
-            manager.beginTransaction().replace(R.id.display_frame, fragment).commit();
+            manager.beginTransaction()
+                    .replace(R.id.display_frame, fragment)
+                    .commit();
         }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
+    @Override
+    public void onDrawerSlide(View drawerView, float slideOffset) {
+        //nothing
+    }
+
+    @Override
+    public void onDrawerOpened(View drawerView) {
+        //nothing
+    }
+
+    @Override
+    public void onDrawerStateChanged(int newState) {
+        //nothing
+    }
 }

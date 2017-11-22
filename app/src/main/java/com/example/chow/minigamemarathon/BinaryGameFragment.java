@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -14,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 /**
@@ -38,8 +38,8 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
 
     private OnFragmentInteractionListener mListener;
     private char numberClicked;
-    private char numberLeft = '0';
-    private char numberRight = '1';
+    private static final char NUMBER_OPTION_1 = '0', NUMBER_OPTION_2 = '1';
+    private char numberLeft = NUMBER_OPTION_1, numberRight = NUMBER_OPTION_2;
     private SpannableStringBuilder gameText;
     private BinaryGame game;
     private TextView binaryText;
@@ -170,6 +170,14 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
                 {
                     notifyGameEnd();
                 }
+                else {
+                    if (Math.random() < 0.2) { //probability to swap text in TextView
+                        swapInTextView();
+                    }
+                    if (Math.random() < 0.36) { //probability to swap the buttons
+                        swapButtons();
+                    }
+                }
             } else {
                 //if current index is greater than words per checkpoint * current checkpoint
                     //currentIndex = words per checkpoint
@@ -177,14 +185,29 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
                 currentIndex = 0;
                 binaryText.setText(gameText);
             }
-            if (Math.random() < 0.36) {
-                swap();
-            }
         }
     }
 
+    private void swapInTextView() {
+        char temp = 'a';
+        switch (gameText.charAt(currentIndex))
+        {
+            case NUMBER_OPTION_1:
+                temp = NUMBER_OPTION_2;
+                break;
+            case NUMBER_OPTION_2:
+                temp = NUMBER_OPTION_1;
+                break;
+            default:
+                Toast.makeText(getActivity(), "Binary Game Error Occurred", Toast.LENGTH_SHORT).show();
+        }
+        gameText.delete(currentIndex, currentIndex + 1);
+        gameText.insert(currentIndex, temp + "");
+        binaryText.setText(gameText, TextView.BufferType.SPANNABLE);
+    }
 
-    private void swap() {
+
+    private void swapButtons() {
         char temp = numberLeft;
         numberLeft = numberRight;
         numberRight = temp;

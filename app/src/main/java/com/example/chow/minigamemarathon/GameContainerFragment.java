@@ -151,7 +151,7 @@ public class GameContainerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        if (timer.getTotalTimeElapsed() != 0)
+        if (timer!= null && timer.getTotalTimeElapsed() != 0)
         {
             timer.resume();
         }
