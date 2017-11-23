@@ -192,7 +192,7 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
     }
 
     @Override
-    public void initializeVariables() {
+    public void assignWidgetFunctions() {
         makeArrayLists();
         wireWidgets();
         setListeners();

@@ -83,14 +83,13 @@ public class MainActivity extends AppCompatActivity
         }
         Fragment fragment = null;
         if (currentIDSelected == R.id.game_new) {
-            GameFragment[] gameFragments = {new LightsOutGameFragment(), new BinaryGameFragment()};
             GameContainerFragment gameContainerFragment = new GameContainerFragment();
-            gameContainerFragment.setArguments(gameFragments);
+            gameContainerFragment.setArguments(GameContainerFragment.getAllGames());
             fragment = gameContainerFragment;
         } else if (currentIDSelected == R.id.score_high) {
             fragment = new HighScoreFragment();
         } else if (currentIDSelected == R.id.practice) {
-
+            fragment = new PracticeGameContainerFragment();
         }
         if (fragment != null)
         {

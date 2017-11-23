@@ -96,6 +96,11 @@ public class StopWatch {
         return laps;
     }
 
+    public void removeOnTickListener()
+    {
+        listener = null;
+    }
+
     public void setOnTickListener(OnTickListener listener)
     {
         this.listener = listener;

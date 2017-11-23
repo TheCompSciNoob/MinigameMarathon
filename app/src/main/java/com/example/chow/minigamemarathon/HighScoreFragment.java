@@ -24,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Random;
 
@@ -46,7 +47,7 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
         //nested fragments for different gamemodes
         GameMode[] gameModes = GameMode.AVAILABLE_GAME_MODES;
         ViewPager viewPager = rootView.findViewById(R.id.view_pager_high_score_container);
-        viewPager.setOffscreenPageLimit(gameModes.length-1);
+        viewPager.setOffscreenPageLimit(gameModes.length - 1);
         adapter = new SectionsPagerAdapter(getChildFragmentManager(), gameModes);
         viewPager.setAdapter(adapter);
         //add layout to toolbar of activity
@@ -76,8 +77,7 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
         appBar.removeView(extraToolbar);
     }
 
-    private static ArrayList<Score> retrieveScoresFromDatabase()
-    {
+    private static ArrayList<Score> retrieveScoresFromDatabase() {
         //TODO: get scores from database in the method and return the list of scores; the following is only an example
         ArrayList<Score> scores = new ArrayList<>();
         /*scores.add(new Score("p1", 15602, 1234, GameMode.EASY));
@@ -101,8 +101,7 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
         String[] names = {"Player 1", "Player 2", "Player 3"};
         GameMode[] gameModes = GameMode.AVAILABLE_GAME_MODES;
         Random random = new Random();
-        for (int i = 0; i < 50; i++)
-        {
+        for (int i = 0; i < 50; i++) {
             String name = names[random.nextInt(names.length)];
             int score = random.nextInt(30000) + 20000;
             long time = random.nextInt(2000) + 1000;
@@ -117,8 +116,7 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
     public boolean onMenuItemClick(MenuItem item) {
         Comparator<Score> scoreComparator = null;
         boolean shouldColorCode = false;
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.sort_a_to_z:
                 shouldColorCode = false;
                 scoreComparator = new Comparator<Score>() {
@@ -147,18 +145,15 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
                 };
                 break;
         }
-        if (scoreComparator != null)
-        {
-            for (HighScoreTabFragment fragment : adapter.getChildFragments())
-            {
+        if (scoreComparator != null) {
+            for (HighScoreTabFragment fragment : adapter.getChildFragments()) {
                 fragment.startSortTask(scoreComparator, shouldColorCode);
             }
         }
         return true;
     }
 
-    private class SectionsPagerAdapter extends FragmentPagerAdapter
-    {
+    private class SectionsPagerAdapter extends FragmentPagerAdapter {
         private HighScoreTabFragment[] childFragments;
         private GameMode[] gameModes;
 
@@ -168,8 +163,7 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
             childFragments = new HighScoreTabFragment[gameModes.length];
         }
 
-        public HighScoreTabFragment[] getChildFragments()
-        {
+        public HighScoreTabFragment[] getChildFragments() {
             return childFragments;
         }
 

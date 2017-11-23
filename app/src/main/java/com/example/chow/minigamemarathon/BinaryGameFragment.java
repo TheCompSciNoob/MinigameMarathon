@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.SpannableStringBuilder;
+import android.text.method.ScrollingMovementMethod;
 import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -101,11 +102,12 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
     }
 
     @Override
-    public void initializeVariables() {
+    public void assignWidgetFunctions() {
         game = new BinaryGame(gameMode);
         //wire widgets
         gameText = new SpannableStringBuilder(game.getBinaryString());
         binaryText = getView().findViewById(R.id.binary_view);
+        binaryText.setMovementMethod(new ScrollingMovementMethod());
         buttonLeft = getView().findViewById(R.id.button_left);
         buttonRight = getView().findViewById(R.id.button_right);
         buttonLeft.setOnClickListener(this);

@@ -24,7 +24,7 @@ import static android.content.ContentValues.TAG;
  * Created by Kyros on 10/22/2017.
  */
 
-public class LightsOutGameFragment extends GameFragment implements View.OnClickListener{
+public class LightsOutGameFragment extends GameFragment implements View.OnClickListener {
 
     private BaseAdapter adapter;
     ArrayList<Boolean> translatedList;
@@ -33,7 +33,6 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
     private int numSwitchFlipped = 0, numPuzzlesGenerated = 1;
     private View rootView;
     private GameMode gameMode;
-    private Context context;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -42,13 +41,10 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         return rootView;
     }
 
-    private ArrayList<Boolean> convertTo1D(boolean[][] grid)
-    {
+    private ArrayList<Boolean> convertTo1D(boolean[][] grid) {
         ArrayList<Boolean> convertedList = new ArrayList<>();
-        for (boolean[] row : grid)
-        {
-            for (boolean col : row)
-            {
+        for (boolean[] row : grid) {
+            for (boolean col : row) {
                 convertedList.add(col);
             }
         }
@@ -57,8 +53,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
 
     @Override
     public void onClick(View view) {
-        switch (view.getId())
-        {
+        switch (view.getId()) {
             case R.id.generate_new_puzzle:
                 game = new LightsOut(gameMode);
                 game.randomize();
@@ -100,12 +95,8 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
     }
 
     @Override
-    public void initializeVariables() {
+    public void assignWidgetFunctions() {
         //wire widgets here
-        if (gameMode == null)
-        {
-            Log.d(TAG, "set_gameMode: gamemode is null");
-        }
         game = new LightsOut(gameMode);
         game.randomize();
         originalGrid = LightsOut.makeCopyOf(game.getGrid());
@@ -129,43 +120,36 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 ImageView imageView;
-                if (convertView == null)
-                {
+                if (convertView == null) {
                     imageView = new SquareImageView(getActivity());
                     imageView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                     imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     imageView.setPadding(5, 5, 5, 5);
-                }
-                else
-                {
+                } else {
                     imageView = (ImageView) convertView;
                 }
                 //put appropriate image into ImageView
-                if (translatedList.get(position))
-                {
+                if (translatedList.get(position)) {
                     imageView.setImageResource(R.drawable.ic_lights_on_black_24dp);
-                }
-                else
-                {
+                } else {
                     imageView.setImageResource(R.drawable.ic_lights_off_black_24dp);
                 }
                 return imageView;
             }
         };
-        GridView displayedLights = new SquareGridView(context);
+        GridView displayedLights = new SquareGridView(getContext());
         displayedLights.setNumColumns(game.getGrid()[0].length);
         displayedLights.setAdapter(adapter);
         displayedLights.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 boolean[][] grid = game.getGrid();
-                game.flipSwitch(position / grid[0].length , position % grid[0].length);
+                game.flipSwitch(position / grid[0].length, position % grid[0].length);
                 translatedList.clear();
                 translatedList.addAll(convertTo1D(grid));
                 adapter.notifyDataSetChanged();
                 numSwitchFlipped++;
-                if (isSolved())
-                {
+                if (isSolved()) {
                     LightsOutGameFragment.this.notifyGameEnd();
                 }
             }
@@ -178,10 +162,8 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         resetCurrentPuzzle.setOnClickListener(this);
     }
 
-    private class SquareImageView extends android.support.v7.widget.AppCompatImageView
-    {
-        public SquareImageView(Context context)
-        {
+    private class SquareImageView extends android.support.v7.widget.AppCompatImageView {
+        public SquareImageView(Context context) {
             super(context);
         }
 
@@ -204,11 +186,5 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
             super.onMeasure(dimension, dimension);
             setMeasuredDimension(dimension, dimension);
         }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.context = context;
     }
 }

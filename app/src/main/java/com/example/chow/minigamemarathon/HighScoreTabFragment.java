@@ -53,9 +53,7 @@ public class HighScoreTabFragment extends Fragment {
                 if (savedInstanceState != null) //when fragment is recreated
                 {
                     filteredDatabase = savedInstanceState.getParcelableArrayList(SCORE_TAG);
-                    adapter = new ScoreAdapter(filteredDatabase);
                 }
-
                 else //when fragment is first created
                 {
                     filteredDatabase = new ArrayList<>();
@@ -64,8 +62,9 @@ public class HighScoreTabFragment extends Fragment {
                             filteredDatabase.add(score);
                         }
                     }
-                    adapter = new ScoreAdapter(filteredDatabase);
                 }
+                adapter = new ScoreAdapter(filteredDatabase);
+
                 return  null;
             }
 
@@ -134,10 +133,18 @@ public class HighScoreTabFragment extends Fragment {
             switcherArrayList = new ArrayList<>();
             detailPosition = 0;
             rankOffset = 0;
+            sortComparator = new Comparator<Score>() {
+                @Override
+                public int compare(Score score1, Score score2) {
+                    return Integer.parseInt(score2.get_score()) - Integer.parseInt(score1.get_score());
+                }
+            };
+            Collections.sort(scores, sortComparator);
+            isColorCodeEnabled = true;
+            recalculateRanks();
             clock = new UpdateClock(4000) { //updates textswitcher
                 @Override
                 public void onUpdate() {
-                    Log.d(TAG, "onUpdate: clock updated " + gameMode.toString());
                     detailPosition = (detailPosition + 1) % 2;
                     for (int i = 0; i < switcherArrayList.size(); i++) {
                         switcherArrayList.get(i).displayTextAtPosition(detailPosition);
@@ -155,6 +162,7 @@ public class HighScoreTabFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final ScoreViewHolder holder, final int position) {
+            Log.d(TAG, "onBindViewHolder: assign ranks");
             //reset
             holder.playerName.setTextColor(COLOR_HERE_I_AM);
             ((TextView) holder.scoreDetails.getCurrentView()).setTextColor(COLOR_HERE_I_AM);
@@ -278,12 +286,6 @@ public class HighScoreTabFragment extends Fragment {
         if (adapter != null) {
             adapter.startClock();
         }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, "onDestroy: tab fragment destroyed " + gameMode.toString());
     }
 
     private abstract class UpdateClock {
