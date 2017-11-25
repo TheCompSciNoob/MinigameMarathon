@@ -44,17 +44,18 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         rootView = inflater.inflate(R.layout.high_score_layout, container, false);
+        extraToolbar = inflater.inflate(R.layout.high_score_tab_selection_layout, container, false);
+        appBar = getActivity().findViewById(R.id.app_bar);
+        ViewPager viewPager = rootView.findViewById(R.id.view_pager_high_score_container);
+        TabLayout tabLayout = extraToolbar.findViewById(R.id.tab_selection_tablayout);
+        final ImageButton imageButton = extraToolbar.findViewById(R.id.sort_button);
         //nested fragments for different gamemodes
         GameMode[] gameModes = GameMode.AVAILABLE_GAME_MODES;
-        ViewPager viewPager = rootView.findViewById(R.id.view_pager_high_score_container);
         viewPager.setOffscreenPageLimit(gameModes.length - 1);
         adapter = new SectionsPagerAdapter(getChildFragmentManager(), gameModes);
         viewPager.setAdapter(adapter);
         //add layout to toolbar of activity
-        extraToolbar = inflater.inflate(R.layout.high_score_tab_selection_layout, container, false);
-        TabLayout tabLayout = extraToolbar.findViewById(R.id.tab_selection_tablayout);
         tabLayout.setupWithViewPager(viewPager);
-        final ImageButton imageButton = extraToolbar.findViewById(R.id.sort_button);
         imageButton.setImageResource(R.drawable.ic_sort_black_24dp);
         imageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,8 +66,6 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
                 popupMenu.show();
             }
         });
-        appBar = getActivity().findViewById(R.id.app_bar);
-        appBar.addView(extraToolbar);
 
         return rootView;
     }
@@ -167,6 +166,7 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
                 tabFragment.setArguments(gameModes[i], retrieveScoresFromDatabase(), i);
                 childFragments[i] = tabFragment;
             }
+            appBar.addView(extraToolbar);
         }
 
         public HighScoreTabFragment[] getChildFragments() {

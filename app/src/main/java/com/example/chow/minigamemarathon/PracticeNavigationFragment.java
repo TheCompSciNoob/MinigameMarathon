@@ -1,9 +1,11 @@
 package com.example.chow.minigamemarathon;
 
+import android.animation.LayoutTransition;
 import android.graphics.Color;
 import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.graphics.drawable.IconCompat;
 import android.view.LayoutInflater;
@@ -11,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -38,6 +42,7 @@ public class PracticeNavigationFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.practice_navigation_layout, container, false);
+        //wire widgets
         buttonChange = rootView.findViewById(R.id.open_practice_dialog_button);
         buttonChange.setOnClickListener(new View.OnClickListener() {
             @Override

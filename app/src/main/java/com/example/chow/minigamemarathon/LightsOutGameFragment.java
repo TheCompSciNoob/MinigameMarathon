@@ -1,6 +1,5 @@
 package com.example.chow.minigamemarathon;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -24,7 +24,7 @@ import static android.content.ContentValues.TAG;
  * Created by Kyros on 10/22/2017.
  */
 
-public class LightsOutGameFragment extends GameFragment implements View.OnClickListener {
+public class LightsOutGameFragment extends GameFragment implements View.OnClickListener, ViewTreeObserver.OnPreDrawListener {
 
     private BaseAdapter adapter;
     ArrayList<Boolean> translatedList;
@@ -33,6 +33,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
     private int numSwitchFlipped = 0, numPuzzlesGenerated = 1;
     private View rootView;
     private GameMode gameMode;
+    private GridView displayedLights;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
@@ -101,6 +102,40 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         game.randomize();
         originalGrid = LightsOut.makeCopyOf(game.getGrid());
         translatedList = new ArrayList<>(convertTo1D(game.getGrid()));
+        displayedLights = getView().findViewById(R.id.displayed_lights_gridview);
+        displayedLights.getViewTreeObserver().addOnPreDrawListener(this);
+        displayedLights.setNumColumns(game.getGrid()[0].length);
+        displayedLights.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                boolean[][] grid = game.getGrid();
+                game.flipSwitch(position / grid[0].length, position % grid[0].length);
+                translatedList.clear();
+                translatedList.addAll(convertTo1D(grid));
+                adapter.notifyDataSetChanged();
+                numSwitchFlipped++;
+                if (isSolved()) {
+                    LightsOutGameFragment.this.notifyGameEnd();
+                }
+            }
+        });
+        Button generateNewPuzzle = rootView.findViewById(R.id.generate_new_puzzle);
+        generateNewPuzzle.setOnClickListener(this);
+        Button resetCurrentPuzzle = rootView.findViewById(R.id.reset_current_puzzle);
+        resetCurrentPuzzle.setOnClickListener(this);
+    }
+
+    @Override
+    public boolean onPreDraw() {
+        displayedLights.getViewTreeObserver().removeOnPreDrawListener(this);
+        //resize GridView
+        int initialHeight = displayedLights.getMeasuredHeight();
+        int initialWidth = displayedLights.getMeasuredWidth();
+        Log.d(TAG, "onPreDraw: initialHeight: " + initialHeight + " initialWidth: " + initialWidth);
+        final int dimension = Math.min(initialHeight / game.getGrid()[0].length, initialWidth / game.getGrid().length);
+        displayedLights.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+        displayedLights.requestLayout();
+        //set up adapter after gridview is resized
         adapter = new BaseAdapter() {
             @Override
             public int getCount() {
@@ -121,10 +156,10 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
             public View getView(int position, View convertView, ViewGroup parent) {
                 ImageView imageView;
                 if (convertView == null) {
-                    imageView = new SquareImageView(getActivity());
-                    imageView.setLayoutParams(new GridView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                    imageView = new ImageView(getActivity());
+                    imageView.setLayoutParams(new GridView.LayoutParams(dimension, dimension));
                     imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
-                    imageView.setPadding(5, 5, 5, 5);
+                    imageView.setPadding(2, 2, 2, 2);
                 } else {
                     imageView = (ImageView) convertView;
                 }
@@ -137,54 +172,8 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
                 return imageView;
             }
         };
-        GridView displayedLights = new SquareGridView(getContext());
-        displayedLights.setNumColumns(game.getGrid()[0].length);
         displayedLights.setAdapter(adapter);
-        displayedLights.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                boolean[][] grid = game.getGrid();
-                game.flipSwitch(position / grid[0].length, position % grid[0].length);
-                translatedList.clear();
-                translatedList.addAll(convertTo1D(grid));
-                adapter.notifyDataSetChanged();
-                numSwitchFlipped++;
-                if (isSolved()) {
-                    LightsOutGameFragment.this.notifyGameEnd();
-                }
-            }
-        });
-        LinearLayout gridViewContainer = rootView.findViewById(R.id.displayed_lights_gridview_container);
-        gridViewContainer.addView(displayedLights, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        Button generateNewPuzzle = rootView.findViewById(R.id.generate_new_puzzle);
-        generateNewPuzzle.setOnClickListener(this);
-        Button resetCurrentPuzzle = rootView.findViewById(R.id.reset_current_puzzle);
-        resetCurrentPuzzle.setOnClickListener(this);
-    }
 
-    private class SquareImageView extends android.support.v7.widget.AppCompatImageView {
-        public SquareImageView(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            int dimension = Math.max(widthMeasureSpec, heightMeasureSpec);
-            super.onMeasure(dimension, dimension);
-            setMeasuredDimension(dimension, dimension);
-        }
-    }
-
-    private class SquareGridView extends GridView {
-        public SquareGridView(Context context) {
-            super(context);
-        }
-
-        @Override
-        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            int dimension = Math.min(widthMeasureSpec, heightMeasureSpec);
-            super.onMeasure(dimension, dimension);
-            setMeasuredDimension(dimension, dimension);
-        }
+        return true;
     }
 }

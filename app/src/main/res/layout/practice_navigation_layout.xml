@@ -2,7 +2,7 @@
 <android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:animateLayoutChanges="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="8dp"
@@ -19,9 +19,11 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:animateLayoutChanges="true"
         android:text="Who needs friends when you have skillz?"
         android:textAlignment="center"
         android:textSize="36sp"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,15 +32,16 @@
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/open_practice_dialog_button"
-        style="?android:attr/borderlessButtonStyle"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/changeable_line_textview"
+        android:animateLayoutChanges="true"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/changeable_line_textview" />
 
 </android.support.constraint.ConstraintLayout>
