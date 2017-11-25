@@ -26,21 +26,11 @@ public class StartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.start_screen_layout, container, false);
-        Button startButton = rootView.findViewById(R.id.button_start);
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (listener != null)
-                {
-                    listener.onStart(chosenGameMode);
-                }
-            }
-        });
         final SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         final int lastValue = preferences.getInt(LAST_DIFFICULTY_KEY, 0);
         final GameMode[] gameModes = GameMode.AVAILABLE_GAME_MODES;
         chosenGameMode = gameModes[lastValue];
-        NumberPicker gamemodeChooser = rootView.findViewById(R.id.gamemode_chooser);
+        final NumberPicker gamemodeChooser = rootView.findViewById(R.id.gamemode_chooser);
         gamemodeChooser.setMinValue(0);
         gamemodeChooser.setMaxValue(gameModes.length-1);
         gamemodeChooser.setValue(lastValue);
@@ -53,6 +43,18 @@ public class StartFragment extends Fragment {
                 editor.remove(LAST_DIFFICULTY_KEY);
                 editor.putInt(LAST_DIFFICULTY_KEY, newValue);
                 editor.apply();
+            }
+        });
+        final Button startButton = rootView.findViewById(R.id.button_start);
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startButton.setVisibility(View.GONE);
+                gamemodeChooser.setVisibility(View.GONE);
+                if (listener != null)
+                {
+                    listener.onStart(chosenGameMode);
+                }
             }
         });
 

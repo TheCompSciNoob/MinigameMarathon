@@ -100,6 +100,8 @@ public class GameContainerFragment extends Fragment implements GameFragment.OnGa
             @Override
             public void onStart(GameMode gameMode) {
                 GameContainerFragment.this.gameMode = gameMode;
+                timer = new StopWatch(5);
+                timer.setOnTickListener(GameContainerFragment.this);
                 displayNextFragment();
             }
         });
@@ -112,8 +114,6 @@ public class GameContainerFragment extends Fragment implements GameFragment.OnGa
         }
         //instance variables
         fragmentPosition = -1;
-        timer = new StopWatch(5);
-        timer.setOnTickListener(this);
         gameDataSets = new String[gameFragments.length][];
         //add all fragments to the list
         displayedFragments = new ArrayList<>();

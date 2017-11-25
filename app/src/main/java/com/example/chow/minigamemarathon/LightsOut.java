@@ -13,28 +13,25 @@ import java.util.Random;
 public class LightsOut{
     private boolean[][] grid;
     private int randomizeTimes;
-    private static final int RANDOMIZE_TIMES_EASY = 10, RANDOMIZE_TIMES_HARD = 30, RANDOMIZE_TIMES_DEBUG = 1;
     private final String TAG = "LightsOut Game";
     private static double flipMaxScore = 100, numGeneratePuzzleMaxScore = 50, totalScore = flipMaxScore + numGeneratePuzzleMaxScore;
 
     public LightsOut(GameMode gameMode)
     {
+        randomizeTimes = 0;
         switch (gameMode)
         {
             case EASY:
                 grid = new boolean[5][5];
                 Log.d(TAG, "LightsOut: EASY");
-                randomizeTimes = RANDOMIZE_TIMES_EASY;
                 break;
             case HARD:
                 grid = new boolean[8][8];
                 Log.d(TAG, "LightsOut: HARD");
-                randomizeTimes = RANDOMIZE_TIMES_HARD;
                 break;
             case DEBUG:
-                grid = new boolean[5][5];
+                grid = new boolean[2][2];
                 Log.d(TAG, "LightsOut: DEBUG");
-                randomizeTimes = RANDOMIZE_TIMES_DEBUG;
                 break;
             default:
         }
@@ -42,14 +39,24 @@ public class LightsOut{
 
     public void randomize()
     {
-        for (int i = 0; i < randomizeTimes; i++)
+        StringBuilder debugString = new StringBuilder("\n");
+        for (int row = 0; row < grid.length; row++)
         {
-            Random ran = new Random();
-            int ranRow = ran.nextInt(grid.length);
-            int ranCol = ran.nextInt(grid[0].length);
-            flipSwitch(ranRow, ranCol);
-            Log.d(TAG, "randomize: row:" + ranRow + " col:" + ranCol);
+            for (int col = 0; col < grid[row].length; col++)
+            {
+                if (Math.random() < 0.5)
+                {
+                    flipSwitch(row, col);
+                    debugString.append("1");
+                    randomizeTimes++;
+                }
+                else {
+                    debugString.append("0");
+                }
+            }
+            debugString.append("\n");
         }
+        Log.d(TAG, "randomize: debug string" + debugString.toString());
     }
 
     public void flipSwitch(int row, int col)
@@ -111,22 +118,9 @@ public class LightsOut{
         return solved;
     }
 
-    public static double getPercentScore(int numSwitchFlipped, int numTries, GameMode gameMode)
+    public double getPercentScore(int numSwitchFlipped, int numTries)
     {
-        int RANDOMIZE_TIMES = 0;
-        switch (gameMode)
-        {
-            case EASY:
-                RANDOMIZE_TIMES = RANDOMIZE_TIMES_EASY;
-                break;
-            case HARD:
-                RANDOMIZE_TIMES = RANDOMIZE_TIMES_HARD;
-                break;
-            case DEBUG:
-                RANDOMIZE_TIMES = RANDOMIZE_TIMES_DEBUG;
-                break;
-        }
-        int extraSwitches = numSwitchFlipped - RANDOMIZE_TIMES, extraPuzzles = numTries - 1;
+        int extraSwitches = numSwitchFlipped - randomizeTimes, extraPuzzles = numTries - 1;
         final double switchDepletion = 0.995, generatePuzzleDepletion = .70;
         double flipScore = flipMaxScore * Math.pow(switchDepletion, extraSwitches);
         double puzzleScore = numGeneratePuzzleMaxScore * Math.pow(generatePuzzleDepletion, extraPuzzles);

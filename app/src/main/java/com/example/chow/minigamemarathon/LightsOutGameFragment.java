@@ -81,7 +81,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
 
     @Override
     public double getPercentScore() {
-        return LightsOut.getPercentScore(numSwitchFlipped, numPuzzlesGenerated, gameMode);
+        return game.getPercentScore(numSwitchFlipped, numPuzzlesGenerated);
     }
 
     @Override

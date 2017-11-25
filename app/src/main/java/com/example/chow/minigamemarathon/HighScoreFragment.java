@@ -161,6 +161,12 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
             super(fm);
             this.gameModes = gameModes;
             childFragments = new HighScoreTabFragment[gameModes.length];
+            for (int i = 0; i < gameModes.length; i++)
+            {
+                HighScoreTabFragment tabFragment = new HighScoreTabFragment();
+                tabFragment.setArguments(gameModes[i], retrieveScoresFromDatabase(), i);
+                childFragments[i] = tabFragment;
+            }
         }
 
         public HighScoreTabFragment[] getChildFragments() {
@@ -174,10 +180,7 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
 
         @Override
         public Fragment getItem(int position) {
-            HighScoreTabFragment tabFragment = new HighScoreTabFragment();
-            tabFragment.setArguments(gameModes[position], retrieveScoresFromDatabase(), position);
-            childFragments[position] = tabFragment;
-            return tabFragment;
+            return childFragments[position];
         }
 
         @Override

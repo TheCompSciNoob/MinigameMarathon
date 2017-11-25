@@ -1,11 +1,13 @@
 package com.example.chow.minigamemarathon;
 
+import android.animation.LayoutTransition;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -17,6 +19,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -29,52 +32,22 @@ import static android.content.ContentValues.TAG;
  * Created by Kyros on 11/20/2017.
  */
 
-public class HighScoreTabFragment extends Fragment {
+public class HighScoreTabFragment extends Fragment implements LayoutTransition.TransitionListener {
 
     private ScoreAdapter adapter;
     private DrawerLayout.SimpleDrawerListener drawerListener;
     private ArrayList<Score> filteredDatabase, unfilteredDatabase;
     private GameMode gameMode;
-    private View rootView;
-    private RecyclerView recyclerView;
-    private final String SCORE_TAG = "store scores in instance state";
+    private LinearLayout rootView;
     private int positionInAdapter;
-    private ViewPager viewPager;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable final Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        rootView = inflater.inflate(R.layout.tab_high_score_layout, container, false);
+        rootView = (LinearLayout) inflater.inflate(R.layout.tab_high_score_layout, container, false);
         //either filters the scores or gets filtered scores from savedInstanceState
-        @SuppressLint("StaticFieldLeak") AsyncTask<Void, Void, Void> displayTask = new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... voids) {
-                if (savedInstanceState != null) //when fragment is recreated
-                {
-                    filteredDatabase = savedInstanceState.getParcelableArrayList(SCORE_TAG);
-                }
-                else //when fragment is first created
-                {
-                    filteredDatabase = new ArrayList<>();
-                    for (Score score : unfilteredDatabase) {
-                        if (score.get_gameMode().equals(gameMode)) {
-                            filteredDatabase.add(score);
-                        }
-                    }
-                }
-                adapter = new ScoreAdapter(filteredDatabase);
-
-                return  null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-                displayInfo();
-            }
-        };
-        displayTask.execute();
+        ((LinearLayout) getActivity().findViewById(R.id.app_bar)).getLayoutTransition().addTransitionListener(this);
 
         return rootView;
     }
@@ -82,7 +55,6 @@ public class HighScoreTabFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(SCORE_TAG, filteredDatabase);
         if (adapter != null) {
             adapter.stopClock();
         }
@@ -94,20 +66,46 @@ public class HighScoreTabFragment extends Fragment {
     }
 
     private void displayInfo() {
+        //set up recycler view
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
-        recyclerView = rootView.findViewById(R.id.high_score_recyclerview);
+        RecyclerView recyclerView = new RecyclerView(getActivity());
         recyclerView.setLayoutManager(manager);
+        recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
-        TextView loadScreen = rootView.findViewById(R.id.load_screen);
-        loadScreen.setVisibility(View.INVISIBLE);
         recyclerView.setAdapter(adapter);
-        adapter.startClock();
+        TextView loadScreen = rootView.findViewById(R.id.load_screen);
+        loadScreen.setVisibility(View.GONE);
+        rootView.addView(recyclerView);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                adapter.startClock();
+            }
+        }, 3000);
     }
 
     public void setArguments(GameMode gameMode, ArrayList<Score> unfilteredDatabase, int positionInAdapter) {
         this.gameMode = gameMode;
         this.unfilteredDatabase = unfilteredDatabase;
         this.positionInAdapter = positionInAdapter;
+    }
+
+    @Override
+    public void startTransition(LayoutTransition transition, ViewGroup container, View view, int transitionType) {
+        //nothing
+    }
+
+    @Override
+    public void endTransition(LayoutTransition transition, ViewGroup container, View view, int transitionType) {
+        transition.removeTransitionListener(this);
+        filteredDatabase = new ArrayList<>();
+        for (Score score : unfilteredDatabase) {
+            if (score.get_gameMode().equals(gameMode)) {
+                filteredDatabase.add(score);
+            }
+        }
+        adapter = new ScoreAdapter(filteredDatabase);
+        displayInfo();
     }
 
     //adapter for recycler view
@@ -319,8 +317,7 @@ public class HighScoreTabFragment extends Fragment {
         }
 
         public void cancel() {
-            if (timer != null)
-            {
+            if (timer != null) {
                 timer.cancel();
             }
         }
