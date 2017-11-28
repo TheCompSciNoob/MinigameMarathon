@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by per6 on 11/17/17.
@@ -25,6 +24,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String KEY_NAME = "name";
     private static final String KEY_SCORE = "score";
     private static final String KEY_TIME = "time";
+    private static final String KEY_GAMEMODE = "gamemode";
     //TODO: Add gamemode implementation
 
     public DatabaseHandler(Context context) {
@@ -33,9 +33,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        String CREATE_HIGHSCORES_TABLE = "CREATE TABLE" + TABLE_HIGHSCORES + "("
+        String CREATE_HIGHSCORES_TABLE = "CREATE TABLE " + TABLE_HIGHSCORES + "("
                 + KEY_ID + " INTEGER PRIMARY KEY," + KEY_NAME + " TEXT,"
-                + KEY_SCORE + " TEXT," +  KEY_TIME + " TEXT" + ")";
+                + KEY_SCORE + " TEXT," +  KEY_TIME + " TEXT," + KEY_GAMEMODE + " TEXT" + ")";
         sqLiteDatabase.execSQL(CREATE_HIGHSCORES_TABLE);
     }
 
@@ -54,6 +54,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NAME, score.get_name());
         values.put(KEY_SCORE, score.get_score());
         values.put(KEY_TIME, score.get_time());
+        values.put(KEY_GAMEMODE, score.get_gameMode());
 
         // inserts the new row
         sqLiteDatabase.insert(TABLE_HIGHSCORES, null, values);
@@ -65,20 +66,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         //select the Score with the given ID
-        Cursor cursor = sqLiteDatabase.query(TABLE_HIGHSCORES, new String[]{KEY_ID,KEY_NAME,KEY_SCORE,KEY_TIME},
+        Cursor cursor = sqLiteDatabase.query(TABLE_HIGHSCORES, new String[]{KEY_ID,KEY_NAME,KEY_SCORE,KEY_TIME, KEY_GAMEMODE},
                 KEY_ID + "=?", new String[]{String.valueOf(id)}, null, null ,
                 null , null);
         if(cursor != null)
             cursor.moveToFirst();
         //make Score based on values stored in DB
-        Score score = new Score(Integer.parseInt(cursor.getString(0)),cursor.getString(1),cursor.getString(2),cursor.getString(3));
+        Score score = new Score(Integer.parseInt(cursor.getString(0)),cursor.getString(1),cursor.getString(2),cursor.getString(3),cursor.getString(4));
 
         return score;
     }
 
     // Get all scores
-    public List<Score> getAllScores() {
-        List<Score> scoreList = new ArrayList<>();
+    public ArrayList<Score> getAllScores() {
+        ArrayList<Score> scoreList = new ArrayList<>();
         //Select all in DB
         String selectQuery = "SELECT * FROM " + TABLE_HIGHSCORES;
 
@@ -92,6 +93,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 score.set_name(cursor.getString(1));
                 score.set_score(cursor.getString(2));
                 score.set_time(cursor.getString(3));
+                score.set_gameMode(cursor.getString(4));
+                scoreList.add(score);
             }while(cursor.moveToNext());
         }
         return scoreList;
@@ -114,6 +117,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_NAME, score.get_name());
         values.put(KEY_SCORE, score.get_score());
         values.put(KEY_TIME, score.get_time());
+        values.put(KEY_GAMEMODE, score.get_gameMode());
 
         //update row
         return sqLiteDatabase.update(TABLE_HIGHSCORES, values, KEY_ID + " = ?", new String[]{String.valueOf(score.get_id())});

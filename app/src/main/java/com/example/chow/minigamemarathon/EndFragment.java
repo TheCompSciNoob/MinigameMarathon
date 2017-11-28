@@ -25,6 +25,8 @@ public class EndFragment extends Fragment {
     private ListView gameDataSummary;
     private BaseAdapter adapter;
     private String[][] levelDataSets;
+    private DatabaseHandler db;
+    private GameMode gameMode;
 
     public EndFragment()
     {
@@ -56,7 +58,6 @@ public class EndFragment extends Fragment {
                     public void onClick(View view) {
                         if (!playerName.getText().toString().equals(""))
                         {
-                            //TODO: save the data in storeGameData
                             storeGameData(playerName.getText().toString());
                             alertDialog.dismiss();
                             saveRunButton.setEnabled(false);
@@ -72,6 +73,7 @@ public class EndFragment extends Fragment {
                 alertDialog.show();
             }
         });
+        db = new DatabaseHandler(this.getContext());
         return rootView;
     }
 
@@ -134,13 +136,14 @@ public class EndFragment extends Fragment {
     }
 
     private void storeGameData(String playerName) {
-        //TODO: store the score object
-        Score score = new Score(playerName, getTotalScore() + "", getTotalTime() + "");
+        Score score = new Score(playerName, getTotalScore() + "", getTotalTime() + "", gameMode.name());
+        db.addScore(score);
     }
 
-    public void setArguments(String[][] levelDataSets)
+    public void setArguments(String[][] levelDataSets, GameMode gameMode)
     {
         this.levelDataSets = levelDataSets;
+        this.gameMode = gameMode;
         showResults();
     }
 
