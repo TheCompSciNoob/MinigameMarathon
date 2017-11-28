@@ -159,7 +159,7 @@ public class GameContainerFragment extends Fragment implements GameFragment.OnGa
             if (displayFragment instanceof EndFragment)
             {
                 EndFragment endFragment = (EndFragment) displayFragment;
-                endFragment.setArguments(gameDataSets);
+                endFragment.setArguments(gameDataSets, gameMode);
             }
             viewPager.setCurrentItem(fragmentPosition);
             Log.d(TAG, "displayNextFragment: next fragment displayed");
