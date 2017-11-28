@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
+    android:orientation="vertical"
+    android:weightSum="5"
+    android:gravity="center"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:animateLayoutChanges="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -22,13 +24,7 @@
         android:animateLayoutChanges="true"
         android:text="Who needs friends when you have skillz?"
         android:textAlignment="center"
-        android:textSize="36sp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35000002" />
+        android:textSize="36sp" />
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/open_practice_dialog_button"
@@ -37,11 +33,6 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:animateLayoutChanges="true"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/changeable_line_textview" />
+        android:animateLayoutChanges="true" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>
