@@ -1,21 +1,19 @@
 package com.example.chow.minigamemarathon;
 
 import android.animation.LayoutTransition;
-import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,7 +98,7 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
         transition.removeTransitionListener(this);
         filteredDatabase = new ArrayList<>();
         for (Score score : unfilteredDatabase) {
-            if (score.get_gameMode().equals(gameMode)) {
+            if (score.get_gameMode().equals(gameMode.name())) {
                 filteredDatabase.add(score);
             }
         }
@@ -327,7 +325,7 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
     }
 
     //ViewHolder for layout in recycler view
-    private static class ScoreViewHolder extends RecyclerView.ViewHolder {
+    private static class ScoreViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         TextView playerName, playerRank;
         MemoryTextSwitcher scoreDetails;
         String timeDetail, scoreDetail;
@@ -337,6 +335,12 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
             playerName = itemView.findViewById(R.id.game_name);
             scoreDetails = itemView.findViewById(R.id.score_details_switcher);
             playerRank = itemView.findViewById(R.id.player_rank);
+            itemView.setOnCreateContextMenuListener(this);
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
+
         }
     }
 }
