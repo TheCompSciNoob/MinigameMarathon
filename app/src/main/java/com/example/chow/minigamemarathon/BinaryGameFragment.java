@@ -163,6 +163,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
             //correct button pressed
             if (numberClicked == gameText.charAt(currentIndex)) {
                 currentIndex++;
+                //TODO: Change score eval mechanic
                 score++;
                 textColor = new ForegroundColorSpan(Color.GREEN);
                 gameText.setSpan(textColor, 0, currentIndex, 0);

@@ -27,6 +27,7 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
     private ListView operatorsListView; //use imagebuttons
     private TextView question, expression, hint;
     private BaseAdapter operatorAdapter, numberOptionAdapter;
+    private MathGame mathGame;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,6 +39,7 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
 
     //TODO: initialize the numbers
     private void makeArrayLists() {
+        generateProblem();
         operatorOptions = new ArrayList<>();
         operatorOptions.add(RESET);
         operatorOptions.add(ADD);
@@ -46,12 +48,12 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
         operatorOptions.add(DIVIDE);
         //TODO: put actual numbers from game object into the arraylist
         numberOptions = new ArrayList<>();
-        numberOptions.add("1");
-        numberOptions.add("2");
-        numberOptions.add("3");
-        numberOptions.add("4");
-        numberOptions.add("5");
-        numberOptions.add("6");
+        numberOptions.add(mathGame.num1 + "");
+        numberOptions.add(mathGame.num2 + "");
+        numberOptions.add(mathGame.num3 + "");
+        numberOptions.add(mathGame.num4 + "");
+        numberOptions.add(mathGame.num5 + "");
+        numberOptions.add(mathGame.num6 + "");
     }
 
     private void setListeners() {
@@ -150,6 +152,8 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
         {
             case RESET:
                 generateProblem();
+                makeArrayLists();
+                expression.setText("");
                 break;
             case ADD:
                 //view.setText(+)
@@ -166,7 +170,8 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
     }
 
     private int generateProblem() {
-        return 0;
+        mathGame = new MathGame();
+        return mathGame.generateGame();
     }
 
     @Override

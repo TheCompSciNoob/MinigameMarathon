@@ -7,35 +7,37 @@ import java.util.ArrayList;
  */
 
 public class MathGame {
-    private int problem; //answer
+    private int answer; //answer
     private ArrayList<Integer> numbers;
-    protected int num1;
-    protected int num2;
-    protected int num3;
-    protected int num4;
+    int num1,num2,num3,num4,num5,num6;
 
     public MathGame() {
     }
 
-    public void generateProblem(){
+    public int generateGame(){
         num1 = (int) (Math.random() * 8 + 1);
         num2 = (int) (Math.random() * 8 + 1);
         num3 = (int) (Math.random() * 8 + 1);
         num4 = (int) (Math.random() * 8 + 1);
+        num5 = (int) (Math.random() * 8 + 1);
+        num6 = (int) (Math.random() * 8 + 1);
         numbers = new ArrayList<>();
         numbers.add(num1);
         numbers.add(num2);
         numbers.add(num3);
         numbers.add(num4);
+        numbers.add(num5);
+        numbers.add(num6);
         double percent = Math.random();
         if(percent < .25)
-            problem = num1 + num2;
+            answer = num1 + num2;
         else if(percent < .5)
-            problem = num1 - num2;
+            answer = num1 - num2;
         else if (percent < .75)
-            problem = num1 * num2;
+            answer = num1 * num2;
         else if (percent < 1)
-            problem = num1 / num2;
+            answer = num1 / num2;
+        return answer;
     }
 
     public ArrayList<Integer> getNumbers() {
@@ -121,7 +123,7 @@ public class MathGame {
         }.parse();
     }
 
-    public boolean checkAnswer(String answer) {
-        return eval(answer) == problem;
+    public boolean checkAnswer(String problem) {
+        return eval(problem) == this.answer;
     }
 }
