@@ -1,6 +1,8 @@
 package com.example.chow.minigamemarathon;
 
 import android.app.AlertDialog;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -27,6 +29,7 @@ public class EndFragment extends Fragment {
     private String[][] levelDataSets;
     private DatabaseHandler db;
     private GameMode gameMode;
+    private static final String PREVIOUS_NAME_ENTERED_KEY = "previous name entered";
 
     public EndFragment()
     {
@@ -51,6 +54,8 @@ public class EndFragment extends Fragment {
                 saveDialog.setCancelable(false);
                 final AlertDialog alertDialog = saveDialog.create();
                 final EditText playerName = dialogView.findViewById(R.id.player_name_input);
+                final SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                playerName.setText(preferences.getString(PREVIOUS_NAME_ENTERED_KEY, ""));
                 Button saveButton = dialogView.findViewById(R.id.button_save_dialog);
                 Button cancelButton = dialogView.findViewById(R.id.button_cancel_dialog);
                 saveButton.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +63,11 @@ public class EndFragment extends Fragment {
                     public void onClick(View view) {
                         if (!playerName.getText().toString().equals(""))
                         {
-                            storeGameData(playerName.getText().toString());
+                            String playerNameInput = playerName.getText().toString();
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString(PREVIOUS_NAME_ENTERED_KEY, playerNameInput);
+                            editor.apply();
+                            storeGameData(playerNameInput);
                             alertDialog.dismiss();
                             saveRunButton.setEnabled(false);
                         }

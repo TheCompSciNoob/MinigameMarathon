@@ -13,7 +13,11 @@
 
     <EditText
         android:textSize="24sp"
+        android:selectAllOnFocus="true"
+        android:inputType="textVisiblePassword"
+        android:maxLength="15"
         android:id="@+id/player_name_input"
+        android:maxLines="1"
         android:hint="Name"
         android:textAlignment="center"
         android:layout_width="match_parent"
