@@ -1,5 +1,7 @@
 package com.example.chow.minigamemarathon;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,6 +33,7 @@ public class PracticeGameContainerFragment extends Fragment implements StopWatch
     private StopWatch clock;
     private MenuItem menuItemChange;
     private ArrayList<Integer> icons;
+    private static final String STORE_GAME = "store game key", STORE_GAMEMODE = "store gamemode key";
 
     public PracticeGameContainerFragment()
     {
@@ -96,21 +99,22 @@ public class PracticeGameContainerFragment extends Fragment implements StopWatch
             chooseGameMode.setId(i);
             gameModeGroup.addView(chooseGameMode);
         }
+        final SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        int gameIndex = preferences.getInt(STORE_GAME, 0);
+        int gamemodeIndex = preferences.getInt(STORE_GAMEMODE, 0);
+        gameGroup.check(gameIndex);
+        gameModeGroup.check(gamemodeIndex);
         builder.setView(optionsLayout);
         final AlertDialog dialog = builder.create();
         Button confirmButton = optionsLayout.findViewById(R.id.confirm_practice_option_button);
         confirmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int chosenGameID = gameGroup.getCheckedRadioButtonId(), chosenGameModeID = gameModeGroup.getCheckedRadioButtonId();
+                final int chosenGameID = gameGroup.getCheckedRadioButtonId(), chosenGameModeID = gameModeGroup.getCheckedRadioButtonId();
                 if (chosenGameID != -1 && chosenGameModeID != -1)
                 {
                     final GameFragment chosenGame = allGames[chosenGameID];
                     final GameMode chosenGameMode = gameModes[chosenGameModeID];
-                    ViewGroup gameView = (ViewGroup) chosenGame.getView();
-                    if (gameView != null) {
-                        //gameView.removeView(gameView.findViewById(R.id.complete_status_linearlayout));
-                    }
                     chosenGame.setGameStateUpdateListener(new GameFragment.OnGameStateUpdateListener() {
                         @Override
                         public void onGameSolved(GameFragment solvedFragment) {
@@ -121,6 +125,10 @@ public class PracticeGameContainerFragment extends Fragment implements StopWatch
                         public void onGameStart(GameFragment startingFragment) {
                             chosenGame.finalizeArguments(chosenGameMode);
                             chosenGame.assignWidgetFunctions();
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putInt(STORE_GAME, chosenGameID);
+                            editor.putInt(STORE_GAMEMODE, chosenGameModeID);
+                            editor.apply();
                             Log.d(TAG, "onGameStart: PracticeGameContainerFragment replaced fragment");
                         }
 
