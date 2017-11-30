@@ -328,7 +328,6 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
         }
 
         public abstract void onUpdate();
-
     }
 
     //ViewHolder for layout in recycler view
@@ -336,7 +335,7 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
         TextView playerName, playerRank;
         MemoryTextSwitcher scoreDetails;
         String timeDetail, scoreDetail;
-        private static final int deleteID = 765454897;
+        private static final int deleteID = 765453897;
 
         public ScoreViewHolder(View itemView) {
             super(itemView);
