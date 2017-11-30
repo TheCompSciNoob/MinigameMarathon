@@ -15,6 +15,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -240,6 +242,11 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
         public void updateSortState(Comparator<Score> sortComparator, boolean isColorCodeEnabled) {
             this.sortComparator = sortComparator;
             this.isColorCodeEnabled = isColorCodeEnabled;
+            updateSortState();
+        }
+
+        public void updateSortState()
+        {
             recalculateRanks();
             adapter.notifyDataSetChanged();
         }
@@ -325,10 +332,11 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
     }
 
     //ViewHolder for layout in recycler view
-    private static class ScoreViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
+    private class ScoreViewHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
         TextView playerName, playerRank;
         MemoryTextSwitcher scoreDetails;
         String timeDetail, scoreDetail;
+        private static final int deleteID = 765454897;
 
         public ScoreViewHolder(View itemView) {
             super(itemView);
@@ -340,7 +348,23 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
 
         @Override
         public void onCreateContextMenu(ContextMenu contextMenu, View view, ContextMenu.ContextMenuInfo contextMenuInfo) {
-
+            contextMenu.setHeaderTitle("Select Action");
+            MenuItem delete = contextMenu.add(Menu.NONE, deleteID, 1, "Delete Run");
+            delete.setOnMenuItemClickListener(listener);
         }
+
+        private final MenuItem.OnMenuItemClickListener listener = new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId())
+                {
+                    case deleteID:
+                        Score deleteScore = filteredDatabase.remove(getAdapterPosition());
+                        ((HighScoreFragment) getParentFragment()).deleteScore(deleteScore);
+                        adapter.updateSortState();
+                }
+                return true;
+            }
+        };
     }
 }

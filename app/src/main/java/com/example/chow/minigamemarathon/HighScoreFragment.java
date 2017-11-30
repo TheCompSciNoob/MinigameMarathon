@@ -63,6 +63,11 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
         return rootView;
     }
 
+    public void deleteScore(Score deleteScore)
+    {
+        db.deleteScore(deleteScore);
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
