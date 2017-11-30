@@ -10,7 +10,7 @@
 
     <LinearLayout
         android:orientation="vertical"
-        android:layout_weight="1"
+        android:layout_weight="4"
         android:layout_width="0dp"
         android:layout_height="match_parent">
 
@@ -56,12 +56,13 @@
 
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/operators"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"/>
+    <LinearLayout
+        android:id="@+id/operator_container"
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+    </LinearLayout>
 
 </LinearLayout>

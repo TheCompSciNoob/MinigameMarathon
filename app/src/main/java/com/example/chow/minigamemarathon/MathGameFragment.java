@@ -4,12 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
-import android.widget.ListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,9 +25,8 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
     //widgets in layout
     private View rootView;
     private GridView numbersGridView; //use string
-    private ListView operatorsListView; //use imagebuttons
     private TextView question, expression, hint;
-    private BaseAdapter operatorAdapter, numberOptionAdapter;
+    private BaseAdapter numberOptionAdapter;
     private MathGame mathGame;
 
     @Override
@@ -58,37 +58,6 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
 
     private void setListeners() {
         //adapter for the operators on the right
-        operatorAdapter = new BaseAdapter() {
-            @Override
-            public int getCount() {
-                return operatorOptions.size();
-            }
-
-            @Override
-            public Object getItem(int i) {
-                return operatorOptions.get(i);
-            }
-
-            @Override
-            public long getItemId(int i) {
-                return i;
-            }
-
-            @Override
-            public View getView(int position, View convertView, ViewGroup parent) {
-                ImageButton imageButton;
-                if (convertView == null)
-                {
-                    imageButton = makeOperator(operatorOptions.get(position));
-                }
-                else
-                {
-                    imageButton = (ImageButton) convertView;
-                }
-                return imageButton;
-            }
-        };
-        operatorsListView.setAdapter(operatorAdapter);
 
         //adapters for number options on the left
         numberOptionAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_expandable_list_item_1, numberOptions);
@@ -109,12 +78,22 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
     }
 
     private ImageButton makeOperator(int operatorType) {
-        ImageButton operatorButton = new ImageButton(getActivity());
+        final ImageButton operatorButton = new ImageButton(getActivity());
         operatorButton.setOnClickListener(this);
-        operatorButton.setLayoutParams(new ListView.LayoutParams(185, 185));
         operatorButton.setScaleType(ImageButton.ScaleType.CENTER_CROP);
         operatorButton.setPadding(20, 20, 20, 20);
         operatorButton.setId(operatorType);
+        operatorButton.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                //TODO: change size of ImageButton before draw
+                LinearLayout parent = (LinearLayout) operatorButton.getParent();
+                operatorButton.setLayoutParams(new LinearLayout.LayoutParams(parent.getHeight(), parent.getHeight()));
+                operatorButton.requestLayout();
+
+                return true;
+            }
+        });
         switch (operatorType)
         {
             case RESET:
@@ -140,7 +119,6 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
 
     private void wireWidgets() {
         numbersGridView = rootView.findViewById(R.id.number_options);
-        operatorsListView = rootView.findViewById(R.id.operators);
         question = rootView.findViewById(R.id.question_number);
         expression = rootView.findViewById(R.id.expression_input);
         hint = rootView.findViewById(R.id.hint);
@@ -201,5 +179,12 @@ public class MathGameFragment extends GameFragment implements View.OnClickListen
         makeArrayLists();
         wireWidgets();
         setListeners();
+    }
+
+    private enum OperatorType
+    {
+        RESET, ADD, SUBTRACT, MULTIPLY, DIVIDE;
+
+        public static final OperatorType[] OPERATOR_TYPES = {RESET, ADD, SUBTRACT, MULTIPLY, DIVIDE};
     }
 }
