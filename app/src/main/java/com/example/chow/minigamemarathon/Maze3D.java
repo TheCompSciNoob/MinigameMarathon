@@ -74,6 +74,7 @@ public class Maze3D {
     {
         baseMaze[startRow][startCol] = new Cell();
         generatePathFrom(startRow, startCol);
+        Log.d(TAG, "generateMaze: " + baseMaze.toString());
     }
 
     private void generatePathFrom(int row, int col) //recursive backtracking
