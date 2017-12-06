@@ -10,7 +10,7 @@ public class Color {
     private String colorStringID;
     public void genColorID()
     {
-        colorNumberID=(int)(Math.random()*6);
+        colorNumberID=(int)(Math.random()*3)*2+1;
         if (colorNumberID==0)
         {colorStringID = "red";}
         else if (colorNumberID==1)
