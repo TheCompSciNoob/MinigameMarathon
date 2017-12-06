@@ -14,8 +14,8 @@ public class MazeView extends View {
 
     //variables for the game
     private Maze3D maze3D;
-    private int startRow, startCol, endRow, endCol;
     private int numRows, numCols;
+    private int playerRow, playerCol;
     private Paint line, redIndicator, boundingBox;
     //variables for the view
     private int width, height, backgroundColor;
@@ -25,15 +25,11 @@ public class MazeView extends View {
     private float cellWidth;
     private float cellHeight;
 
-    public MazeView(Context context, Maze3D maze3D, int backgroundColor, int layer)
+    public MazeView(Context context, Maze3D maze3D, int backgroundColor)
     {
         super(context);
         this.maze3D = maze3D;
         //starting and ending points
-        startRow = maze3D.getStartRow();
-        startCol = maze3D.getStartCol();
-        endRow = maze3D.getEndRow();
-        endCol = maze3D.getEndCol();
         numRows = maze3D.getNumRows();
         numCols = maze3D.getNumCols();
         //graphics
@@ -45,9 +41,18 @@ public class MazeView extends View {
         boundingBox.setColor(backgroundColor);
         setFocusable(true);
         setFocusableInTouchMode(true);
+    }
+
+    public void setPlayerLocation(int playerLayer, int playerRow, int playerCol)
+    {
         //store walls as 2 separate boolean 2D arrays
-        hLines = getHorizontalLines();
-        vLines = getVerticalLines();
+        hLines = getHorizontalLines(playerLayer);
+        vLines = getVerticalLines(playerLayer);
+        this.playerRow = playerRow;
+        this.playerCol = playerCol;
+        //TODO change player row and player col
+        //invalidate and redraw after player location is changed
+        invalidate();
     }
 
     @Override
@@ -82,38 +87,43 @@ public class MazeView extends View {
                 }
                 if(col < numRows - 1 && hLines[col][row]) {
                     //we'll draw a horizontal line
-                    canvas.drawLine(x,               //startX
+                    canvas.drawLine(x,              //startX
                             y + cellHeight,  //startY
                             x + cellWidth,   //stopX
                             y + cellHeight,  //stopY
                             line);
                 }
+                //draws the player
+                canvas.drawCircle((playerCol * totalCellWidth)+(cellWidth/2),   //x of center
+                        (playerRow * totalCellHeight)+(cellWidth/2),  //y of center
+                        (cellWidth*0.45f),                           //radius
+                        redIndicator);
             }
         }
     }
 
-    private boolean[][] getHorizontalLines()
+    private boolean[][] getHorizontalLines(int layer)
     {
-        Maze3D.Cell[][] maze = maze3D.getBaseMaze();
-        boolean[][] horizontalLines = new boolean[maze.length-1][maze[0].length];
+        Maze3D.Cell[][][] maze = maze3D.getMaze3D();
+        boolean[][] horizontalLines = new boolean[maze[layer].length-1][maze[layer][0].length];
         for (int row = 0; row < maze.length - 1; row++) {
             for (int col = 0; col < maze[row].length; col++)
             {
-                horizontalLines[row][col] = maze[row][col].isWallBottom() || maze[row+1][col].isWallTop();
+                horizontalLines[row][col] = maze[layer][row][col].isWallBottom() || maze[layer][row+1][col].isWallTop();
             }
         }
         return horizontalLines;
     }
 
-    private boolean[][] getVerticalLines()
+    private boolean[][] getVerticalLines(int layer)
     {
-        Maze3D.Cell[][] maze = maze3D.getBaseMaze();
-        boolean[][] verticalLines = new boolean[maze.length][maze[0].length-1];
+        Maze3D.Cell[][][] maze = maze3D.getMaze3D();
+        boolean[][] verticalLines = new boolean[maze[layer].length][maze[layer][0].length-1];
         for (int row = 0; row < maze.length; row++)
         {
             for (int col = 0; col < maze[row].length - 1; col++)
             {
-                verticalLines[row][col] = maze[row][col].isWallRight() || maze[row][col+1].isWallLeft();
+                verticalLines[row][col] = maze[layer][row][col].isWallRight() || maze[layer][row][col+1].isWallLeft();
             }
         }
         return verticalLines;
