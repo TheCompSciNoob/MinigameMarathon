@@ -215,7 +215,7 @@ public class Maze3D {
         }
     }
 
-    private enum PathDirection
+    public enum PathDirection
     {
         UP, DOWN, LEFT, RIGHT, FRONT, BACK;
 

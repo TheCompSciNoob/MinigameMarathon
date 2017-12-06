@@ -128,4 +128,10 @@ public class MazeView extends View {
         }
         return verticalLines;
     }
+
+    @Override
+    public boolean performClick() {
+        super.performClick();
+        return true;
+    }
 }
