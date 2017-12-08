@@ -41,15 +41,15 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
     private char numberClicked;
     private static final char NUMBER_OPTION_1 = '0', NUMBER_OPTION_2 = '1';
     private char numberLeft = NUMBER_OPTION_1, numberRight = NUMBER_OPTION_2;
+    private static double maxScore = 100;
     private SpannableStringBuilder gameText;
     private BinaryGame game;
     private TextView binaryText;
-    private Button buttonLeft;
-    private Button buttonRight;
+    private Button buttonLeft, buttonRight;
     private ForegroundColorSpan textColor;
-    private int currentIndex;
-    private int score;
+    private int currentIndex, errors;
     private GameMode gameMode;
+    private long lapTime;
 
     public BinaryGameFragment() {
         // Required empty public constructor
@@ -185,6 +185,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
                     //currentIndex = words per checkpoint
                 //incorrect button pressed
                 currentIndex = 0;
+                errors++;
                 binaryText.setText(gameText);
             }
         }
@@ -217,6 +218,11 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
         buttonRight.setText(numberRight + "");
     }
 
+    @Override
+    public void notifyGameEnd() {
+        lapTime = ((GameContainerFragment) getParentFragment()).timer.getLapTimeElapsed();
+        super.notifyGameEnd();
+    }
 
     @Override
     public String getGameName() {
@@ -225,7 +231,9 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
 
     @Override
     public double getPercentScore() {
-        return (double) (score / game.getNumChars(gameMode));
+        final double errorDepreciation = 0.95;
+        double gameScore = maxScore * Math.pow(errorDepreciation,errors);
+        return gameScore / maxScore;
     }
 
     @Override
