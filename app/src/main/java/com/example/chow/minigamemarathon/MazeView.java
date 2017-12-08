@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 
 /**
@@ -12,6 +13,7 @@ import android.view.View;
 
 public class MazeView extends View {
 
+    private final Maze3D.Cell[][][] maze;
     //variables for the game
     private Maze3D maze3D;
     private int numRows, numCols;
@@ -41,6 +43,8 @@ public class MazeView extends View {
         boundingBox.setColor(backgroundColor);
         setFocusable(true);
         setFocusableInTouchMode(true);
+        //gets maze
+        maze = maze3D.getMaze3D();
     }
 
     public void setPlayerLocation(int playerLayer, int playerRow, int playerCol)
@@ -50,7 +54,6 @@ public class MazeView extends View {
         vLines = getVerticalLines(playerLayer);
         this.playerRow = playerRow;
         this.playerCol = playerCol;
-        //TODO change player row and player col
         //invalidate and redraw after player location is changed
         invalidate();
     }
@@ -73,6 +76,10 @@ public class MazeView extends View {
         //fill boundingBox
         canvas.drawRect(0, 0, width, height, boundingBox);
         //iterate over the boolean arrays to draw walls
+        //draws the up/down layer signs
+        Drawable upLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp);
+        Drawable downLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp);
+        Drawable upDownLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_compare_arrows_black_24dp);
         for(int col = 0; col < numCols; col++) {
             for(int row = 0; row < numRows; row++){
                 float x = row * totalCellWidth;
@@ -93,6 +100,7 @@ public class MazeView extends View {
                             y + cellHeight,  //stopY
                             line);
                 }
+                //TODO: draw indicators
                 //draws the player
                 canvas.drawCircle((playerCol * totalCellWidth)+(cellWidth/2),   //x of center
                         (playerRow * totalCellHeight)+(cellWidth/2),  //y of center
@@ -104,7 +112,6 @@ public class MazeView extends View {
 
     private boolean[][] getHorizontalLines(int layer)
     {
-        Maze3D.Cell[][][] maze = maze3D.getMaze3D();
         boolean[][] horizontalLines = new boolean[maze[layer].length-1][maze[layer][0].length];
         for (int row = 0; row < maze.length - 1; row++) {
             for (int col = 0; col < maze[row].length; col++)
@@ -117,7 +124,6 @@ public class MazeView extends View {
 
     private boolean[][] getVerticalLines(int layer)
     {
-        Maze3D.Cell[][][] maze = maze3D.getMaze3D();
         boolean[][] verticalLines = new boolean[maze[layer].length][maze[layer][0].length-1];
         for (int row = 0; row < maze.length; row++)
         {

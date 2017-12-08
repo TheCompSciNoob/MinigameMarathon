@@ -14,6 +14,9 @@
             android:layout_height="wrap_content" />
 
         <TextView
+            android:text="L"
+            android:textSize="36sp"
+            android:gravity="center"
             android:id="@+id/layer_indicator"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
