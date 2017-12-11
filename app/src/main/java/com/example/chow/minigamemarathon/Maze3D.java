@@ -30,6 +30,7 @@ public class Maze3D {
         startLayer = 0;
         endRow = numRows - 1;
         endCol = numCols - 1;
+        endLayer = layers - 1;
     }
 
     public int getNumRows() {
@@ -62,6 +63,11 @@ public class Maze3D {
 
     public int getEndCol() {
         return endCol;
+    }
+
+    public int getEndLayer()
+    {
+        return endLayer;
     }
 
 
@@ -97,10 +103,11 @@ public class Maze3D {
                     colOffset = 1;
                     break;
                 case FRONT:
-                    layerOffset = 1;
+                    layerOffset = -1;
                     break;
                 case BACK:
-                    layerOffset = -1;
+                    layerOffset = 1;
+                    break;
             }
             //create path to next cell if cell is not visited
             try
@@ -137,6 +144,7 @@ public class Maze3D {
                         case BACK:
                             thisCell.setWallBack(false);
                             nextCell.setWallFront(false);
+                            break;
                     }
                     generatePathFrom(layer + layerOffset, row + rowOffset, col + colOffset);
                 }
@@ -163,6 +171,8 @@ public class Maze3D {
             wallBottom = true;
             wallLeft = true;
             wallRight =  true;
+            wallFront = true;
+            wallBack = true;
         }
 
         public boolean isWallFront() {

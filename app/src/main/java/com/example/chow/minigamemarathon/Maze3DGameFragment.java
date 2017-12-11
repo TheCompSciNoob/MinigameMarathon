@@ -68,7 +68,9 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
 
     @Override
     public boolean isSolved() {
-        return false;
+        return mazeHandler.getEndLayer() == playerLayer &&
+                mazeHandler.getEndRow() == playerRow &&
+                mazeHandler.getEndCol() == playerCol;
     }
 
     @Override
@@ -102,7 +104,6 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
                 }
                 break;
         }
-        Log.d(TAG, "onTouch: player location " + playerLayer + " " + playerRow + " " + playerCol);
         return true;
     }
 
@@ -154,6 +155,11 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
                 playerRow += rowOffset;
                 playerCol += colOffset;
                 mazeView.setPlayerLocation(playerLayer, playerRow, playerCol);
+            }
+            //if new position is the solution, then game is solved
+            if (isSolved())
+            {
+                notifyGameEnd();
             }
         }
         catch (ArrayIndexOutOfBoundsException e)
