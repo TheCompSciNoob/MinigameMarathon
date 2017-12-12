@@ -3,11 +3,10 @@ package com.example.chow.minigamemarathon;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
 import android.graphics.Paint;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
+import android.support.annotation.Nullable;
+import android.util.AttributeSet;
 import android.view.View;
 
 /**
@@ -17,21 +16,32 @@ import android.view.View;
 public class MazeView extends View {
 
     private static final String TAG = "MazeView";
-    private final Maze3D.Cell[][][] maze;
+    private Maze3D.Cell[][][] maze = null;
     //variables for the game
     private Maze3D maze3D;
     private int numRows, numCols;
     private int playerLayer, playerRow, playerCol;
-    private Paint line, redIndicator, boundingBox;
+    private Paint line, redIndicator, boundingBox, grayLayerIndicator;
     //variables for the view
     private int width, height, backgroundColor;
     private boolean[][] hLines, vLines;
     private float totalCellWidth, totalCellHeight, cellWidth, cellHeight, lineWidth;
     private Drawable upLayerIndicator, downLayerIndicator, upDownLayerIndicator;
 
-    public MazeView(Context context, Maze3D maze3D, int backgroundColor)
-    {
+    public MazeView(Context context) {
         super(context);
+    }
+
+    public MazeView(Context context, @Nullable AttributeSet attrs) {
+        super(context, attrs);
+    }
+
+    public MazeView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+    }
+
+    public void setArguments(Maze3D maze3D, int backgroundColor)
+    {
         this.maze3D = maze3D;
         //graphics
         line = new Paint();
@@ -41,6 +51,8 @@ public class MazeView extends View {
         redIndicator.setStyle(Paint.Style.STROKE);
         boundingBox = new Paint();
         boundingBox.setColor(backgroundColor);
+        grayLayerIndicator = new Paint();
+        grayLayerIndicator.setColor(Color.LTGRAY);
         setFocusable(true);
         setFocusableInTouchMode(true);
         //gets maze Cell[][][]
@@ -83,6 +95,13 @@ public class MazeView extends View {
     protected void onDraw(Canvas canvas) {
         //fill boundingBox
         canvas.drawRect(0, 0, width, height, boundingBox);
+        //TODO: draw layer
+        grayLayerIndicator.setTextSize(500);
+        grayLayerIndicator.setTextAlign(Paint.Align.CENTER);
+        Paint.FontMetrics metric = grayLayerIndicator.getFontMetrics();
+        int textHeight = (int) Math.ceil(metric.descent - metric.ascent);
+        int drawY = (int)(textHeight - metric.descent);
+        canvas.drawText(playerLayer + 1 + "", 0, 0, grayLayerIndicator);
         //iterate over the boolean arrays to draw walls
         for(int col = 0; col < numCols; col++) {
             for(int row = 0; row < numRows; row++){
@@ -110,29 +129,30 @@ public class MazeView extends View {
                 //finds appropriate indicator and draw
                 if (!thisCell.isWallBack() && !thisCell.isWallFront()) //both up and down arrows
                 {
-                    upDownLayerIndicator.setBounds((int) (x + lineWidth),
-                            (int) (y + lineWidth),
-                            (int) (x + cellWidth - lineWidth),
-                            (int) (y + cellWidth - lineWidth));
+                    float modifiedWidth = cellWidth / 2;
+                    upDownLayerIndicator.setBounds((int) (y + lineWidth + modifiedWidth / 2),
+                            (int) (x + lineWidth + modifiedWidth / 2),
+                            (int) (y + cellWidth - lineWidth - modifiedWidth / 2),
+                            (int) (x + cellWidth - lineWidth - modifiedWidth / 2));
                     upDownLayerIndicator.draw(canvas);
                 }
                 else if (!thisCell.isWallFront()) //up layer arrow
                 {
                     float modifiedWidth = cellWidth / 2;
-                    upLayerIndicator.setBounds((int) (x + lineWidth + modifiedWidth / 2),
-                            (int) (y + lineWidth + modifiedWidth / 2),
-                            (int) (x + cellWidth - lineWidth - modifiedWidth / 2),
-                            (int) (y + cellWidth - lineWidth - modifiedWidth / 2));
+                    upLayerIndicator.setBounds((int) (y + lineWidth + modifiedWidth / 2),
+                            (int) (x + lineWidth + modifiedWidth / 2),
+                            (int) (y + cellWidth - lineWidth - modifiedWidth / 2),
+                            (int) (x + cellWidth - lineWidth - modifiedWidth / 2));
                     upLayerIndicator.draw(canvas);
                 }
                 else if (!thisCell.isWallBack()) //down layer arrow
                 {
                     float modifiedWidth = cellWidth / 2;
-                    upDownLayerIndicator.setBounds((int) (x + lineWidth + modifiedWidth / 2),
-                            (int) (y + lineWidth + modifiedWidth / 2),
-                            (int) (x + cellWidth - lineWidth - modifiedWidth / 2),
-                            (int) (y + cellWidth - lineWidth - modifiedWidth / 2));
-                    upDownLayerIndicator.draw(canvas);
+                    downLayerIndicator.setBounds((int) (y + lineWidth + modifiedWidth / 2),
+                            (int) (x + lineWidth + modifiedWidth / 2),
+                            (int) (y + cellWidth - lineWidth - modifiedWidth / 2),
+                            (int) (x + cellWidth - lineWidth - modifiedWidth / 2));
+                    downLayerIndicator.draw(canvas);
                 }
                 //draws the player
                 canvas.drawCircle((playerCol * totalCellWidth)+(cellWidth/2),   //x of center

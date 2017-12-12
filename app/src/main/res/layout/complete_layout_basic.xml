@@ -7,7 +7,8 @@
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginStart="8dp"
-    android:layout_marginTop="8dp">
+    android:layout_marginTop="8dp"
+    android:background="@drawable/layout_wth_border">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -20,7 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:text="Best" />
+            android:text="Best"
+            android:textColor="@color/colorPrimary"/>
 
         <TextView
             android:id="@+id/game_header"
@@ -28,6 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
             android:text="Game" />
 
         <TextView
@@ -36,6 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
             android:text="Score" />
     </LinearLayout>
 
@@ -51,6 +55,7 @@
             android:layout_weight="1"
             android:text="best"
             android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
             android:textSize="36sp" />
 
         <TextView
@@ -60,6 +65,7 @@
             android:layout_weight="1"
             android:text="cg"
             android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
             android:textSize="36sp" />
 
         <TextView
@@ -69,6 +75,7 @@
             android:layout_weight="1"
             android:text="cts"
             android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
             android:textSize="36sp" />
     </LinearLayout>
 
@@ -83,6 +90,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Total Time"
+            android:textColor="@color/colorPrimary"
             android:textAlignment="center" />
 
         <TextView
@@ -91,6 +99,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Section Time"
+            android:textColor="@color/colorPrimary"
             android:textAlignment="center" />
     </LinearLayout>
 
@@ -105,6 +114,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="total time"
+            android:textColor="@color/colorPrimary"
             android:textAlignment="center"
             android:textSize="36sp" />
 
@@ -115,6 +125,7 @@
             android:layout_weight="1"
             android:text="section time"
             android:textAlignment="center"
+            android:textColor="@color/colorPrimary"
             android:textSize="36sp" />
     </LinearLayout>
 

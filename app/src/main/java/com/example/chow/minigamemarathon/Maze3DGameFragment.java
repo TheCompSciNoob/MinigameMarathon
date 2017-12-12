@@ -41,18 +41,32 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
 
     @Override
     public void assignWidgetFunctions() {
-        mazeHandler = new Maze3D(5, 5, 5);
+        switch (gameMode)
+        {
+            case EASY:
+                mazeHandler = new Maze3D(5, 5, 5);
+                break;
+            case HARD:
+                mazeHandler = new Maze3D(10, 10, 10);
+                break;
+            case DEBUG:
+                mazeHandler = new Maze3D(3, 3, 3);
+                break;
+        }
         mazeHandler.generateMaze();
         maze3D = mazeHandler.getMaze3D();
         //"if this works I'm gonna kill myself" - Chi,2017
-        mazeView = new MazeView(getActivity(), mazeHandler, Color.TRANSPARENT);
-        mazeView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 1));
+        mazeView = new MazeView(getActivity());
+        mazeView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        mazeView.setArguments(mazeHandler, Color.TRANSPARENT);
         mazeView.setPlayerLocation(playerLayer, playerRow, playerCol);
         mazeView.setOnTouchListener(this);
-        rootView.addView(mazeView,0);
+        rootView.addView(mazeView, 0);
         Button upLayerOption = rootView.findViewById(R.id.up_layer_option);
+        upLayerOption.setTextColor(Color.WHITE);
         upLayerOption.setOnClickListener(this);
         Button downLayerOption = rootView.findViewById(R.id.down_layer_option);
+        downLayerOption.setTextColor(Color.WHITE);
         downLayerOption.setOnClickListener(this);
     }
 
