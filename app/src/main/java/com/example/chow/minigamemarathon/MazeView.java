@@ -3,7 +3,11 @@ package com.example.chow.minigamemarathon;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -12,45 +16,52 @@ import android.view.View;
 
 public class MazeView extends View {
 
+    private static final String TAG = "MazeView";
+    private final Maze3D.Cell[][][] maze;
     //variables for the game
     private Maze3D maze3D;
     private int numRows, numCols;
-    private int playerRow, playerCol;
+    private int playerLayer, playerRow, playerCol;
     private Paint line, redIndicator, boundingBox;
     //variables for the view
     private int width, height, backgroundColor;
     private boolean[][] hLines, vLines;
-    private float totalCellWidth;
-    private float totalCellHeight;
-    private float cellWidth;
-    private float cellHeight;
+    private float totalCellWidth, totalCellHeight, cellWidth, cellHeight, lineWidth;
+    private Drawable upLayerIndicator, downLayerIndicator, upDownLayerIndicator;
 
     public MazeView(Context context, Maze3D maze3D, int backgroundColor)
     {
         super(context);
         this.maze3D = maze3D;
-        //starting and ending points
-        numRows = maze3D.getNumRows();
-        numCols = maze3D.getNumCols();
         //graphics
         line = new Paint();
         line.setColor(Color.BLACK);
         redIndicator = new Paint();
         redIndicator.setColor(Color.RED);
+        redIndicator.setStyle(Paint.Style.STROKE);
         boundingBox = new Paint();
         boundingBox.setColor(backgroundColor);
         setFocusable(true);
         setFocusableInTouchMode(true);
+        //gets maze Cell[][][]
+        maze = maze3D.getMaze3D();
+        //TODO: starting and ending points
+        numRows = maze3D.getNumRows();
+        numCols = maze3D.getNumCols();
+        //up/down layer signs
+        upLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp);
+        downLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp);
+        upDownLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_compare_arrows_black_24dp);
     }
 
     public void setPlayerLocation(int playerLayer, int playerRow, int playerCol)
     {
-        //store walls as 2 separate boolean 2D arrays
-        hLines = getHorizontalLines(playerLayer);
-        vLines = getVerticalLines(playerLayer);
+        this.playerLayer = playerLayer;
         this.playerRow = playerRow;
         this.playerCol = playerCol;
-        //TODO change player row and player col
+        //store walls as 2 separate boolean 2D arrays
+        hLines = getHorizontalLines();
+        vLines = getVerticalLines();
         //invalidate and redraw after player location is changed
         invalidate();
     }
@@ -60,7 +71,7 @@ public class MazeView extends View {
         int dimension = Math.min(w, h);
         width = dimension;
         height = dimension;
-        int lineWidth = 1;
+        lineWidth = 3;
         cellWidth = (width - ((float) numCols * lineWidth)) / numCols;
         totalCellWidth = cellWidth + lineWidth;
         cellHeight = (height - ((float) numRows * lineWidth)) / numRows;
@@ -75,6 +86,9 @@ public class MazeView extends View {
         //iterate over the boolean arrays to draw walls
         for(int col = 0; col < numCols; col++) {
             for(int row = 0; row < numRows; row++){
+                //cell we're referencing
+                Maze3D.Cell thisCell = maze[playerLayer][row][col];
+                //paint location
                 float x = row * totalCellWidth;
                 float y = col * totalCellHeight;
                 if(row < numCols - 1 && vLines[col][row]) {
@@ -93,6 +107,33 @@ public class MazeView extends View {
                             y + cellHeight,  //stopY
                             line);
                 }
+                //finds appropriate indicator and draw
+                if (!thisCell.isWallBack() && !thisCell.isWallFront()) //both up and down arrows
+                {
+                    upDownLayerIndicator.setBounds((int) (x + lineWidth),
+                            (int) (y + lineWidth),
+                            (int) (x + cellWidth - lineWidth),
+                            (int) (y + cellWidth - lineWidth));
+                    upDownLayerIndicator.draw(canvas);
+                }
+                else if (!thisCell.isWallFront()) //up layer arrow
+                {
+                    float modifiedWidth = cellWidth / 2;
+                    upLayerIndicator.setBounds((int) (x + lineWidth + modifiedWidth / 2),
+                            (int) (y + lineWidth + modifiedWidth / 2),
+                            (int) (x + cellWidth - lineWidth - modifiedWidth / 2),
+                            (int) (y + cellWidth - lineWidth - modifiedWidth / 2));
+                    upLayerIndicator.draw(canvas);
+                }
+                else if (!thisCell.isWallBack()) //down layer arrow
+                {
+                    float modifiedWidth = cellWidth / 2;
+                    upDownLayerIndicator.setBounds((int) (x + lineWidth + modifiedWidth / 2),
+                            (int) (y + lineWidth + modifiedWidth / 2),
+                            (int) (x + cellWidth - lineWidth - modifiedWidth / 2),
+                            (int) (y + cellWidth - lineWidth - modifiedWidth / 2));
+                    upDownLayerIndicator.draw(canvas);
+                }
                 //draws the player
                 canvas.drawCircle((playerCol * totalCellWidth)+(cellWidth/2),   //x of center
                         (playerRow * totalCellHeight)+(cellWidth/2),  //y of center
@@ -102,30 +143,48 @@ public class MazeView extends View {
         }
     }
 
-    private boolean[][] getHorizontalLines(int layer)
+    private boolean[][] getHorizontalLines()
     {
-        Maze3D.Cell[][][] maze = maze3D.getMaze3D();
-        boolean[][] horizontalLines = new boolean[maze[layer].length-1][maze[layer][0].length];
+        boolean[][] horizontalLines = new boolean[maze[playerLayer].length-1][maze[playerLayer][0].length];
         for (int row = 0; row < maze.length - 1; row++) {
             for (int col = 0; col < maze[row].length; col++)
             {
-                horizontalLines[row][col] = maze[layer][row][col].isWallBottom() || maze[layer][row+1][col].isWallTop();
+                horizontalLines[row][col] = maze[playerLayer][row][col].isWallBottom() || maze[playerLayer][row+1][col].isWallTop();
             }
         }
         return horizontalLines;
     }
 
-    private boolean[][] getVerticalLines(int layer)
+    private boolean[][] getVerticalLines()
     {
-        Maze3D.Cell[][][] maze = maze3D.getMaze3D();
-        boolean[][] verticalLines = new boolean[maze[layer].length][maze[layer][0].length-1];
+        boolean[][] verticalLines = new boolean[maze[playerLayer].length][maze[playerLayer][0].length-1];
         for (int row = 0; row < maze.length; row++)
         {
             for (int col = 0; col < maze[row].length - 1; col++)
             {
-                verticalLines[row][col] = maze[layer][row][col].isWallRight() || maze[layer][row][col+1].isWallLeft();
+                verticalLines[row][col] = maze[playerLayer][row][col].isWallRight() || maze[playerLayer][row][col+1].isWallLeft();
             }
         }
         return verticalLines;
+    }
+
+    @Override
+    public boolean performClick() {
+        super.performClick();
+        return true;
+    }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        int dimension = Math.min(widthMeasureSpec, heightMeasureSpec);
+        if (dimension != 0)
+        {
+            setMeasuredDimension(dimension, dimension);
+            super.onMeasure(dimension, dimension);
+        }
+        else
+        {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
     }
 }
