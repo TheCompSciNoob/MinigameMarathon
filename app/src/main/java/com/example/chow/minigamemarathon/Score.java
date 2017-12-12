@@ -10,6 +10,7 @@ public class Score {
     String _score;
     String _time;
     String _gameMode;
+    public String objectId;
 
     public Score() {
 

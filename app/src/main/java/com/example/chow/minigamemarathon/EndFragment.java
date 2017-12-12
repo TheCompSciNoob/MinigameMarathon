@@ -18,6 +18,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.backendless.Backendless;
+
 /**
  * Created by per6 on 11/1/17.
  */
@@ -83,6 +85,7 @@ public class EndFragment extends Fragment {
             }
         });
         db = new DatabaseHandler(this.getContext());
+        Backendless.initApp(this.getContext(),"5366E1EB-A6A4-8C6C-FFC4-569F55C00300","CB426A88-910A-D939-FFD3-F8EFDD7DAE00");
         return rootView;
     }
 
