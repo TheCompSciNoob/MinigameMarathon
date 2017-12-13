@@ -26,6 +26,6 @@ public class BackendlessHandler {
         });
     }
     public void updateScore(Score score){
-        Backendless.Persistence.
+        //Backendless.Persistence.
     }
 }

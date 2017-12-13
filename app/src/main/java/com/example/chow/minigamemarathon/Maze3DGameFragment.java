@@ -22,7 +22,7 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
     private Maze3D mazeHandler;
     private Maze3D.Cell[][][] maze3D;
     private LinearLayout rootView;
-    private int playerLayer = 0, playerRow = 0, playerCol = 0;
+    private int playerLayer = 0, playerRow = 0, playerCol = 0, moves = 0;
     private MazeView mazeView;
     private static final String TAG = "Maze3DGameFragment";
 
@@ -56,12 +56,10 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
         mazeHandler.generateMaze();
         maze3D = mazeHandler.getMaze3D();
         //"if this works I'm gonna kill myself" - Chi,2017
-        mazeView = new MazeView(getActivity());
-        mazeView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        mazeView = rootView.findViewById(R.id.maze_view_3d);
         mazeView.setArguments(mazeHandler, Color.TRANSPARENT);
         mazeView.setPlayerLocation(playerLayer, playerRow, playerCol);
         mazeView.setOnTouchListener(this);
-        rootView.addView(mazeView, 0);
         Button upLayerOption = rootView.findViewById(R.id.up_layer_option);
         upLayerOption.setTextColor(Color.WHITE);
         upLayerOption.setOnClickListener(this);
@@ -77,7 +75,11 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
 
     @Override
     public double getPercentScore() {
-        return 0;
+        int bestNumMoves = (maze3D.length + maze3D[0].length + maze3D[0][0].length) * 3;
+        int extraMoves = moves - bestNumMoves;
+        final double moveDepletion = 0.995;
+        double movePercent = Math.pow(moveDepletion, extraMoves);
+        return Math.min(1, movePercent);
     }
 
     @Override
@@ -91,29 +93,24 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
     public boolean onTouch(View view, MotionEvent motionEvent) {
         int x = (int) motionEvent.getX();
         int y = mazeView.getHeight() - (int) motionEvent.getY();
-        Log.d(TAG, "onTouch: point " + x + " " + y);
         double w = mazeView.getWidth(), h = mazeView.getHeight();
         switch (motionEvent.getAction())
         {
             case MotionEvent.ACTION_UP:
                 if (y > h / w * x && y > - h / w * x + h) //top quadrant
                 {
-                    Log.d(TAG, "onTouch: up");
                     tryMovePlayer(Maze3D.PathDirection.UP);
                 }
                 else if (y < h / w * x && y < - h / w * x + h) //bottom quadrant
                 {
-                    Log.d(TAG, "onTouch: down");
                     tryMovePlayer(Maze3D.PathDirection.DOWN);
                 }
                 else if (y < h / w * x && y > - h / w * x + h)
                 {
-                    Log.d(TAG, "onTouch: right");
                     tryMovePlayer(Maze3D.PathDirection.RIGHT);
                 }
                 else if (y > h / w * x && y < - h / w * x + h) //left quadrant
                 {
-                    Log.d(TAG, "onTouch: left");
                     tryMovePlayer(Maze3D.PathDirection.LEFT);
                 }
                 break;
@@ -164,11 +161,11 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
             //if cell is not null and can move, then move
             if (nextCell != null && canMove)
             {
-                Log.d(TAG, "tryMovePlayer: player moved");
                 playerLayer += layerOffset;
                 playerRow += rowOffset;
                 playerCol += colOffset;
                 mazeView.setPlayerLocation(playerLayer, playerRow, playerCol);
+                moves++;
             }
             //if new position is the solution, then game is solved
             if (isSolved())

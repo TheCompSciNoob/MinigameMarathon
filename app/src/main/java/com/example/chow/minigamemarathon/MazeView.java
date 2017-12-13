@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -21,7 +22,7 @@ public class MazeView extends View {
     private Maze3D maze3D;
     private int numRows, numCols;
     private int playerLayer, playerRow, playerCol;
-    private Paint line, redIndicator, boundingBox, grayLayerIndicator;
+    private Paint line, redIndicator, grayLayerIndicator;
     //variables for the view
     private int width, height, backgroundColor;
     private boolean[][] hLines, vLines;
@@ -49,10 +50,9 @@ public class MazeView extends View {
         redIndicator = new Paint();
         redIndicator.setColor(Color.RED);
         redIndicator.setStyle(Paint.Style.STROKE);
-        boundingBox = new Paint();
-        boundingBox.setColor(backgroundColor);
         grayLayerIndicator = new Paint();
         grayLayerIndicator.setColor(Color.LTGRAY);
+        grayLayerIndicator.setTextAlign(Paint.Align.CENTER);
         setFocusable(true);
         setFocusableInTouchMode(true);
         //gets maze Cell[][][]
@@ -64,6 +64,7 @@ public class MazeView extends View {
         upLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp);
         downLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp);
         upDownLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_compare_arrows_black_24dp);
+        invalidate();
     }
 
     public void setPlayerLocation(int playerLayer, int playerRow, int playerCol)
@@ -93,73 +94,77 @@ public class MazeView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        //fill boundingBox
-        canvas.drawRect(0, 0, width, height, boundingBox);
-        //TODO: draw layer
-        grayLayerIndicator.setTextSize(500);
-        grayLayerIndicator.setTextAlign(Paint.Align.CENTER);
-        Paint.FontMetrics metric = grayLayerIndicator.getFontMetrics();
-        int textHeight = (int) Math.ceil(metric.descent - metric.ascent);
-        int drawY = (int)(textHeight - metric.descent);
-        canvas.drawText(playerLayer + 1 + "", 0, 0, grayLayerIndicator);
-        //iterate over the boolean arrays to draw walls
-        for(int col = 0; col < numCols; col++) {
-            for(int row = 0; row < numRows; row++){
-                //cell we're referencing
-                Maze3D.Cell thisCell = maze[playerLayer][row][col];
-                //paint location
-                float x = row * totalCellWidth;
-                float y = col * totalCellHeight;
-                if(row < numCols - 1 && vLines[col][row]) {
-                    //we'll draw a vertical line
-                    canvas.drawLine(x + cellWidth,   //start X
-                            y,               //start Y
-                            x + cellWidth,   //stop X
-                            y + cellHeight,  //stop Y
-                            line);
+        try {
+            //draw layer
+            grayLayerIndicator.setTextSize(MazeView.this.getHeight() - 16);
+            int drawX = canvas.getWidth() / 2;
+            int drawY = (int) ((canvas.getHeight() / 2) - ((grayLayerIndicator.descent() + grayLayerIndicator.ascent()) / 2));
+            canvas.drawText(playerLayer + 1 + "", drawX, drawY, grayLayerIndicator);
+            //iterate over the boolean arrays to draw walls
+            for(int col = 0; col < numCols; col++) {
+                for(int row = 0; row < numRows; row++){
+                    Log.d(TAG, "onDraw: iterating in array: size " + numCols);
+                    //cell we're referencing
+                    Maze3D.Cell thisCell = maze[playerLayer][row][col];
+                    //paint location
+                    float x = row * totalCellWidth;
+                    float y = col * totalCellHeight;
+                    if(row < numCols - 1 && vLines[col][row]) {
+                        //we'll draw a vertical line
+                        canvas.drawLine(x + cellWidth,   //start X
+                                y,               //start Y
+                                x + cellWidth,   //stop X
+                                y + cellHeight,  //stop Y
+                                line);
+                        Log.d(TAG, "onDraw: stuff is drawn");
+                    }
+                    if(col < numRows - 1 && hLines[col][row]) {
+                        //we'll draw a horizontal line
+                        canvas.drawLine(x,              //startX
+                                y + cellHeight,  //startY
+                                x + cellWidth,   //stopX
+                                y + cellHeight,  //stopY
+                                line);
+                    }
+                    //finds appropriate indicator and draw
+                    if (!thisCell.isWallBack() && !thisCell.isWallFront()) //both up and down arrows
+                    {
+                        float modifiedWidth = cellWidth / 2;
+                        upDownLayerIndicator.setBounds((int) (y + lineWidth + modifiedWidth / 2),
+                                (int) (x + lineWidth + modifiedWidth / 2),
+                                (int) (y + cellWidth - lineWidth - modifiedWidth / 2),
+                                (int) (x + cellWidth - lineWidth - modifiedWidth / 2));
+                        upDownLayerIndicator.draw(canvas);
+                    }
+                    else if (!thisCell.isWallFront()) //up layer arrow
+                    {
+                        float modifiedWidth = cellWidth / 2;
+                        upLayerIndicator.setBounds((int) (y + lineWidth + modifiedWidth / 2),
+                                (int) (x + lineWidth + modifiedWidth / 2),
+                                (int) (y + cellWidth - lineWidth - modifiedWidth / 2),
+                                (int) (x + cellWidth - lineWidth - modifiedWidth / 2));
+                        upLayerIndicator.draw(canvas);
+                    }
+                    else if (!thisCell.isWallBack()) //down layer arrow
+                    {
+                        float modifiedWidth = cellWidth / 2;
+                        downLayerIndicator.setBounds((int) (y + lineWidth + modifiedWidth / 2),
+                                (int) (x + lineWidth + modifiedWidth / 2),
+                                (int) (y + cellWidth - lineWidth - modifiedWidth / 2),
+                                (int) (x + cellWidth - lineWidth - modifiedWidth / 2));
+                        downLayerIndicator.draw(canvas);
+                    }
+                    //draws the player
+                    canvas.drawCircle((playerCol * totalCellWidth)+(cellWidth/2),   //x of center
+                            (playerRow * totalCellHeight)+(cellWidth/2),  //y of center
+                            (cellWidth*0.45f),                           //radius
+                            redIndicator);
                 }
-                if(col < numRows - 1 && hLines[col][row]) {
-                    //we'll draw a horizontal line
-                    canvas.drawLine(x,              //startX
-                            y + cellHeight,  //startY
-                            x + cellWidth,   //stopX
-                            y + cellHeight,  //stopY
-                            line);
-                }
-                //finds appropriate indicator and draw
-                if (!thisCell.isWallBack() && !thisCell.isWallFront()) //both up and down arrows
-                {
-                    float modifiedWidth = cellWidth / 2;
-                    upDownLayerIndicator.setBounds((int) (y + lineWidth + modifiedWidth / 2),
-                            (int) (x + lineWidth + modifiedWidth / 2),
-                            (int) (y + cellWidth - lineWidth - modifiedWidth / 2),
-                            (int) (x + cellWidth - lineWidth - modifiedWidth / 2));
-                    upDownLayerIndicator.draw(canvas);
-                }
-                else if (!thisCell.isWallFront()) //up layer arrow
-                {
-                    float modifiedWidth = cellWidth / 2;
-                    upLayerIndicator.setBounds((int) (y + lineWidth + modifiedWidth / 2),
-                            (int) (x + lineWidth + modifiedWidth / 2),
-                            (int) (y + cellWidth - lineWidth - modifiedWidth / 2),
-                            (int) (x + cellWidth - lineWidth - modifiedWidth / 2));
-                    upLayerIndicator.draw(canvas);
-                }
-                else if (!thisCell.isWallBack()) //down layer arrow
-                {
-                    float modifiedWidth = cellWidth / 2;
-                    downLayerIndicator.setBounds((int) (y + lineWidth + modifiedWidth / 2),
-                            (int) (x + lineWidth + modifiedWidth / 2),
-                            (int) (y + cellWidth - lineWidth - modifiedWidth / 2),
-                            (int) (x + cellWidth - lineWidth - modifiedWidth / 2));
-                    downLayerIndicator.draw(canvas);
-                }
-                //draws the player
-                canvas.drawCircle((playerCol * totalCellWidth)+(cellWidth/2),   //x of center
-                        (playerRow * totalCellHeight)+(cellWidth/2),  //y of center
-                        (cellWidth*0.45f),                           //radius
-                        redIndicator);
             }
+        }
+        catch (NullPointerException e)
+        {
+            Log.d(TAG, "onDraw: view is drawn before user selects difficulty");
         }
     }
 
