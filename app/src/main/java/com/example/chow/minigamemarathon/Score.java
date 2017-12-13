@@ -70,4 +70,8 @@ public class Score {
     public void set_gameMode(String _gameMode) {
         this._gameMode = _gameMode;
     }
+
+    public String getObjectId() {
+        return objectId;
+    }
 }
