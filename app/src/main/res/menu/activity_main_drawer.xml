@@ -8,11 +8,11 @@
             android:title="New Game" />
         <item
             android:id="@+id/score_high"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_person_black_24dp"
             android:title="Leader Board" />
         <item
             android:id="@+id/practice"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_games_black_24dp"
             android:title="Train" />
     </group>
 
