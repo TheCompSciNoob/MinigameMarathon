@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -32,6 +33,7 @@ public class EndFragment extends Fragment {
     private DatabaseHandler db;
     private GameMode gameMode;
     private static final String PREVIOUS_NAME_ENTERED_KEY = "previous name entered";
+    private BackendlessHandler backendlessDb;
 
     public EndFragment()
     {
@@ -57,6 +59,7 @@ public class EndFragment extends Fragment {
                 final AlertDialog alertDialog = saveDialog.create();
                 final EditText playerName = dialogView.findViewById(R.id.player_name_input);
                 final SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                final CheckBox saveOnline = dialogView.findViewById(R.id.checkbox_save_online);
                 playerName.setText(preferences.getString(PREVIOUS_NAME_ENTERED_KEY, ""));
                 Button saveButton = dialogView.findViewById(R.id.button_save_dialog);
                 Button cancelButton = dialogView.findViewById(R.id.button_cancel_dialog);
@@ -73,6 +76,10 @@ public class EndFragment extends Fragment {
                             alertDialog.dismiss();
                             saveRunButton.setEnabled(false);
                         }
+                        if(saveOnline.isChecked()){
+                            String playerNameInput = playerName.getText().toString();
+                            storeGameDataOnline(playerNameInput);
+                        }
                     }
                 });
                 cancelButton.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +93,7 @@ public class EndFragment extends Fragment {
         });
         db = new DatabaseHandler(this.getContext());
         Backendless.initApp(this.getContext(),"5366E1EB-A6A4-8C6C-FFC4-569F55C00300","CB426A88-910A-D939-FFD3-F8EFDD7DAE00");
+        backendlessDb = new BackendlessHandler();
         return rootView;
     }
 
@@ -150,6 +158,12 @@ public class EndFragment extends Fragment {
     private void storeGameData(String playerName) {
         Score score = new Score(playerName, getTotalScore() + "", getTotalTime() + "", gameMode.name());
         db.addScore(score);
+    }
+
+    private void storeGameDataOnline(String playerName){
+        Score score = new Score(playerName, getTotalScore() + "", getTotalTime() + "", gameMode.name());
+        db.addScore(score);
+        backendlessDb.saveScore(score);
     }
 
     public void setArguments(String[][] levelDataSets, GameMode gameMode)
