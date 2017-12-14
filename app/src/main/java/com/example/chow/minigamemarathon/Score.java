@@ -10,6 +10,7 @@ public class Score {
     String _score;
     String _time;
     String _gameMode;
+    public String objectId;
 
     public Score() {
 
@@ -68,5 +69,9 @@ public class Score {
 
     public void set_gameMode(String _gameMode) {
         this._gameMode = _gameMode;
+    }
+
+    public String getObjectId() {
+        return objectId;
     }
 }
