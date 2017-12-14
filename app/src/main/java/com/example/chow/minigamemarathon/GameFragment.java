@@ -3,11 +3,7 @@ package com.example.chow.minigamemarathon;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by per6 on 10/26/17.
@@ -65,6 +61,8 @@ public abstract class GameFragment extends Fragment {
         }
     }
 
+
+
     public abstract String getGameName();
 
     public abstract double getPercentScore();
@@ -74,6 +72,7 @@ public abstract class GameFragment extends Fragment {
     public abstract void setGameMode(GameMode gameMode);
 
     public abstract void assignWidgetFunctions();
+
 
     public void finalizeArguments(GameMode gameMode) {
         setGameMode(gameMode);
