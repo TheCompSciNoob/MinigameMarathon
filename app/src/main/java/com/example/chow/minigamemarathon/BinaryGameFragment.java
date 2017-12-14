@@ -220,7 +220,14 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
 
     @Override
     public void notifyGameEnd() {
-        lapTime = ((GameContainerFragment) getParentFragment()).timer.getLapTimeElapsed();
+        try
+        {
+            lapTime = ((GameContainerFragment) getParentFragment()).timer.getLapTimeElapsed();
+        }
+        catch (ClassCastException e)
+        {
+            Log.d(TAG, "notifyGameEnd: there is no timer");
+        }
         super.notifyGameEnd();
     }
 

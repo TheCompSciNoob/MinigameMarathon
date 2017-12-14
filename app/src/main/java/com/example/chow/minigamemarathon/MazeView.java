@@ -96,6 +96,7 @@ public class MazeView extends View {
     protected void onDraw(Canvas canvas) {
         try {
             //draw layer
+            Log.d(TAG, "onDraw: "+canvas.getWidth());
             grayLayerIndicator.setTextSize(MazeView.this.getHeight() - 16);
             int drawX = canvas.getWidth() / 2;
             int drawY = (int) ((canvas.getHeight() / 2) - ((grayLayerIndicator.descent() + grayLayerIndicator.ascent()) / 2));
