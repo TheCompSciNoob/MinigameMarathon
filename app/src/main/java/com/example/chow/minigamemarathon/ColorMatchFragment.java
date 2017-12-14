@@ -43,6 +43,8 @@ public class ColorMatchFragment extends GameFragment{
         blueCheck=(CheckBox)rootView.findViewById(R.id.blueCheckBox);
         enterButton=(Button) rootView.findViewById(R.id.enterB);
         colorText=(TextView)rootView.findViewById(R.id.colorName);
+        game.genAnswer();
+        colorText.setText(game.getAnsweredStr());
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,6 +64,12 @@ public class ColorMatchFragment extends GameFragment{
                         game.setColorInt2(4);
                     }
                     game.checkAnswer();
+                    if (game.isFinished())
+                    {
+                        notifyGameEnd();
+                    }
+                    colorText.setText(game.getAnsweredStr());
+
 
             }
         });
@@ -73,7 +81,7 @@ public class ColorMatchFragment extends GameFragment{
 
     @Override
     public double getPercentScore() {
-        return (game.getQuestionsCorrect()/game.getQuestionAttempted());
+        return ((double)(game.getQuestionsCorrect())/(double)(game.getQuestionAttempted()));
     }
 
     @Override

@@ -1,11 +1,14 @@
 package com.example.chow.minigamemarathon;
 
+import android.util.Log;
+
 /**
  * Created by per6 on 11/28/17.
  */
 
 public class ColorMatchAlgorithm {
     public String colorStr1, colorStr2, answeredStr;
+    public static final String TAG = "minecraft is terrible";
     private boolean finished = false;
     private int questionsCorrect = 0, questionAttempted=0;
     public int questionCount, colorInt1, colorInt2, answerInt;
@@ -23,15 +26,14 @@ public class ColorMatchAlgorithm {
     public void checkIfFinished() {
         if (questionsCorrect >= questionCount) {
             finished = true;
+            Log.d(TAG, "checkIfFinished: Finished!");
         }
     }
-    public boolean isFinished() {
-        return finished;
-    }
+
 
     public void genAnswer()
     {
-        int answeredColor=(int)(Math.random()*3)*2+1;
+        int answerInt=(int)(Math.random()*3)*2+1;
         if (answerInt==0)
             {answeredStr = "red";}
         else if (answerInt==1)
@@ -70,15 +72,18 @@ public class ColorMatchAlgorithm {
         if (colorInt1 == 0 && colorInt2 == 4 || colorInt2 == 0 && colorInt1 == 4) {
             if (answerInt == 5) {
                 questionsCorrect++;
+                Log.d(TAG, "checkAnswer: Correct!");
             }
 
         } else {
             if (answerInt == (colorInt1 + colorInt2) / 2) {
                 questionsCorrect++;
+                Log.d(TAG, "checkAnswer: Correct!");
             }
         }
         questionsAttempted++;
         checkIfFinished();
+        genAnswer();
 
     }
 
@@ -109,6 +114,17 @@ public class ColorMatchAlgorithm {
     }
 
     public int getQuestionAttempted() {
+        Log.d(TAG, "getQuestionAttempted: "+questionsAttempted);
         return questionAttempted;
     }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public String getAnsweredStr() {
+        return answeredStr;
+    }
+
+
 }
