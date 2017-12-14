@@ -4,7 +4,7 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/game_new"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_videogame_asset_black_24dp"
             android:title="New Game" />
         <item
             android:id="@+id/score_high"
