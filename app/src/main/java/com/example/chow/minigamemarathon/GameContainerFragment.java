@@ -195,7 +195,7 @@ public class GameContainerFragment extends Fragment implements GameFragment.OnGa
 
     public static GameFragment[] getAllGames()
     {
-        return new GameFragment[] {new ColorMatchFragment(),new LightsOutGameFragment(), new BinaryGameFragment(), new Maze3DGameFragment()};
+        return new GameFragment[] {new LightsOutGameFragment(), new BinaryGameFragment(), new Maze3DGameFragment()};
     }
 
     @Override
