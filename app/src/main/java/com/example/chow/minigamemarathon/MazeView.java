@@ -60,9 +60,9 @@ public class MazeView extends View {
         numRows = maze3D.getNumRows();
         numCols = maze3D.getNumCols();
         //up/down layer signs
-        upLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp);
-        downLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp);
-        upDownLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_compare_arrows_black_24dp);
+        upLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_stairs_up);
+        downLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_stairs_down);
+        upDownLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_stairs_up_down);
         //invalidate();
         //requestLayout();
         setVisibility(VISIBLE);

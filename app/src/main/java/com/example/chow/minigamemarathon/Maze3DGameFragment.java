@@ -75,7 +75,7 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
 
     @Override
     public double getPercentScore() {
-        int bestNumMoves = (maze3D.length + maze3D[0].length + maze3D[0][0].length) * 3;
+        int bestNumMoves = mazeHandler.getMinMovesToSolution();
         int extraMoves = moves - bestNumMoves;
         final double moveDepletion = 0.995;
         double movePercent = Math.pow(moveDepletion, extraMoves);
