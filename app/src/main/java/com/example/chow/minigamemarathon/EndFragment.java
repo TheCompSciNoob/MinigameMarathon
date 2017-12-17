@@ -32,13 +32,18 @@ public class EndFragment extends Fragment {
     private String[][] levelDataSets;
     private DatabaseHandler db;
     private GameMode gameMode;
-    private static final String PREVIOUS_NAME_ENTERED_KEY = "previous name entered";
+    public static final String PREVIOUS_NAME_ENTERED_KEY = "previous name entered", BEST_SCORE_KEY = "best score saved ";
     private BackendlessHandler backendlessDb;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     public EndFragment()
     {
         super();
         levelDataSets = new String[][] {};
+        preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        editor = preferences.edit();
+        editor.apply();
     }
 
     @Nullable
@@ -58,7 +63,6 @@ public class EndFragment extends Fragment {
                 saveDialog.setCancelable(false);
                 final AlertDialog alertDialog = saveDialog.create();
                 final EditText playerName = dialogView.findViewById(R.id.player_name_input);
-                final SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
                 final CheckBox saveOnline = dialogView.findViewById(R.id.checkbox_save_online);
                 playerName.setText(preferences.getString(PREVIOUS_NAME_ENTERED_KEY, ""));
                 Button saveButton = dialogView.findViewById(R.id.button_save_dialog);
@@ -69,7 +73,6 @@ public class EndFragment extends Fragment {
                         if (!playerName.getText().toString().equals(""))
                         {
                             String playerNameInput = playerName.getText().toString();
-                            SharedPreferences.Editor editor = preferences.edit();
                             editor.putString(PREVIOUS_NAME_ENTERED_KEY, playerNameInput);
                             editor.apply();
                             storeGameData(playerNameInput);
@@ -156,6 +159,9 @@ public class EndFragment extends Fragment {
     }
 
     private void storeGameData(String playerName) {
+        int currentBest = preferences.getInt(BEST_SCORE_KEY + gameMode.name(), 0);
+        editor.putInt(BEST_SCORE_KEY + gameMode.name(), Math.max(getTotalScore(), currentBest));
+        editor.apply();
         Score score = new Score(playerName, getTotalScore() + "", getTotalTime() + "", gameMode.name());
         db.addScore(score);
     }
