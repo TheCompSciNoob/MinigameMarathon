@@ -17,7 +17,7 @@
             android:layout_weight="1"
             android:textAlignment="center"
             android:text="@string/best"
-            android:textColor="@color/colorPrimary"/>
+            android:textColor="@color/navBarBackground"/>
 
         <TextView
             android:id="@+id/game_header"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/navBarBackground"
             android:text="@string/game" />
 
         <TextView
@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/navBarBackground"
             android:text="@string/score" />
     </LinearLayout>
 
@@ -49,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/navBarBackground"
             android:textSize="36sp" />
 
         <TextView
@@ -59,7 +59,7 @@
             android:layout_weight="1"
             android:text=""
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/navBarBackground"
             android:textSize="36sp" />
 
         <TextView
@@ -69,7 +69,7 @@
             android:layout_weight="1"
             android:text=""
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/navBarBackground"
             android:textSize="36sp" />
     </LinearLayout>
 
@@ -84,7 +84,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/total_time"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/navBarBackground"
             android:textAlignment="center" />
 
         <TextView
@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/section_time"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/navBarBackground"
             android:textAlignment="center" />
     </LinearLayout>
 
@@ -107,7 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/navBarBackground"
             android:textAlignment="center"
             android:textSize="36sp" />
 
@@ -117,7 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/navBarBackground"
             android:textSize="36sp" />
     </LinearLayout>
 

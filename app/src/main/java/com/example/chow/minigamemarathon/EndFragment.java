@@ -41,15 +41,16 @@ public class EndFragment extends Fragment {
     {
         super();
         levelDataSets = new String[][] {};
-        preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        editor = preferences.edit();
-        editor.apply();
     }
 
     @Nullable
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        //preferences
+        preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        editor = preferences.edit();
+        editor.apply();
         View rootView = inflater.inflate(R.layout.end_screen_layout, container, false);
         TextView resultSummary = rootView.findViewById(R.id.result_summary);
         resultSummary.setTextColor(Color.BLACK);

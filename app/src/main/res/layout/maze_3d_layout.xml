@@ -17,7 +17,7 @@
 
         <Button
             android:id="@+id/up_layer_option"
-            android:background="@color/colorPrimary"
+            android:background="@color/navBarBackground"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
 
         <Button
             android:id="@+id/down_layer_option"
-            android:background="@color/colorPrimary"
+            android:background="@color/navBarBackground"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

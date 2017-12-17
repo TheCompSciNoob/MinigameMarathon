@@ -10,5 +10,5 @@ public enum GameMode {
 
     EASY, HARD, DEBUG;
 
-    public static final GameMode[] AVAILABLE_GAME_MODES = {EASY, HARD};
+    public static final GameMode[] AVAILABLE_GAME_MODES = {EASY, HARD, DEBUG};
 }

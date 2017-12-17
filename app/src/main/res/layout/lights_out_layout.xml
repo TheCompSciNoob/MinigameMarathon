@@ -33,7 +33,7 @@
             android:id="@+id/generate_new_puzzle"
             android:layout_weight="1"
             android:background="@drawable/layout_with_border"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/navBarBackground"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
         <Button
             android:id="@+id/reset_current_puzzle"
             android:layout_weight="1"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/navBarBackground"
             android:background="@drawable/layout_with_border"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
