@@ -5,6 +5,6 @@
     <item
         android:id="@+id/practice_game_options"
         android:icon="@drawable/ic_settings_white_24dp"
-        android:title="Settings"
+        android:title="@string/settings"
         app:showAsAction="always" />
 </menu>

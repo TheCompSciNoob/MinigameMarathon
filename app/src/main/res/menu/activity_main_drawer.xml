@@ -5,15 +5,15 @@
         <item
             android:id="@+id/game_new"
             android:icon="@drawable/ic_videogame_asset_black_24dp"
-            android:title="New Game" />
+            android:title="@string/new_game" />
         <item
             android:id="@+id/score_high"
             android:icon="@drawable/ic_person_black_24dp"
-            android:title="Leader Board" />
+            android:title="@string/leader_board" />
         <item
             android:id="@+id/practice"
             android:icon="@drawable/ic_games_black_24dp"
-            android:title="Train" />
+            android:title="@string/train" />
     </group>
 
 </menu>

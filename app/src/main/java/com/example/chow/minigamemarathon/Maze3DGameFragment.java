@@ -91,6 +91,7 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
 
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
+        mazeView.performClick();
         int x = (int) motionEvent.getX();
         int y = mazeView.getHeight() - (int) motionEvent.getY();
         double w = mazeView.getWidth(), h = mazeView.getHeight();

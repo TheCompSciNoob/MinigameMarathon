@@ -24,13 +24,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Minigame Marathon 2017"
+        android:text="@string/minigame_marathon_2017"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Created By: TheCompSciNoob | hedgey579 | Chrysopelea-Rc" />
+        android:text="@string/created_by_thecompscinoob_hedgey579_chrysopelea_rc" />
 
 </LinearLayout>

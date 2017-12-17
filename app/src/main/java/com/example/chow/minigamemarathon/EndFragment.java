@@ -139,7 +139,7 @@ public class EndFragment extends Fragment {
                         gameName.setTextColor(Color.BLACK);
                         gameTime.setTextColor(Color.BLACK);
                         gameScore.setTextColor(Color.BLACK);
-                        gameName.setText("Total");
+                        gameName.setText(R.string.total);
                         gameTime.append(GameFragment.formatMillisToMMSSMSMS(getTotalTime()));
                         gameScore.append(getTotalScore() + "");
                     }

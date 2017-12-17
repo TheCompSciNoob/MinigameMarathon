@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:text="Best"
+            android:text="@string/best"
             android:textColor="@color/colorPrimary"/>
 
         <TextView
@@ -26,7 +26,7 @@
             android:layout_weight="1"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
-            android:text="Game" />
+            android:text="@string/game" />
 
         <TextView
             android:id="@+id/score_header"
@@ -35,7 +35,7 @@
             android:layout_weight="1"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
-            android:text="Score" />
+            android:text="@string/score" />
     </LinearLayout>
 
     <LinearLayout
@@ -48,7 +48,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="best"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="36sp" />
@@ -58,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="cg"
+            android:text=""
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="36sp" />
@@ -68,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="cts"
+            android:text=""
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="36sp" />
@@ -84,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Total Time"
+            android:text="@string/total_time"
             android:textColor="@color/colorPrimary"
             android:textAlignment="center" />
 
@@ -93,7 +92,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Section Time"
+            android:text="@string/section_time"
             android:textColor="@color/colorPrimary"
             android:textAlignment="center" />
     </LinearLayout>
@@ -108,7 +107,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="total time"
             android:textColor="@color/colorPrimary"
             android:textAlignment="center"
             android:textSize="36sp" />
@@ -118,7 +116,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="section time"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             android:textSize="36sp" />
