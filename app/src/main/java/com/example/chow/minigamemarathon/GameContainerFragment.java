@@ -106,7 +106,7 @@ public class GameContainerFragment extends Fragment implements GameFragment.OnGa
                 //set the best score
                 SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
                 TextView bestScore = extraTimeBar.findViewById(R.id.best_score_view);
-                bestScore.setText("" + preferences.getInt(EndFragment.BEST_SCORE_KEY, 0));
+                bestScore.setText("" + preferences.getInt(EndFragment.BEST_SCORE_KEY + gameMode.name(), 0));
                 //start timer
                 timer = new StopWatch(5);
                 timer.setOnTickListener(GameContainerFragment.this);
