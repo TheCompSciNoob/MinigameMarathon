@@ -170,6 +170,10 @@ public class Maze3D {
             {
                 for (Cell col : row)
                 {
+                    if (col == null)
+                    {
+                        Log.e(TAG, "getMinMovesToSolution: cell is null", null);
+                    }
                     if (col.isSolutionCell())
                     {
                         numCellSolutions++;

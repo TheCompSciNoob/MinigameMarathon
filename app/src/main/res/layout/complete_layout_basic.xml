@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/complete_status_linearlayout"
-    android:background="@drawable/layout_wth_border">
+    android:background="@drawable/layout_with_border">
 
     <LinearLayout
         android:orientation="horizontal"

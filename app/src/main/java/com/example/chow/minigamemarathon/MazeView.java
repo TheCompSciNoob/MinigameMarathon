@@ -45,6 +45,7 @@ public class MazeView extends View {
         this.maze3D = maze3D;
         //graphics
         line = new Paint();
+        line.setStyle(Paint.Style.STROKE);
         line.setColor(Color.BLACK);
         redIndicator = new Paint();
         redIndicator.setColor(Color.RED);
@@ -95,8 +96,9 @@ public class MazeView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         try {
+            //draw bounding box
+            canvas.drawRect(1, 1, canvas.getWidth(), canvas.getHeight(), line);
             //draw layer
-            Log.d(TAG, "onDraw: " + canvas.getWidth());
             grayLayerIndicator.setTextSize(MazeView.this.getHeight() - 16);
             int drawX = canvas.getWidth() / 2;
             int drawY = (int) ((canvas.getHeight() / 2) - ((grayLayerIndicator.descent() + grayLayerIndicator.ascent()) / 2));
