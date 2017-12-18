@@ -81,7 +81,7 @@ public class ColorMatchFragment extends GameFragment{
 
     @Override
     public double getPercentScore() {
-        return ((double)(game.getQuestionsCorrect())/(double)(game.getQuestionAttempted()));
+        return ((double)(game.getQuestionsCorrect())/(game.getQuestionAttempted()));
     }
 
     @Override

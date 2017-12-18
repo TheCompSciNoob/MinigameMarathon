@@ -115,6 +115,7 @@ public class ColorMatchAlgorithm {
 
     public int getQuestionAttempted() {
         Log.d(TAG, "getQuestionAttempted: "+questionsAttempted);
+        Log.d(TAG, "getQuestionAttempted: "+questionsCorrect);
         return questionAttempted;
     }
 
