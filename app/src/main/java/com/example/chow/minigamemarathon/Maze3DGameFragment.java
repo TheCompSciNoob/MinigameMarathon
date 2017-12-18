@@ -61,10 +61,8 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
         mazeView.setPlayerLocation(playerLayer, playerRow, playerCol);
         mazeView.setOnTouchListener(this);
         Button upLayerOption = rootView.findViewById(R.id.up_layer_option);
-        upLayerOption.setTextColor(Color.WHITE);
         upLayerOption.setOnClickListener(this);
         Button downLayerOption = rootView.findViewById(R.id.down_layer_option);
-        downLayerOption.setTextColor(Color.WHITE);
         downLayerOption.setOnClickListener(this);
     }
 

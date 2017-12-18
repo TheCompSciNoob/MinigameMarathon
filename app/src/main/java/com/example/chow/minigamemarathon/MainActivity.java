@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity
         } else if (currentIDSelected == R.id.score_high) {
             fragment = new HighScoreFragment();
         } else if (currentIDSelected == R.id.practice) {
-            fragment = new PracticeGameContainerFragment();
+            fragment = new PracticeNavigationFragment();
         }
         if (fragment != null)
         {
