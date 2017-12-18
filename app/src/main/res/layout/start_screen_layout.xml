@@ -15,7 +15,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/start"
-        android:background="@drawable/layout_with_border"
+        android:background="@drawable/theme_button_background"
         android:textColor="@color/navBarBackground"
         android:textSize="64sp" />
 

@@ -1,10 +1,8 @@
 package com.example.chow.minigamemarathon;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.Arrays;
-import java.util.Random;
 
 /**
  * Created by per6 on 10/13/17.
@@ -56,7 +54,17 @@ public class LightsOut{
             }
             debugString.append("\n");
         }
-        Log.d(TAG, "randomize: debug string" + debugString.toString());
+        //regenerate if randomize times is less than 1/2 the number of cells toggled
+        if (randomizeTimes < (grid.length + grid[0].length) / 2)
+        {
+            randomizeTimes = 0;
+            grid = new boolean[grid.length][grid[0].length];
+            randomize();
+        }
+        else
+        {
+            Log.d(TAG, "randomize: debug string" + debugString.toString());
+        }
     }
 
     public void flipSwitch(int row, int col)

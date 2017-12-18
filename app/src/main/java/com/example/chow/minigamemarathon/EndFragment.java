@@ -51,8 +51,6 @@ public class EndFragment extends Fragment {
         editor = preferences.edit();
         editor.apply();
         View rootView = inflater.inflate(R.layout.end_screen_layout, container, false);
-        TextView resultSummary = rootView.findViewById(R.id.result_summary);
-        resultSummary.setTextColor(Color.BLACK);
         final Button saveRunButton = rootView.findViewById(R.id.save_result_button);
         saveRunButton.setOnClickListener(new View.OnClickListener() {
             @Override

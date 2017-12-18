@@ -8,6 +8,7 @@
     android:gravity="center">
 
     <TextView
+        android:textColor="@color/navBarBackground"
         android:id="@+id/result_summary"
         android:textStyle="bold"
         android:layout_width="match_parent"
@@ -36,6 +37,8 @@
 
     <Button
         android:id="@+id/save_result_button"
+        android:textColor="@color/navBarBackground"
+        android:background="@drawable/theme_button_background"
         android:textSize="36sp"
         android:text="@string/save_run"
         android:layout_width="wrap_content"
