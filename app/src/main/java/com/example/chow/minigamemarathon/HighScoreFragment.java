@@ -30,6 +30,7 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
     private SectionsPagerAdapter adapter;
     private DatabaseHandler db;
     private ArrayList<Score> unfilteredScores;
+    protected boolean isScoreDeletable = true;
 
     @Nullable
     @Override
@@ -130,7 +131,7 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
             for (int i = 0; i < gameModes.length; i++)
             {
                 HighScoreTabFragment tabFragment = new HighScoreTabFragment();
-                tabFragment.setArguments(gameModes[i], unfilteredScores, i);
+                tabFragment.setArguments(gameModes[i], unfilteredScores, isScoreDeletable);
                 childFragments[i] = tabFragment;
             }
             appBar.addView(extraToolbar);

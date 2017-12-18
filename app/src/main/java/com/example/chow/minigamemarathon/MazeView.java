@@ -45,6 +45,7 @@ public class MazeView extends View {
         this.maze3D = maze3D;
         //graphics
         line = new Paint();
+        line.setStyle(Paint.Style.STROKE);
         line.setColor(Color.BLACK);
         redIndicator = new Paint();
         redIndicator.setColor(Color.RED);
@@ -60,9 +61,9 @@ public class MazeView extends View {
         numRows = maze3D.getNumRows();
         numCols = maze3D.getNumCols();
         //up/down layer signs
-        upLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_arrow_upward_black_24dp);
-        downLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_arrow_downward_black_24dp);
-        upDownLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_compare_arrows_black_24dp);
+        upLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_stairs_up);
+        downLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_stairs_down);
+        upDownLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_stairs_up_down);
         //invalidate();
         //requestLayout();
         setVisibility(VISIBLE);
@@ -95,8 +96,9 @@ public class MazeView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         try {
+            //draw bounding box
+            canvas.drawRect(1, 1, canvas.getWidth(), canvas.getHeight(), line);
             //draw layer
-            Log.d(TAG, "onDraw: " + canvas.getWidth());
             grayLayerIndicator.setTextSize(MazeView.this.getHeight() - 16);
             int drawX = canvas.getWidth() / 2;
             int drawY = (int) ((canvas.getHeight() / 2) - ((grayLayerIndicator.descent() + grayLayerIndicator.ascent()) / 2));

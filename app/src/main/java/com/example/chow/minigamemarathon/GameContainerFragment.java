@@ -1,5 +1,7 @@
 package com.example.chow.minigamemarathon;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -35,19 +37,19 @@ public class GameContainerFragment extends Fragment implements GameFragment.OnGa
     private GameMode gameMode = GameMode.AVAILABLE_GAME_MODES[0];
     private SectionsPagerAdapter adapter;
     private boolean isLastFragmentGameFragment = false;
+    private LinearLayout extraTimeBar;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         final LinearLayout rootView = (LinearLayout) inflater.inflate(R.layout.game_fragment_container_layout, container, false);
-        final LinearLayout extraTimeBar = (LinearLayout) inflater.inflate(R.layout.complete_layout_basic, container, false);
+        extraTimeBar = (LinearLayout) inflater.inflate(R.layout.complete_layout_basic, container, false);
         //info for each game fragment
         sectionTime = extraTimeBar.findViewById(R.id.section_time_status);
         totalTime = extraTimeBar.findViewById(R.id.total_time_status);
         roundView = extraTimeBar.findViewById(R.id.current_game_view);
         scoreView = extraTimeBar.findViewById(R.id.current_score_view);
-
         //child fragments
         adapter = new SectionsPagerAdapter(getChildFragmentManager(), displayedFragments);
         viewPager = rootView.findViewById(R.id.game_parent_container);
@@ -100,6 +102,12 @@ public class GameContainerFragment extends Fragment implements GameFragment.OnGa
             @Override
             public void onStart(GameMode gameMode) {
                 GameContainerFragment.this.gameMode = gameMode;
+                DatabaseHandler db = new DatabaseHandler(GameContainerFragment.this.getContext());
+                //set the best score
+                SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                TextView bestScore = extraTimeBar.findViewById(R.id.best_score_view);
+                bestScore.setText("" + preferences.getInt(EndFragment.BEST_SCORE_KEY + gameMode.name(), 0));
+                //start timer
                 timer = new StopWatch(5);
                 timer.setOnTickListener(GameContainerFragment.this);
                 displayNextFragment();
@@ -195,7 +203,7 @@ public class GameContainerFragment extends Fragment implements GameFragment.OnGa
 
     public static GameFragment[] getAllGames()
     {
-        return new GameFragment[] {new ColorMatchFragment(),new LightsOutGameFragment(), new BinaryGameFragment()};
+        return new GameFragment[] {new LightsOutGameFragment(), new BinaryGameFragment(), new Maze3DGameFragment()};
     }
 
     @Override

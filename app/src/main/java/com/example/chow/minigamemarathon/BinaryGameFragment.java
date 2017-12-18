@@ -168,11 +168,9 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
                 gameText.setSpan(textColor, 0, currentIndex, 0);
                 binaryText.setText(gameText, TextView.BufferType.SPANNABLE);
                 //manually tell timer to stop
-                if (isSolved())
-                {
+                if (isSolved()) {
                     notifyGameEnd();
-                }
-                else {
+                } else {
                     if (Math.random() < 0.2) { //probability to swap text in TextView
                         swapInTextView();
                     }
@@ -182,19 +180,30 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
                 }
             } else {
                 //if current index is greater than words per checkpoint * current checkpoint
-                    //currentIndex = words per checkpoint
+                //currentIndex = words per checkpoint
                 //incorrect button pressed
-                currentIndex = 0;
+                currentIndex = getLastCheckPoint();
                 errors++;
-                binaryText.setText(gameText);
+                gameText.setSpan(textColor, 0, currentIndex, 0);
+                binaryText.setText(gameText, TextView.BufferType.SPANNABLE);
             }
+        }
+    }
+
+    private int getLastCheckPoint() {
+        switch (gameMode) {
+            case EASY:
+                return Math.max(currentIndex - 20, 0);
+            case HARD:
+                return Math.max(currentIndex - 33, 0);
+            default:
+                return 0;
         }
     }
 
     private void swapInTextView() {
         char temp = 'a';
-        switch (gameText.charAt(currentIndex))
-        {
+        switch (gameText.charAt(currentIndex)) {
             case NUMBER_OPTION_1:
                 temp = NUMBER_OPTION_2;
                 break;
@@ -220,12 +229,9 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
 
     @Override
     public void notifyGameEnd() {
-        try
-        {
+        try {
             lapTime = ((GameContainerFragment) getParentFragment()).timer.getLapTimeElapsed();
-        }
-        catch (ClassCastException e)
-        {
+        } catch (ClassCastException e) {
             Log.d(TAG, "notifyGameEnd: there is no timer");
         }
         super.notifyGameEnd();
@@ -239,7 +245,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
     @Override
     public double getPercentScore() {
         final double errorDepreciation = 0.95;
-        double gameScore = maxScore * Math.pow(errorDepreciation,errors);
+        double gameScore = maxScore * Math.pow(errorDepreciation, errors);
         return gameScore / maxScore;
     }
 

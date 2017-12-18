@@ -8,7 +8,7 @@
         android:textSize="36sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Game Name" />
+        android:text="@string/game_name" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -21,7 +21,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Time: " />
+            android:text="@string/time_end" />
 
         <TextView
             android:id="@+id/game_score"
@@ -29,7 +29,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Score: " />
+            android:text="@string/score_end" />
 
     </LinearLayout>
 </LinearLayout>

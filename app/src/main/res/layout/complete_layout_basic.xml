@@ -3,7 +3,7 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/complete_status_linearlayout"
-    android:background="@drawable/layout_wth_border">
+    android:background="@drawable/layout_with_border">
 
     <LinearLayout
         android:orientation="horizontal"
@@ -16,8 +16,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:text="Best"
-            android:textColor="@color/colorPrimary"/>
+            android:text="@string/best"
+            android:textColor="@color/navBarBackground"/>
 
         <TextView
             android:id="@+id/game_header"
@@ -25,8 +25,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:text="Game" />
+            android:textColor="@color/navBarBackground"
+            android:text="@string/game" />
 
         <TextView
             android:id="@+id/score_header"
@@ -34,8 +34,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
-            android:text="Score" />
+            android:textColor="@color/navBarBackground"
+            android:text="@string/score" />
     </LinearLayout>
 
     <LinearLayout
@@ -44,13 +44,12 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/best_score_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="best"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/navBarBackground"
             android:textSize="36sp" />
 
         <TextView
@@ -58,9 +57,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="cg"
+            android:text=""
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/navBarBackground"
             android:textSize="36sp" />
 
         <TextView
@@ -68,9 +67,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="cts"
+            android:text=""
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/navBarBackground"
             android:textSize="36sp" />
     </LinearLayout>
 
@@ -84,8 +83,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Total Time"
-            android:textColor="@color/colorPrimary"
+            android:text="@string/total_time"
+            android:textColor="@color/navBarBackground"
             android:textAlignment="center" />
 
         <TextView
@@ -93,8 +92,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Section Time"
-            android:textColor="@color/colorPrimary"
+            android:text="@string/section_time"
+            android:textColor="@color/navBarBackground"
             android:textAlignment="center" />
     </LinearLayout>
 
@@ -108,8 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="total time"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/navBarBackground"
             android:textAlignment="center"
             android:textSize="36sp" />
 
@@ -118,9 +116,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="section time"
             android:textAlignment="center"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/navBarBackground"
             android:textSize="36sp" />
     </LinearLayout>
 

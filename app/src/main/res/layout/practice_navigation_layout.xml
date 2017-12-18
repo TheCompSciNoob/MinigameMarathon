@@ -22,9 +22,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:animateLayoutChanges="true"
-        android:text="Who needs friends when you have skillz?"
+        android:text="@string/who_needs_friends_when_you_have_skillz"
         android:textAlignment="center"
-        android:textSize="36sp" />
+        android:textSize="36sp"/>
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/open_practice_dialog_button"
@@ -33,6 +33,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:animateLayoutChanges="true" />
+        android:animateLayoutChanges="true"
+        android:background="@drawable/layout_with_border"/>
 
 </LinearLayout>

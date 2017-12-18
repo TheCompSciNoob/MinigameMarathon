@@ -17,20 +17,20 @@
 
         <Button
             android:id="@+id/up_layer_option"
-            android:background="@color/colorPrimary"
+            android:background="@color/navBarBackground"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Up"
+            android:text="@string/up"
             android:textSize="36sp"/>
 
         <Button
             android:id="@+id/down_layer_option"
-            android:background="@color/colorPrimary"
+            android:background="@color/navBarBackground"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Down"
+            android:text="@string/down"
             android:textSize="36sp"/>
 
     </LinearLayout>

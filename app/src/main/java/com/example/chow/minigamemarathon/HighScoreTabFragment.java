@@ -39,7 +39,7 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
     private ArrayList<Score> filteredDatabase, unfilteredDatabase;
     private GameMode gameMode;
     private LinearLayout rootView;
-    private int positionInAdapter;
+    private boolean isDataDeletable;
 
     @Nullable
     @Override
@@ -84,10 +84,10 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
         }, 3000);
     }
 
-    public void setArguments(GameMode gameMode, ArrayList<Score> unfilteredDatabase, int positionInAdapter) {
+    public void setArguments(GameMode gameMode, ArrayList<Score> unfilteredDatabase, boolean isDataDeletable) {
         this.gameMode = gameMode;
         this.unfilteredDatabase = unfilteredDatabase;
-        this.positionInAdapter = positionInAdapter;
+        this.isDataDeletable = isDataDeletable;
     }
 
     @Override
@@ -245,8 +245,7 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
             updateSortState();
         }
 
-        public void updateSortState()
-        {
+        public void updateSortState() {
             recalculateRanks();
             adapter.notifyDataSetChanged();
         }
@@ -342,7 +341,10 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
             playerName = itemView.findViewById(R.id.game_name);
             scoreDetails = itemView.findViewById(R.id.score_details_switcher);
             playerRank = itemView.findViewById(R.id.player_rank);
-            itemView.setOnCreateContextMenuListener(this);
+            if (isDataDeletable)
+            {
+                itemView.setOnCreateContextMenuListener(this);
+            }
         }
 
         @Override
@@ -355,8 +357,7 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
         private final MenuItem.OnMenuItemClickListener listener = new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId())
-                {
+                switch (menuItem.getItemId()) {
                     case deleteID:
                         Score deleteScore = filteredDatabase.remove(getAdapterPosition());
                         ((HighScoreFragment) getParentFragment()).deleteScore(deleteScore);

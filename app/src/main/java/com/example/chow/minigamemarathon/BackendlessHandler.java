@@ -6,12 +6,19 @@ import com.backendless.Backendless;
 import com.backendless.async.callback.AsyncCallback;
 import com.backendless.exceptions.BackendlessFault;
 
+import java.util.List;
+
 /**
  * Created by per6 on 12/12/17.
  */
 
 public class BackendlessHandler {
     public static final String TAG = "BackendlessHandler";
+    private List<Score> returnValue;
+
+    public BackendlessHandler() {
+    }
+
     public void saveScore(Score score){
         Backendless.Persistence.save(score, new AsyncCallback<Score>() {
             @Override
@@ -66,7 +73,20 @@ public class BackendlessHandler {
         });
 
     }
-    public void getAllScores(){
+    public List<Score> getAllScores(){
         //TODO: Finish getAllScores()
+        Backendless.Persistence.of(Score.class).find(new AsyncCallback<List<Score>>() {
+            @Override
+            public void handleResponse(List<Score> response) {
+                returnValue = response;
+            }
+
+            @Override
+            public void handleFault(BackendlessFault fault) {
+                Log.e(TAG, "handleFault: Backendless error " + fault.getCode());
+            }
+        });
+        return returnValue;
     }
+
 }

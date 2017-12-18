@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -31,7 +32,10 @@ public class EndFragment extends Fragment {
     private String[][] levelDataSets;
     private DatabaseHandler db;
     private GameMode gameMode;
-    private static final String PREVIOUS_NAME_ENTERED_KEY = "previous name entered";
+    public static final String PREVIOUS_NAME_ENTERED_KEY = "previous name entered", BEST_SCORE_KEY = "best score saved ";
+    private BackendlessHandler backendlessDb;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
 
     public EndFragment()
     {
@@ -43,6 +47,10 @@ public class EndFragment extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        //preferences
+        preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        editor = preferences.edit();
+        editor.apply();
         View rootView = inflater.inflate(R.layout.end_screen_layout, container, false);
         TextView resultSummary = rootView.findViewById(R.id.result_summary);
         resultSummary.setTextColor(Color.BLACK);
@@ -56,7 +64,7 @@ public class EndFragment extends Fragment {
                 saveDialog.setCancelable(false);
                 final AlertDialog alertDialog = saveDialog.create();
                 final EditText playerName = dialogView.findViewById(R.id.player_name_input);
-                final SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+                final CheckBox saveOnline = dialogView.findViewById(R.id.checkbox_save_online);
                 playerName.setText(preferences.getString(PREVIOUS_NAME_ENTERED_KEY, ""));
                 Button saveButton = dialogView.findViewById(R.id.button_save_dialog);
                 Button cancelButton = dialogView.findViewById(R.id.button_cancel_dialog);
@@ -66,12 +74,15 @@ public class EndFragment extends Fragment {
                         if (!playerName.getText().toString().equals(""))
                         {
                             String playerNameInput = playerName.getText().toString();
-                            SharedPreferences.Editor editor = preferences.edit();
                             editor.putString(PREVIOUS_NAME_ENTERED_KEY, playerNameInput);
                             editor.apply();
                             storeGameData(playerNameInput);
                             alertDialog.dismiss();
                             saveRunButton.setEnabled(false);
+                        }
+                        if(saveOnline.isChecked()){
+                            String playerNameInput = playerName.getText().toString();
+                            storeGameDataOnline(playerNameInput);
                         }
                     }
                 });
@@ -86,6 +97,7 @@ public class EndFragment extends Fragment {
         });
         db = new DatabaseHandler(this.getContext());
         Backendless.initApp(this.getContext(),"5366E1EB-A6A4-8C6C-FFC4-569F55C00300","CB426A88-910A-D939-FFD3-F8EFDD7DAE00");
+        backendlessDb = new BackendlessHandler();
         return rootView;
     }
 
@@ -131,7 +143,7 @@ public class EndFragment extends Fragment {
                         gameName.setTextColor(Color.BLACK);
                         gameTime.setTextColor(Color.BLACK);
                         gameScore.setTextColor(Color.BLACK);
-                        gameName.setText("Total");
+                        gameName.setText(R.string.total);
                         gameTime.append(GameFragment.formatMillisToMMSSMSMS(getTotalTime()));
                         gameScore.append(getTotalScore() + "");
                     }
@@ -148,8 +160,17 @@ public class EndFragment extends Fragment {
     }
 
     private void storeGameData(String playerName) {
+        int currentBest = preferences.getInt(BEST_SCORE_KEY + gameMode.name(), 0);
+        editor.putInt(BEST_SCORE_KEY + gameMode.name(), Math.max(getTotalScore(), currentBest));
+        editor.apply();
         Score score = new Score(playerName, getTotalScore() + "", getTotalTime() + "", gameMode.name());
         db.addScore(score);
+    }
+
+    private void storeGameDataOnline(String playerName){
+        Score score = new Score(playerName, getTotalScore() + "", getTotalTime() + "", gameMode.name());
+        db.addScore(score);
+        backendlessDb.saveScore(score);
     }
 
     public void setArguments(String[][] levelDataSets, GameMode gameMode)

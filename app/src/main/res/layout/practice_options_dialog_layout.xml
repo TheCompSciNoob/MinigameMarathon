@@ -25,7 +25,7 @@
             android:textSize="24sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Choose Game"/>
+            android:text="@string/choose_game"/>
 
     </RadioGroup>
 
@@ -45,13 +45,13 @@
             android:textSize="24sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Choose Game Mode"/>
+            android:text="@string/choose_game_mode"/>
 
     </RadioGroup>
 
     <Button
         android:id="@+id/confirm_practice_option_button"
-        android:text="Confirm"
+        android:text="@string/confirm"
         android:textSize="24sp"
         style="@style/Base.Widget.AppCompat.Button.ButtonBar.AlertDialog"
         android:layout_width="match_parent"
