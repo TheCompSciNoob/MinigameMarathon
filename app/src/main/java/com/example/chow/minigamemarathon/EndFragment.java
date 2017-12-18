@@ -19,8 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.backendless.Backendless;
-
 /**
  * Created by per6 on 11/1/17.
  */
@@ -48,6 +46,7 @@ public class EndFragment extends Fragment {
     public View onCreateView(final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         //preferences
+        backendlessDb = new BackendlessHandler(this.getContext());
         preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         editor = preferences.edit();
         editor.apply();
@@ -96,8 +95,6 @@ public class EndFragment extends Fragment {
             }
         });
         db = new DatabaseHandler(this.getContext());
-        Backendless.initApp(this.getContext(),"5366E1EB-A6A4-8C6C-FFC4-569F55C00300","CB426A88-910A-D939-FFD3-F8EFDD7DAE00");
-        backendlessDb = new BackendlessHandler();
         return rootView;
     }
 
@@ -169,7 +166,6 @@ public class EndFragment extends Fragment {
 
     private void storeGameDataOnline(String playerName){
         Score score = new Score(playerName, getTotalScore() + "", getTotalTime() + "", gameMode.name());
-        db.addScore(score);
         backendlessDb.saveScore(score);
     }
 

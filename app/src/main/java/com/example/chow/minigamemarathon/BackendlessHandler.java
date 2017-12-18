@@ -1,5 +1,6 @@
 package com.example.chow.minigamemarathon;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.backendless.Backendless;
@@ -16,7 +17,9 @@ public class BackendlessHandler {
     public static final String TAG = "BackendlessHandler";
     private List<Score> returnValue;
 
-    public BackendlessHandler() {
+    public BackendlessHandler(Context context) {
+        Backendless.setUrl(Defaults.SERVER_URL);
+        Backendless.initApp(context, Defaults.APPLICATION_ID, Defaults.API_KEY);
     }
 
     public void saveScore(Score score){
@@ -28,7 +31,7 @@ public class BackendlessHandler {
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                Log.e(TAG, "handleFault: Backendless error " + fault.getCode());
+                Log.e(TAG, "handleFault: Backendless error " + fault.getCode() + " Message: " + fault.getMessage() + " Details: " + fault.getDetail());
             }
         });
     }
@@ -36,11 +39,11 @@ public class BackendlessHandler {
         Backendless.Persistence.of(Score.class).findById(oldScore.getObjectId(), new AsyncCallback<Score>() {
             @Override
             public void handleResponse(Score response) {
-                response.set_gameMode(newScore.get_gameMode());
-                response.set_time(newScore.get_time());
-                response.set_score(newScore.get_score());
-                response.set_name(newScore.get_name());
-                response.set_id(newScore.get_id());
+                response.setGameMode(newScore.getGameMode());
+                response.setTime(newScore.getTime());
+                response.setScore(newScore.getScore());
+                response.setName(newScore.getName());
+                response.setId(newScore.getId());
             }
 
             @Override

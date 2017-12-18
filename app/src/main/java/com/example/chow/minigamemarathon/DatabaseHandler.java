@@ -51,10 +51,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // sets the row values
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, score.get_name());
-        values.put(KEY_SCORE, score.get_score());
-        values.put(KEY_TIME, score.get_time());
-        values.put(KEY_GAMEMODE, score.get_gameMode());
+        values.put(KEY_NAME, score.getName());
+        values.put(KEY_SCORE, score.getScore());
+        values.put(KEY_TIME, score.getTime());
+        values.put(KEY_GAMEMODE, score.getGameMode());
 
         // inserts the new row
         sqLiteDatabase.insert(TABLE_HIGHSCORES, null, values);
@@ -89,11 +89,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if(cursor.moveToFirst()){
             do{
                 Score score = new Score();
-                score.set_id(Integer.parseInt(cursor.getString(0)));
-                score.set_name(cursor.getString(1));
-                score.set_score(cursor.getString(2));
-                score.set_time(cursor.getString(3));
-                score.set_gameMode(cursor.getString(4));
+                score.setId(Integer.parseInt(cursor.getString(0)));
+                score.setName(cursor.getString(1));
+                score.setScore(cursor.getString(2));
+                score.setTime(cursor.getString(3));
+                score.setGameMode(cursor.getString(4));
                 scoreList.add(score);
             }while(cursor.moveToNext());
         }
@@ -114,19 +114,19 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_NAME, score.get_name());
-        values.put(KEY_SCORE, score.get_score());
-        values.put(KEY_TIME, score.get_time());
-        values.put(KEY_GAMEMODE, score.get_gameMode());
+        values.put(KEY_NAME, score.getName());
+        values.put(KEY_SCORE, score.getScore());
+        values.put(KEY_TIME, score.getTime());
+        values.put(KEY_GAMEMODE, score.getGameMode());
 
         //update row
-        return sqLiteDatabase.update(TABLE_HIGHSCORES, values, KEY_ID + " = ?", new String[]{String.valueOf(score.get_id())});
+        return sqLiteDatabase.update(TABLE_HIGHSCORES, values, KEY_ID + " = ?", new String[]{String.valueOf(score.getId())});
     }
 
     // Delete single score
     public void deleteScore(Score score) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
-        sqLiteDatabase.delete(TABLE_HIGHSCORES, KEY_ID + " = ?", new String[]{ String.valueOf(score.get_id())});
+        sqLiteDatabase.delete(TABLE_HIGHSCORES, KEY_ID + " = ?", new String[]{ String.valueOf(score.getId())});
         sqLiteDatabase.close();
     }
 }
