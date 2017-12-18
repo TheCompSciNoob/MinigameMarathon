@@ -2,6 +2,7 @@ package com.example.chow.minigamemarathon;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,6 +70,7 @@ public class ColorMatchFragment extends GameFragment{
                         notifyGameEnd();
                     }
                     colorText.setText(game.getAnsweredStr());
+                    colorText.setText(game.getAnsweredStr());
 
 
             }
@@ -81,7 +83,10 @@ public class ColorMatchFragment extends GameFragment{
 
     @Override
     public double getPercentScore() {
-        return ((double)(game.getQuestionsCorrect())/(double)(game.getQuestionAttempted()));
+        Log.d("COMPLETE", "GetPercent score"+((double)(game.getQuestionsCorrect())/(game.getQuestionAttempted())));//HERE HERE HERE HERE HERE HERE
+        Log.d("COMPLETE", "Get score correct"+game.getQuestionsCorrect());
+        Log.d("COMPLETE", "GetAttempted"+game.getQuestionAttempted());
+        return ((double)(game.getQuestionsCorrect())/(game.getQuestionAttempted()));
     }
 
     @Override
