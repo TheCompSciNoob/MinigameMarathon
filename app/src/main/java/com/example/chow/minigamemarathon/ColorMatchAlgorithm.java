@@ -10,7 +10,7 @@ public class ColorMatchAlgorithm {
     public String colorStr1, colorStr2, answeredStr;
     public static final String TAG = "minecraft is terrible";
     private boolean finished = false;
-    private int questionsCorrect = 0, questionAttempted=0;
+    private int questionsCorrect = 0;
     public int questionCount, colorInt1, colorInt2, answerInt;
 
     public int questionsAttempted=0;
@@ -81,7 +81,9 @@ public class ColorMatchAlgorithm {
                 Log.d(TAG, "checkAnswer: Correct!");
             }
         }
+
         questionsAttempted++;
+        Log.d(TAG, "question attempt: "+ questionsAttempted);
         checkIfFinished();
         genAnswer();
 
@@ -116,7 +118,7 @@ public class ColorMatchAlgorithm {
     public int getQuestionAttempted() {
         Log.d(TAG, "getQuestionAttempted: "+questionsAttempted);
         Log.d(TAG, "getQuestionAttempted: "+questionsCorrect);
-        return questionAttempted;
+        return questionsAttempted;
     }
 
     public boolean isFinished() {
