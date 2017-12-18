@@ -73,15 +73,20 @@ public class ColorMatchAlgorithm {
             if (answerInt == 5) {
                 questionsCorrect++;
                 Log.d(TAG, "checkAnswer: Correct!");
+                questionsAttempted++;
+
             }
 
         } else {
             if (answerInt == (colorInt1 + colorInt2) / 2) {
                 questionsCorrect++;
                 Log.d(TAG, "checkAnswer: Correct!");
-            }
-        }
+                questionsAttempted++;
 
+            }
+            else{
+                questionsAttempted++;}
+        }
         questionsAttempted++;
         Log.d(TAG, "question attempt: "+ questionsAttempted);
         checkIfFinished();
