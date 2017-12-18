@@ -27,7 +27,7 @@ public class MazeView extends View {
     private int width, height, backgroundColor;
     private boolean[][] hLines, vLines;
     private float totalCellWidth, totalCellHeight, cellWidth, cellHeight, lineWidth;
-    private Drawable upLayerIndicator, downLayerIndicator, upDownLayerIndicator;
+    private Drawable upLayerIndicator, downLayerIndicator, upDownLayerIndicator, finishIndicator, playerIndicator;
 
     public MazeView(Context context) {
         super(context);
@@ -61,6 +61,8 @@ public class MazeView extends View {
         numRows = maze3D.getNumRows();
         numCols = maze3D.getNumCols();
         //up/down layer signs
+        finishIndicator = getContext().getResources().getDrawable(R.drawable.ic_location_on_black_24dp);
+        playerIndicator = getContext().getResources().getDrawable(R.drawable.ic_my_location_black_24dp);
         upLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_stairs_up);
         downLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_stairs_down);
         upDownLayerIndicator = getContext().getResources().getDrawable(R.drawable.ic_stairs_up_down);
@@ -130,9 +132,17 @@ public class MazeView extends View {
                                 line);
                     }
                     //finds appropriate indicator and draw
-                    if (!thisCell.isWallBack() && !thisCell.isWallFront()) //both up and down arrows
+                    float modifiedWidth = cellWidth / 2;
+                    if(playerLayer == maze3D.getEndLayer() && row == maze3D.getEndRow() && col == maze3D.getEndCol())
                     {
-                        float modifiedWidth = cellWidth / 2;
+                        finishIndicator.setBounds((int) (y + lineWidth + modifiedWidth / 2),
+                                (int) (x + lineWidth + modifiedWidth / 2),
+                                (int) (y + cellWidth - lineWidth - modifiedWidth / 2),
+                                (int) (x + cellWidth - lineWidth - modifiedWidth / 2));
+                        finishIndicator.draw(canvas);
+                    }
+                    else if (!thisCell.isWallBack() && !thisCell.isWallFront()) //both up and down arrows
+                    {
                         upDownLayerIndicator.setBounds((int) (y + lineWidth + modifiedWidth / 2),
                                 (int) (x + lineWidth + modifiedWidth / 2),
                                 (int) (y + cellWidth - lineWidth - modifiedWidth / 2),
@@ -140,7 +150,6 @@ public class MazeView extends View {
                         upDownLayerIndicator.draw(canvas);
                     } else if (!thisCell.isWallFront()) //up layer arrow
                     {
-                        float modifiedWidth = cellWidth / 2;
                         upLayerIndicator.setBounds((int) (y + lineWidth + modifiedWidth / 2),
                                 (int) (x + lineWidth + modifiedWidth / 2),
                                 (int) (y + cellWidth - lineWidth - modifiedWidth / 2),
@@ -148,12 +157,6 @@ public class MazeView extends View {
                         upLayerIndicator.draw(canvas);
                     } else if (!thisCell.isWallBack()) //down layer arrow
                     {
-                        float modifiedWidth = cellWidth / 2;
-                        Log.d(TAG, "onDraw: " + ((int) (y + lineWidth + modifiedWidth / 2))
-                                + " " + ((int) (x + lineWidth + modifiedWidth / 2))
-                                + " " + ((int) (y + cellWidth - lineWidth - modifiedWidth / 2))
-                                + " " + ((int) (x + cellWidth - lineWidth - modifiedWidth / 2))
-                                + " " + cellWidth);
                         downLayerIndicator.setBounds((int) (y + lineWidth + modifiedWidth / 2),
                                 (int) (x + lineWidth + modifiedWidth / 2),
                                 (int) (y + cellWidth - lineWidth - modifiedWidth / 2),
@@ -161,10 +164,15 @@ public class MazeView extends View {
                         downLayerIndicator.draw(canvas);
                     }
                     //draws the player
-                    canvas.drawCircle((playerCol * totalCellWidth) + (cellWidth / 2),   //x of center
+                    playerIndicator.setBounds((int) (playerCol * totalCellWidth + lineWidth + modifiedWidth / 2),
+                            (int) (playerRow * totalCellHeight + modifiedWidth / 2),
+                            (int) (playerCol * totalCellWidth + cellWidth - lineWidth - modifiedWidth / 2),
+                            (int) (playerRow * totalCellHeight + cellWidth - lineWidth - modifiedWidth / 2));
+                    playerIndicator.draw(canvas);
+                    /*canvas.drawCircle((playerCol * totalCellWidth) + (cellWidth / 2),   //x of center
                             (playerRow * totalCellHeight) + (cellWidth / 2),  //y of center
                             (cellWidth * 0.45f),                           //radius
-                            redIndicator);
+                            redIndicator);*/
                 }
             }
         } catch (NullPointerException e) {
