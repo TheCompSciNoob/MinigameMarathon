@@ -69,14 +69,15 @@ public class ColorMatchAlgorithm {
     }
    public void checkAnswer()
    {
-       if (colorInt1 == 0 && colorInt2 == 4 || colorInt2 == 0 && colorInt1 == 4) {
-           {if (answerInt == 5) {
+       if (colorInt1 == 0 && colorInt2 == 4 || colorInt2 == 0 && colorInt1 == 4)
+       {
+           if (answerInt == 5) {
                questionsCorrect++;
                Log.d(TAG, "checkAnswer: Correct!");
            }
-            else
-        {questionsAttempted++}
-       } else {
+
+       }
+       else {
            if (answerInt == (colorInt1 + colorInt2) / 2) {
                questionsCorrect++;
                Log.d(TAG, "checkAnswer: Correct!");
