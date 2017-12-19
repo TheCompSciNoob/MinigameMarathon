@@ -67,27 +67,27 @@ public class ColorMatchAlgorithm {
         else
         {return "NOTHING!";}
     }
-    public void checkAnswer()
-    {
-        if (colorInt1 == 0 && colorInt2 == 4 || colorInt2 == 0 && colorInt1 == 4) {
-            if (answerInt == 5) {
-                questionsCorrect++;
-                Log.d(TAG, "checkAnswer: Correct!");
-            }
+   public void checkAnswer()
+   {
+       if (colorInt1 == 0 && colorInt2 == 4 || colorInt2 == 0 && colorInt1 == 4) {
+           {if (answerInt == 5) {
+               questionsCorrect++;
+               Log.d(TAG, "checkAnswer: Correct!");
+           }
+            else
+        {questionsAttempted++}
+       } else {
+           if (answerInt == (colorInt1 + colorInt2) / 2) {
+               questionsCorrect++;
+               Log.d(TAG, "checkAnswer: Correct!");
+		questionsAttempted++;
+           }
+       }
+       questionsAttempted++;
+       checkIfFinished();
+       genAnswer();
+   }
 
-        } else {
-            if (answerInt == (colorInt1 + colorInt2) / 2) {
-                questionsCorrect++;
-                Log.d(TAG, "checkAnswer: Correct!");
-            }
-        }
-
-        questionsAttempted++;
-        Log.d(TAG, "question attempt: "+ questionsAttempted);
-        checkIfFinished();
-        genAnswer();
-
-    }
 
     public int getColorInt1() {
         return colorInt1;
