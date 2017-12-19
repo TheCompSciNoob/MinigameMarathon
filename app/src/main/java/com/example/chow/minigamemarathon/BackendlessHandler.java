@@ -13,9 +13,10 @@ import java.util.List;
  * Created by per6 on 12/12/17.
  */
 
-public class BackendlessHandler {
+public class BackendlessHandler{
     public static final String TAG = "BackendlessHandler";
     private List<Score> returnValue;
+    private ScoreReceivedListener listener;
 
     public BackendlessHandler(Context context) {
         Backendless.setUrl(Defaults.SERVER_URL);
@@ -76,20 +77,31 @@ public class BackendlessHandler {
         });
 
     }
-    public List<Score> getAllScores(){
+    public void populateScores(){
         //TODO: Finish getAllScores()
         Backendless.Persistence.of(Score.class).find(new AsyncCallback<List<Score>>() {
             @Override
             public void handleResponse(List<Score> response) {
-                returnValue = response;
+                if (listener != null)
+                {
+                    listener.onScoreReceived(response);
+                }
             }
 
             @Override
             public void handleFault(BackendlessFault fault) {
-                Log.e(TAG, "handleFault: Backendless error " + fault.getCode());
+                Log.e(TAG, "handleFault: Backendless error " + fault.getCode() + " Message: " + fault.getMessage() + " Details: " + fault.getDetail());
             }
         });
-        return returnValue;
     }
 
+    public void setScoreReceiveListener(ScoreReceivedListener listener)
+    {
+        this.listener = listener;
+    }
+
+    public interface ScoreReceivedListener
+    {
+        public void onScoreReceived(List<Score> response);
+    }
 }

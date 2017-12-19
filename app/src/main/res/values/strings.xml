@@ -47,4 +47,5 @@
     <string name="start">START</string>
     <string name="loading">Loading...</string>
     <string name="total">Total</string>
+    <string name="world_leader_board">World Leader Board</string>
 </resources>

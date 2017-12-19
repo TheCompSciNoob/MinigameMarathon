@@ -8,7 +8,6 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +24,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import static android.content.ContentValues.TAG;
 
@@ -35,11 +35,12 @@ import static android.content.ContentValues.TAG;
 public class HighScoreTabFragment extends Fragment implements LayoutTransition.TransitionListener {
 
     private ScoreAdapter adapter;
-    private DrawerLayout.SimpleDrawerListener drawerListener;
-    private ArrayList<Score> filteredDatabase, unfilteredDatabase;
+    private ArrayList<Score> filteredDatabase;
+    private List<Score> unfilteredDatabase;
     private GameMode gameMode;
     private LinearLayout rootView;
     private boolean isDataDeletable;
+    private RecyclerView recyclerView;
 
     @Nullable
     @Override
@@ -66,9 +67,13 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
     }
 
     private void displayInfo() {
+        if (recyclerView != null && getView() != null)
+        {
+            ((ViewGroup) getView()).removeView(recyclerView);
+        }
         //set up recycler view
         RecyclerView.LayoutManager manager = new LinearLayoutManager(getActivity());
-        RecyclerView recyclerView = new RecyclerView(getActivity());
+        recyclerView = new RecyclerView(getActivity());
         recyclerView.setLayoutManager(manager);
         recyclerView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         recyclerView.addItemDecoration(new DividerItemDecoration(recyclerView.getContext(), DividerItemDecoration.VERTICAL));
@@ -84,7 +89,7 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
         }, 3000);
     }
 
-    public void setArguments(GameMode gameMode, ArrayList<Score> unfilteredDatabase, boolean isDataDeletable) {
+    public void setArguments(GameMode gameMode, List<Score> unfilteredDatabase, boolean isDataDeletable) {
         this.gameMode = gameMode;
         this.unfilteredDatabase = unfilteredDatabase;
         this.isDataDeletable = isDataDeletable;
@@ -97,7 +102,10 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
 
     @Override
     public void endTransition(LayoutTransition transition, ViewGroup container, View view, int transitionType) {
-        transition.removeTransitionListener(this);
+        if (transition != null)
+        {
+            transition.removeTransitionListener(this);
+        }
         filteredDatabase = new ArrayList<>();
         for (Score score : unfilteredDatabase) {
             if (score.getGameMode().equals(gameMode.name())) {
@@ -327,6 +335,18 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
         }
 
         public abstract void onUpdate();
+    }
+
+    public void setScoreList(List<Score> newScoresList)
+    {
+        unfilteredDatabase = newScoresList;
+        endTransition(null, null, null, 0);
+        startSortTask(new Comparator<Score>() {
+            @Override
+            public int compare(Score score1, Score score2) {
+                return Integer.parseInt(score1.getScore()) - Integer.parseInt(score2.getScore());
+            }
+        }, true);
     }
 
     //ViewHolder for layout in recycler view

@@ -15,8 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * Created by Kyros on 11/17/2017.
@@ -29,7 +29,7 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
     private View extraToolbar;
     private SectionsPagerAdapter adapter;
     private DatabaseHandler db;
-    private ArrayList<Score> unfilteredScores;
+    private List<Score> unfilteredScores;
     protected boolean isScoreDeletable = true;
 
     @Nullable
@@ -75,7 +75,7 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
         appBar.removeView(extraToolbar);
     }
 
-    private ArrayList<Score> retrieveScoresFromDatabase() {
+    protected List<Score> retrieveScoresFromDatabase() {
         return db.getAllScores();
     }
 
@@ -118,6 +118,13 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
             }
         }
         return true;
+    }
+
+    protected void updateScores(List<Score> newScoresList) {
+        for (HighScoreTabFragment fragment : adapter.getChildFragments())
+        {
+            fragment.setScoreList(newScoresList);
+        }
     }
 
     private class SectionsPagerAdapter extends FragmentPagerAdapter {

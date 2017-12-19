@@ -80,9 +80,14 @@ public class MainActivity extends AppCompatActivity
             GameContainerFragment gameContainerFragment = new GameContainerFragment();
             gameContainerFragment.setArguments(GameContainerFragment.getAllGames());
             fragment = gameContainerFragment;
-        } else if (currentIDSelected == R.id.score_high) {
+        }
+        else if (currentIDSelected == R.id.score_high) {
             fragment = new HighScoreFragment();
-        } else if (currentIDSelected == R.id.practice) {
+        }
+        else if (currentIDSelected == R.id.world_leader_board) {
+            fragment = new WorldHighScoreFragment();
+        }
+        else if (currentIDSelected == R.id.practice) {
             fragment = new PracticeNavigationFragment();
         }
         if (fragment != null)

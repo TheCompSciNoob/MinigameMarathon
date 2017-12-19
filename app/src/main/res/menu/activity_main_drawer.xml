@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
         <item
@@ -10,6 +11,10 @@
             android:id="@+id/score_high"
             android:icon="@drawable/ic_person_black_24dp"
             android:title="@string/leader_board" />
+        <item
+            android:id="@+id/world_leader_board"
+            android:icon="@drawable/ic_public_black_24dp"
+            android:title="@string/world_leader_board" />
         <item
             android:id="@+id/practice"
             android:icon="@drawable/ic_games_black_24dp"
