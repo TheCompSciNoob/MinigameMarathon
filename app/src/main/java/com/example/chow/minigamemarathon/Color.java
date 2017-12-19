@@ -9,24 +9,25 @@ public class Color {
     private int colorNumberID;
     private String colorStringID;
 
-    public void setColorID(int num)
-    {
-        colorNumberID=num;
-        if (colorNumberID==0)
-        {colorStringID = "red";}
-        else if (colorNumberID==1)
-        {colorStringID = "yellow";}
-        else if (colorNumberID==2)
-        {colorStringID = "green";}
-        else if (colorNumberID==3)
-        {colorStringID = "cyan";}
-        else if (colorNumberID==4)
-        {colorStringID = "blue";}
-        else if (colorNumberID==5)
-        {colorStringID = "magenta";}
-        else
-        {colorStringID = "NOTHING!";}
+    public void setColorID(int num) {
+        colorNumberID = num;
+        if (colorNumberID == 0) {
+            colorStringID = "red";
+        } else if (colorNumberID == 1) {
+            colorStringID = "yellow";
+        } else if (colorNumberID == 2) {
+            colorStringID = "green";
+        } else if (colorNumberID == 3) {
+            colorStringID = "cyan";
+        } else if (colorNumberID == 4) {
+            colorStringID = "blue";
+        } else if (colorNumberID == 5) {
+            colorStringID = "magenta";
+        } else {
+            colorStringID = "NOTHING!";
+        }
     }
+
     public int getColorNumberID() {
         return colorNumberID;
     }

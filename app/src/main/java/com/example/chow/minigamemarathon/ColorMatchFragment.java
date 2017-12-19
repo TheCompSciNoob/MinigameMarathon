@@ -49,7 +49,7 @@ public class ColorMatchFragment extends GameFragment{
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (redCheq==true)
+                if (redCheq)
                 {game.setColorInt1(0);}
                 if (greenCheq==true)
                 {

@@ -13,16 +13,18 @@ public class ColorMatchAlgorithm {
     private int questionsCorrect = 0;
     public int questionCount, colorInt1, colorInt2, answerInt;
 
-    public int questionsAttempted=0;
-    public ColorMatchAlgorithm(GameMode gameMode)
-    {
-        if (gameMode.equals(GameMode.EASY))
-        {questionCount=5;}
-        else if (gameMode.equals(GameMode.HARD))
-        {questionCount=15;}
-        else if (gameMode.equals(GameMode.DEBUG))
-        {questionCount=2;}
+    public int questionsAttempted = 0;
+
+    public ColorMatchAlgorithm(GameMode gameMode) {
+        if (gameMode.equals(GameMode.EASY)) {
+            questionCount = 5;
+        } else if (gameMode.equals(GameMode.HARD)) {
+            questionCount = 15;
+        } else if (gameMode.equals(GameMode.DEBUG)) {
+            questionCount = 2;
+        }
     }
+
     public void checkIfFinished() {
         if (questionsCorrect >= questionCount) {
             finished = true;
@@ -31,63 +33,62 @@ public class ColorMatchAlgorithm {
     }
 
 
-    public void genAnswer()
-    {
-        int answerInt=(int)(Math.random()*3)*2+1;
-        if (answerInt==0)
-            {answeredStr = "red";}
-        else if (answerInt==1)
-            {answeredStr = "yellow";}
-        else if (answerInt==2)
-            {answeredStr = "green";}
-        else if (answerInt==3)
-            {answeredStr = "cyan";}
-        else if (answerInt==4)
-            {answeredStr = "blue";}
-        else if (answerInt==5)
-            {answeredStr = "magenta";}
-        else
-            {answeredStr = "NOTHING!";}
+    public void genAnswer() {
+        int answerInt = (int) (Math.random() * 3) * 2 + 1;
+        if (answerInt == 0) {
+            answeredStr = "red";
+        } else if (answerInt == 1) {
+            answeredStr = "yellow";
+        } else if (answerInt == 2) {
+            answeredStr = "green";
+        } else if (answerInt == 3) {
+            answeredStr = "cyan";
+        } else if (answerInt == 4) {
+            answeredStr = "blue";
+        } else if (answerInt == 5) {
+            answeredStr = "magenta";
+        } else {
+            answeredStr = "NOTHING!";
+        }
     }
-    public String colorString(int num)
-    {
-        int answerNum=num;
-        if (answerNum==0)
-        {return "red";}
-        else if (answerNum==1)
-        {return "yellow";}
-        else if (answerNum==2)
-        {return "green";}
-        else if (answerNum==3)
-        {return "cyan";}
-        else if (answerNum==4)
-        {return "blue";}
-        else if (answerNum==5)
-        {return "magenta";}
-        else
-        {return "NOTHING!";}
-    }
-   public void checkAnswer()
-   {
-       if (colorInt1 == 0 && colorInt2 == 4 || colorInt2 == 0 && colorInt1 == 4)
-       {
-           if (answerInt == 5) {
-               questionsCorrect++;
-               Log.d(TAG, "checkAnswer: Correct!");
-           }
 
-       }
-       else {
-           if (answerInt == (colorInt1 + colorInt2) / 2) {
-               questionsCorrect++;
-               Log.d(TAG, "checkAnswer: Correct!");
-		questionsAttempted++;
-           }
-       }
-       questionsAttempted++;
-       checkIfFinished();
-       genAnswer();
-   }
+    public String colorString(int num) {
+        int answerNum = num;
+        if (answerNum == 0) {
+            return "red";
+        } else if (answerNum == 1) {
+            return "yellow";
+        } else if (answerNum == 2) {
+            return "green";
+        } else if (answerNum == 3) {
+            return "cyan";
+        } else if (answerNum == 4) {
+            return "blue";
+        } else if (answerNum == 5) {
+            return "magenta";
+        } else {
+            return "NOTHING!";
+        }
+    }
+
+    public void checkAnswer() {
+        if (colorInt1 == 0 && colorInt2 == 4 || colorInt2 == 0 && colorInt1 == 4) {
+            if (answerInt == 5) {
+                questionsCorrect++;
+                Log.d(TAG, "checkAnswer: Correct!");
+            }
+
+        } else {
+            if (answerInt == (colorInt1 + colorInt2) / 2) {
+                questionsCorrect++;
+                Log.d(TAG, "checkAnswer: Correct!");
+                questionsAttempted++;
+            }
+        }
+        questionsAttempted++;
+        checkIfFinished();
+        genAnswer();
+    }
 
 
     public int getColorInt1() {
@@ -96,7 +97,7 @@ public class ColorMatchAlgorithm {
 
     public void setColorInt1(int colorInt1) {
         this.colorInt1 = colorInt1;
-        colorStr1=colorString(colorInt1);
+        colorStr1 = colorString(colorInt1);
     }
 
     public int getColorInt2() {
@@ -105,7 +106,7 @@ public class ColorMatchAlgorithm {
 
     public void setColorInt2(int colorInt2) {
         this.colorInt2 = colorInt2;
-        colorStr2=colorString(colorInt2);
+        colorStr2 = colorString(colorInt2);
     }
 
     public String getColorStr1() {
@@ -117,8 +118,8 @@ public class ColorMatchAlgorithm {
     }
 
     public int getQuestionAttempted() {
-        Log.d(TAG, "getQuestionAttempted: "+questionsAttempted);
-        Log.d(TAG, "getQuestionAttempted: "+questionsCorrect);
+        Log.d(TAG, "getQuestionAttempted: " + questionsAttempted);
+        Log.d(TAG, "getQuestionAttempted: " + questionsCorrect);
         return questionsAttempted;
     }
 
