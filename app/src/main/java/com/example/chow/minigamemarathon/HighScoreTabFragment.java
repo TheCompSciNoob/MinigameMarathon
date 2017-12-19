@@ -100,7 +100,7 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
         transition.removeTransitionListener(this);
         filteredDatabase = new ArrayList<>();
         for (Score score : unfilteredDatabase) {
-            if (score.get_gameMode().equals(gameMode.name())) {
+            if (score.getGameMode().equals(gameMode.name())) {
                 filteredDatabase.add(score);
             }
         }
@@ -134,7 +134,7 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
             sortComparator = new Comparator<Score>() {
                 @Override
                 public int compare(Score score1, Score score2) {
-                    return Integer.parseInt(score2.get_score()) - Integer.parseInt(score1.get_score());
+                    return Integer.parseInt(score2.getScore()) - Integer.parseInt(score1.getScore());
                 }
             };
             Collections.sort(scores, sortComparator);
@@ -197,11 +197,11 @@ public class HighScoreTabFragment extends Fragment implements LayoutTransition.T
                 }
             }
             //player name
-            holder.playerName.setText(scores.get(position).get_name());
+            holder.playerName.setText(scores.get(position).getName());
             holder.playerName.setTypeface(null, Typeface.BOLD);
             //Strings to loop back and forth
-            holder.timeDetail = "Time: " + GameFragment.formatMillisToMMSSMSMS(Long.parseLong(scores.get(position).get_time()));
-            holder.scoreDetail = "Score: " + scores.get(position).get_score();
+            holder.timeDetail = "Time: " + GameFragment.formatMillisToMMSSMSMS(Long.parseLong(scores.get(position).getTime()));
+            holder.scoreDetail = "Score: " + scores.get(position).getScore();
             holder.scoreDetails.clearText();
             holder.scoreDetails.addText(holder.timeDetail);
             holder.scoreDetails.addText(holder.scoreDetail);

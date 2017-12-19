@@ -89,7 +89,7 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
                 scoreComparator = new Comparator<Score>() {
                     @Override
                     public int compare(Score score1, Score score2) {
-                        return score1.get_name().toLowerCase().compareTo(score2.get_name().toLowerCase());
+                        return score1.getName().toLowerCase().compareTo(score2.getName().toLowerCase());
                     }
                 };
                 break;
@@ -98,7 +98,7 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
                 scoreComparator = new Comparator<Score>() {
                     @Override
                     public int compare(Score score1, Score score2) {
-                        return (int) (Long.parseLong(score1.get_time()) - Long.parseLong(score2.get_time()));
+                        return (int) (Long.parseLong(score1.getTime()) - Long.parseLong(score2.getTime()));
                     }
                 };
                 break;
@@ -107,7 +107,7 @@ public class HighScoreFragment extends Fragment implements PopupMenu.OnMenuItemC
                 scoreComparator = new Comparator<Score>() {
                     @Override
                     public int compare(Score score1, Score score2) {
-                        return Integer.parseInt(score2.get_score()) - Integer.parseInt(score1.get_score());
+                        return Integer.parseInt(score2.getScore()) - Integer.parseInt(score1.getScore());
                     }
                 };
                 break;

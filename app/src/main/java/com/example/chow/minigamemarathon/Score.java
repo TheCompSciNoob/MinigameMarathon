@@ -1,77 +1,101 @@
 package com.example.chow.minigamemarathon;
 
+import java.util.Date;
+
 /**
  * Created by per6 on 11/17/17.
  */
 
 public class Score {
-    int _id;
-    String _name;
-    String _score;
-    String _time;
-    String _gameMode;
-    public String objectId;
+    private String objectId;
+    int id;
+    String name;
+    String score;
+    String time;
+    String gameMode;
+    public Date created;
+    public Date updated;
 
     public Score() {
 
     }
 
-    public Score(String _name, String _score, String _time, String _gameMode) {
-        this._name = _name;
-        this._score = _score;
-        this._time = _time;
-        this._gameMode = _gameMode;
+    public Score(String name, String score, String time, String gameMode) {
+        this.name = name;
+        this.score = score;
+        this.time = time;
+        this.gameMode = gameMode;
     }
 
-    public Score(int _id, String _name, String _score, String _time, String _gameMode) {
-        this._id = _id;
-        this._name = _name;
-        this._score = _score;
-        this._time = _time;
-        this._gameMode = _gameMode;
-    }
-
-    public int get_id() {
-        return _id;
-    }
-
-    public void set_id(int _id) {
-        this._id = _id;
-    }
-
-    public String get_name() {
-        return _name;
-    }
-
-    public void set_name(String _name) {
-        this._name = _name;
-    }
-
-    public String get_score() {
-        return _score;
-    }
-
-    public void set_score(String _score) {
-        this._score = _score;
-    }
-
-    public String get_time() {
-        return _time;
-    }
-
-    public void set_time(String _time) {
-        this._time = _time;
-    }
-
-    public String get_gameMode() {
-        return _gameMode;
-    }
-
-    public void set_gameMode(String _gameMode) {
-        this._gameMode = _gameMode;
+    public Score(int id, String name, String score, String time, String gameMode) {
+        this.id = id;
+        this.name = name;
+        this.score = score;
+        this.time = time;
+        this.gameMode = gameMode;
     }
 
     public String getObjectId() {
         return objectId;
+    }
+
+    public void setObjectId( String objectId ) {
+        this.objectId = objectId;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getGameMode() {
+        return gameMode;
+    }
+
+    public void setGameMode(String gameMode) {
+        this.gameMode = gameMode;
+    }
+
+    public Date getCreated() {
+        return created;
+    }
+
+    public void setCreated(Date created) {
+        this.created = created;
+    }
+
+    public Date getUpdated() {
+        return updated;
+    }
+
+    public void setUpdated(Date updated) {
+        this.updated = updated;
     }
 }
