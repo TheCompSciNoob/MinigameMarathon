@@ -1,8 +1,4 @@
 Your issue may have already been reported! Please check the [issue tracker](https://github.com/TheCompSciNoob/MinigameMarathon/issues) before creating a new issue.
-### Issue Type
-- [ ] Bug Report
-- [ ] Feature Request
----
 ### Expected behavior
 ### Actual behavior
 #### Possible solution
