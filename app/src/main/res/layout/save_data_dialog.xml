@@ -23,6 +23,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <CheckBox
+        android:textSize="24sp"
+        android:id="@+id/checkbox_save_online"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save_online" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -45,12 +52,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"/>
-
     </LinearLayout>
 
-    <CheckBox
-        android:id="@+id/checkbox_save_online"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/save_online" />
 </LinearLayout>

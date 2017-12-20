@@ -30,7 +30,7 @@ public class EndFragment extends Fragment {
     private String[][] levelDataSets;
     private DatabaseHandler db;
     private GameMode gameMode;
-    public static final String PREVIOUS_NAME_ENTERED_KEY = "previous name entered";
+    public static final String PREVIOUS_NAME_ENTERED_KEY = "previous name entered", PREVIOUS_SAVE_ONLINE_CHECKED_KEY = "is saved online checked?";
     private BackendlessHandler backendlessDb;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
@@ -62,6 +62,7 @@ public class EndFragment extends Fragment {
                 final AlertDialog alertDialog = saveDialog.create();
                 final EditText playerName = dialogView.findViewById(R.id.player_name_input);
                 final CheckBox saveOnline = dialogView.findViewById(R.id.checkbox_save_online);
+                saveOnline.setChecked(preferences.getBoolean(PREVIOUS_SAVE_ONLINE_CHECKED_KEY, false));
                 playerName.setText(preferences.getString(PREVIOUS_NAME_ENTERED_KEY, ""));
                 Button saveButton = dialogView.findViewById(R.id.button_save_dialog);
                 Button cancelButton = dialogView.findViewById(R.id.button_cancel_dialog);
@@ -81,6 +82,8 @@ public class EndFragment extends Fragment {
                             String playerNameInput = playerName.getText().toString();
                             storeGameDataOnline(playerNameInput);
                         }
+                        editor.putBoolean(PREVIOUS_SAVE_ONLINE_CHECKED_KEY, saveOnline.isChecked());
+                        editor.apply();
                     }
                 });
                 cancelButton.setOnClickListener(new View.OnClickListener() {
