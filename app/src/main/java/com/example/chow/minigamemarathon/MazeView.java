@@ -108,7 +108,6 @@ public class MazeView extends View {
             //iterate over the boolean arrays to draw walls
             for (int col = 0; col < numCols; col++) {
                 for (int row = 0; row < numRows; row++) {
-                    Log.d(TAG, "onDraw: iterating in array: size " + numCols);
                     //cell we're referencing
                     Maze3D.Cell thisCell = maze[playerLayer][row][col];
                     //paint location
@@ -121,7 +120,6 @@ public class MazeView extends View {
                                 x + cellWidth,   //stop X
                                 y + cellHeight,  //stop Y
                                 line);
-                        Log.d(TAG, "onDraw: stuff is drawn");
                     }
                     if (col < numRows - 1 && hLines[col][row]) {
                         //we'll draw a horizontal line
