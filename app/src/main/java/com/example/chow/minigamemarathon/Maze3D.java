@@ -5,6 +5,7 @@ import android.util.Log;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created by per6 on 12/4/17.
@@ -81,10 +82,19 @@ public class Maze3D {
     private void generatePathFrom(int layer, int row, int col, Cell fromCell) //recursive backtracking
     {
         Cell thisCell = maze3D[layer][row][col];
+        Stack<Cell> stack = new Stack<>();
+        stack.push(thisCell);
+        while(stack.size() > 0){
+            Cell current = stack.pop();
+            //TODO: Implement recusive method with stack
+            stack.push(maze3D[layer + layerOffset][row + rowOffset][col + colOffset]);
+        }
+
         //checks if generation has reached solution
         if (layer == endLayer && row == endRow && col == endCol) {
             thisCell.setIsSolutionCell(true);
         }
+
         //generate to adjacent cells
         Collections.shuffle(directions);
         for (PathDirection direction : directions) {
