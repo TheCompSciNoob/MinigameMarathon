@@ -1,6 +1,8 @@
 package com.example.chow.minigamemarathon;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.backendless.Backendless;
@@ -17,8 +19,11 @@ public class BackendlessHandler{
     public static final String TAG = "BackendlessHandler";
     private List<Score> returnValue;
     private ScoreReceivedListener listener;
+    private NetworkStatusChangedListener networkListener;
+    private Context context;
 
     public BackendlessHandler(Context context) {
+        this.context = context;
         Backendless.setUrl(Defaults.SERVER_URL);
         Backendless.initApp(context, Defaults.APPLICATION_ID, Defaults.API_KEY);
     }
@@ -78,13 +83,17 @@ public class BackendlessHandler{
 
     }
     public void populateScores(){
-        //TODO: Finish getAllScores()
+
         Backendless.Persistence.of(Score.class).find(new AsyncCallback<List<Score>>() {
             @Override
             public void handleResponse(List<Score> response) {
-                if (listener != null)
-                {
-                    listener.onScoreReceived(response);
+                if(isNetworkAvailable()) {
+                    if (listener != null) {
+                        listener.onScoreReceived(response);
+                    }
+                }
+                else {
+                    networkListener.onNetworkStatusChanged();
                 }
             }
 
@@ -100,8 +109,24 @@ public class BackendlessHandler{
         this.listener = listener;
     }
 
+    public void setNetworkStatusChangedListener(NetworkStatusChangedListener listener){
+        this.networkListener = listener;
+
+    }
+
+    private boolean isNetworkAvailable(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     public interface ScoreReceivedListener
     {
         public void onScoreReceived(List<Score> response);
+    }
+
+    public interface NetworkStatusChangedListener
+    {
+        public void onNetworkStatusChanged();
     }
 }
