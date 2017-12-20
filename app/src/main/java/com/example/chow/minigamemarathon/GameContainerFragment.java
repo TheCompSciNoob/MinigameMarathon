@@ -1,7 +1,7 @@
 package com.example.chow.minigamemarathon;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+import android.annotation.SuppressLint;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -104,9 +104,25 @@ public class GameContainerFragment extends Fragment implements GameFragment.OnGa
                 GameContainerFragment.this.gameMode = gameMode;
                 DatabaseHandler db = new DatabaseHandler(GameContainerFragment.this.getContext());
                 //set the best score
-                SharedPreferences preferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-                TextView bestScore = extraTimeBar.findViewById(R.id.best_score_view);
-                bestScore.setText("" + preferences.getInt(EndFragment.BEST_SCORE_KEY + gameMode.name(), 0));
+                final TextView bestScore = extraTimeBar.findViewById(R.id.best_score_view);
+                @SuppressLint("StaticFieldLeak") AsyncTask<Void, Void, Integer> asyncTask = new AsyncTask<Void, Void, Integer>() {
+                    @Override
+                    protected Integer doInBackground(Void... voids) {
+                        int max = 0;
+                        DatabaseHandler db = new DatabaseHandler(getContext());
+                        for (Score score : db.getAllScores())
+                        {
+                            max = Math.max(Integer.parseInt(score.getScore()), max);
+                        }
+                        return max;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Integer maxScore) {
+                        bestScore.setText("" + maxScore.toString());
+                    }
+                };
+                asyncTask.execute();
                 //start timer
                 timer = new StopWatch(5);
                 timer.setOnTickListener(GameContainerFragment.this);

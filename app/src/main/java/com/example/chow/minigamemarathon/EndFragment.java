@@ -30,7 +30,7 @@ public class EndFragment extends Fragment {
     private String[][] levelDataSets;
     private DatabaseHandler db;
     private GameMode gameMode;
-    public static final String PREVIOUS_NAME_ENTERED_KEY = "previous name entered", BEST_SCORE_KEY = "best score saved ";
+    public static final String PREVIOUS_NAME_ENTERED_KEY = "previous name entered";
     private BackendlessHandler backendlessDb;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
@@ -155,9 +155,6 @@ public class EndFragment extends Fragment {
     }
 
     private void storeGameData(String playerName) {
-        int currentBest = preferences.getInt(BEST_SCORE_KEY + gameMode.name(), 0);
-        editor.putInt(BEST_SCORE_KEY + gameMode.name(), Math.max(getTotalScore(), currentBest));
-        editor.apply();
         Score score = new Score(playerName, getTotalScore() + "", getTotalTime() + "", gameMode.name());
         db.addScore(score);
     }
