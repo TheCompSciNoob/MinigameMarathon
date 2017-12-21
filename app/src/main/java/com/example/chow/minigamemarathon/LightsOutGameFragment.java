@@ -124,6 +124,16 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
     }
 
     @Override
+    public int getIconID() {
+        return R.drawable.ic_lights_on_black_24dp;
+    }
+
+    @Override
+    public String getInstructions() {
+        return "When the game starts, a grid is randomized and your job is to turn off all the lights. But when you press one light, all of the adjacent lights will toggle as well. A torch means that the light is on and a cross means that the light is off";
+    }
+
+    @Override
     public boolean onPreDraw() {
         displayedLights.getViewTreeObserver().removeOnPreDrawListener(this);
         //resize GridView
