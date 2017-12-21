@@ -130,7 +130,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
 
     @Override
     public String getDescription() {
-        return "When the game starts, a grid is randomized and your job is to turn off all the lights. But when you press one light, all of the adjacent lights will toggle as well. A torch means that the light is on and a cross means that the light is off";
+        return "When the game starts, a grid is randomized and your job is to turn off all the lights. But when you press one light, all of the adjacent lights will toggle as well. A torch means that the light is on and a cross means that the light is off.";
     }
 
     @Override

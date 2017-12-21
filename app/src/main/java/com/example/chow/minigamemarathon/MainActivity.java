@@ -85,10 +85,10 @@ public class MainActivity extends AppCompatActivity
             fragment = new WorldHighScoreFragment();
         } else if (currentIDSelected == R.id.practice) {
             fragment = new PracticeNavigationFragment();
-        }
-        else if (currentIDSelected == R.id.how_to_play)
-        {
+        } else if (currentIDSelected == R.id.how_to_play) {
             fragment = new HowToPlayFragment();
+        } else if (currentIDSelected == R.id.about_us) {
+            fragment = new AboutUsFragment();
         }
         //start the fragment
         if (fragment != null) {

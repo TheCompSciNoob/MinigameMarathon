@@ -24,7 +24,7 @@
             android:icon="@drawable/ic_lightbulb_outline_black_24dp"
             android:title="@string/how_to_play" />
         <item
-            android:id="@+id/about"
+            android:id="@+id/about_us"
             android:icon="@drawable/ic_developer_mode_black_24dp"
             android:title="@string/about_us" />
     </group>
