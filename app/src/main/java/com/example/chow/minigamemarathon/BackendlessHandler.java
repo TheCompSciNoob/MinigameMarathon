@@ -1,8 +1,6 @@
 package com.example.chow.minigamemarathon;
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.util.Log;
 
 import com.backendless.Backendless;
@@ -87,18 +85,12 @@ public class BackendlessHandler{
         Backendless.Persistence.of(Score.class).find(new AsyncCallback<List<Score>>() {
             @Override
             public void handleResponse(List<Score> response) {
-                if(isNetworkAvailable()) {
-                    if (listener != null) {
-                        listener.onScoreReceived(response);
-                    }
-                }
-                else {
-                    networkListener.onNetworkStatusChanged();
-                }
+                listener.onScoreReceived(response);
             }
 
             @Override
             public void handleFault(BackendlessFault fault) {
+                networkListener.onNetworkStatusChanged();
                 Log.e(TAG, "handleFault: Backendless error " + fault.getCode() + " Message: " + fault.getMessage() + " Details: " + fault.getDetail());
             }
         });
@@ -112,12 +104,6 @@ public class BackendlessHandler{
     public void setNetworkStatusChangedListener(NetworkStatusChangedListener listener){
         this.networkListener = listener;
 
-    }
-
-    private boolean isNetworkAvailable(){
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     public interface ScoreReceivedListener
