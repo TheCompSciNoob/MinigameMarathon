@@ -8,6 +8,7 @@
 
     <TextView
         android:id="@+id/load_screen"
+        style="@style/buttonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
