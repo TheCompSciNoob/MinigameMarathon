@@ -24,7 +24,7 @@ public class ColorMatchAlgorithm {
         {questionCount=2;}
     }
     public void checkIfFinished() {
-        if (questionsCorrect >= questionCount) {
+        if (questionsAttempted >= questionCount) {
             finished = true;
             Log.d(TAG, "checkIfFinished: Finished!");
         }
@@ -33,7 +33,7 @@ public class ColorMatchAlgorithm {
 
     public void genAnswer()
     {
-        answerInt=(int)(Math.random()*3)*2+1;
+        answerInt=(int)(Math.random()*6);
         Log.d(TAG, "colorAlgColor"+answerInt);
 
         if (answerInt==0)
