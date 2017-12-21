@@ -72,7 +72,7 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
     }
 
     @Override
-    public String getInstructions() {
+    public String getDescription() {
         return "Get to the bottom of a 3d maze by going up or down stairs.";
     }
 

@@ -121,7 +121,7 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
     }
 
     @Override
-    public String getInstructions() {
+    public String getDescription() {
         return "You are given two buttons at the bottom of the screen and a string of numbers in the center. Your goal is to accurately type the string of numbers, however, both the string of numbers in the center and the buttons at the bottom will switch around during the course of play.";
     }
 

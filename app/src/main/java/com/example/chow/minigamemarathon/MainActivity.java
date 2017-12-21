@@ -16,7 +16,7 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, BinaryGameFragment.OnFragmentInteractionListener,
-        DrawerLayout.DrawerListener{
+        DrawerLayout.DrawerListener {
 
     private int currentIDSelected = R.id.game_new; //startup fragment
 
@@ -70,8 +70,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onDrawerClosed(View drawerView) {
-        if (drawerView != null)
-        {
+        if (drawerView != null) {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.removeDrawerListener(this);
         }
@@ -80,18 +79,19 @@ public class MainActivity extends AppCompatActivity
             GameContainerFragment gameContainerFragment = new GameContainerFragment();
             gameContainerFragment.setArguments(GameContainerFragment.getAllGames());
             fragment = gameContainerFragment;
-        }
-        else if (currentIDSelected == R.id.score_high) {
+        } else if (currentIDSelected == R.id.score_high) {
             fragment = new HighScoreFragment();
-        }
-        else if (currentIDSelected == R.id.world_leader_board) {
+        } else if (currentIDSelected == R.id.world_leader_board) {
             fragment = new WorldHighScoreFragment();
-        }
-        else if (currentIDSelected == R.id.practice) {
+        } else if (currentIDSelected == R.id.practice) {
             fragment = new PracticeNavigationFragment();
         }
-        if (fragment != null)
+        else if (currentIDSelected == R.id.how_to_play)
         {
+            fragment = new HowToPlayFragment();
+        }
+        //start the fragment
+        if (fragment != null) {
             FragmentManager manager = getSupportFragmentManager();
             manager.beginTransaction()
                     .replace(R.id.display_frame, fragment)
