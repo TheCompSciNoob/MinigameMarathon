@@ -65,7 +65,7 @@ public class ColorMatchFragment extends GameFragment{
 
     public boolean finished()
     {
-        if (questionsCorrect>=game.getQuestionCount())
+        if (questionsAttempted>=game.getQuestionCount())
         {
             return true;
         }
@@ -127,17 +127,32 @@ public class ColorMatchFragment extends GameFragment{
 
     public void checkAnswer()
     {
-        if(redCheck.isChecked()==true && blueCheck.isChecked()==true&&game.getAnswerInt()==5)
+        if(redCheck.isChecked()==true && blueCheck.isChecked()==true&&greenCheck.isChecked()==false&&game.getAnswerInt()==5)
         {
             questionsCorrect++;
             Log.d("HI", "correct");
         }
-        else if(redCheck.isChecked()==true && greenCheck.isChecked()==true&&game.getAnswerInt()==1)
+        else if(redCheck.isChecked()==true && greenCheck.isChecked()==true&&blueCheck.isChecked()==false&&game.getAnswerInt()==1)
         {
             questionsCorrect++;
             Log.d("HI", "correct");
         }
-        else if (greenCheck.isChecked()&& blueCheck.isChecked()&&game.getAnswerInt()==3)
+        else if (greenCheck.isChecked()==true&& blueCheck.isChecked()==true&&redCheck.isChecked()==false&&game.getAnswerInt()==3)
+        {
+            questionsCorrect++;
+            Log.d("HI", "correct");
+        }
+        else if (greenCheck.isChecked()==false&& blueCheck.isChecked()==false&&redCheck.isChecked()==true&&game.getAnswerInt()==0)
+        {
+            questionsCorrect++;
+            Log.d("HI", "correct");
+        }
+        else if (greenCheck.isChecked()==true&& blueCheck.isChecked()==false&&redCheck.isChecked()==false&&game.getAnswerInt()==2)
+        {
+            questionsCorrect++;
+            Log.d("HI", "correct");
+        }
+        else if (greenCheck.isChecked()==false&& blueCheck.isChecked()==true&&redCheck.isChecked()==false&&game.getAnswerInt()==4)
         {
             questionsCorrect++;
             Log.d("HI", "correct");
