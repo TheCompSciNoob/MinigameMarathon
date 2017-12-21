@@ -34,6 +34,17 @@ public class ColorMatchFragment extends GameFragment{
 
 
     }
+
+    @Override
+    public int getIconID() {
+        return R.drawable.ic_palette_black_24dp;
+    }
+
+    @Override
+    public void getInstructions() {
+
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
