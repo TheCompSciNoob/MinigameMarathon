@@ -82,92 +82,87 @@ public class Maze3D {
     private void generatePathFrom(int layer, int row, int col, Cell fromCell) //recursive backtracking
     {
         Cell thisCell = maze3D[layer][row][col];
-        Stack<Cell> stack = new Stack<>();
+        Stack<Cell> stack =  new Stack<>();
         stack.push(thisCell);
-        while(stack.size() > 0){
-            Cell current = stack.pop();
-            //TODO: Implement recusive method with stack
-            stack.push(maze3D[layer + layerOffset][row + rowOffset][col + colOffset]);
-        }
-
-        //checks if generation has reached solution
-        if (layer == endLayer && row == endRow && col == endCol) {
-            thisCell.setIsSolutionCell(true);
-        }
-
-        //generate to adjacent cells
-        Collections.shuffle(directions);
-        for (PathDirection direction : directions) {
-            int layerOffset = 0, rowOffset = 0, colOffset = 0;
-            //gets offset
-            switch (direction) {
-                case UP:
-                    rowOffset = -1;
-                    break;
-                case DOWN:
-                    rowOffset = 1;
-                    break;
-                case LEFT:
-                    colOffset = -1;
-                    break;
-                case RIGHT:
-                    colOffset = 1;
-                    break;
-                case FRONT:
-                    layerOffset = -1;
-                    break;
-                case BACK:
-                    layerOffset = 1;
-                    break;
+        while(stack.size()  > 0){
+            if (layer == endLayer && row == endRow && col == endCol) {
+                stack.pop();
+                Collections.shuffle(directions);
             }
-            //create path to next cell if cell is not visited
-            try {
-                if (maze3D[layer + layerOffset][row + rowOffset][col + colOffset] == null) {
-                    //initialize next cell
-                    maze3D[layer + layerOffset][row + rowOffset][col + colOffset] = new Cell();
-                    Cell nextCell = maze3D[layer + layerOffset][row + rowOffset][col + colOffset];
-                    //destroy walls
-                    switch (direction) {
-                        case UP:
-                            thisCell.setWallTop(false);
-                            nextCell.setWallBottom(false);
-                            break;
-                        case DOWN:
-                            thisCell.setWallBottom(false);
-                            nextCell.setWallTop(false);
-                            break;
-                        case LEFT:
-                            thisCell.setWallLeft(false);
-                            nextCell.setWallRight(false);
-                            break;
-                        case RIGHT:
-                            thisCell.setWallRight(false);
-                            nextCell.setWallLeft(false);
-                            break;
-                        case FRONT:
-                            thisCell.setWallFront(false);
-                            nextCell.setWallBack(false);
-                            break;
-                        case BACK:
-                            thisCell.setWallBack(false);
-                            nextCell.setWallFront(false);
-                            break;
-                    }
-                    generatePathFrom(layer + layerOffset, row + rowOffset, col + colOffset, thisCell);
+            //generate to adjacent cells
+            Collections.shuffle(directions);
+            for (PathDirection direction : directions) {
+                int layerOffset = 0, rowOffset = 0, colOffset = 0;
+                //gets offset
+                switch (direction) {
+                    case UP:
+                        rowOffset = -1;
+                        break;
+                    case DOWN:
+                        rowOffset = 1;
+                        break;
+                    case LEFT:
+                        colOffset = -1;
+                        break;
+                    case RIGHT:
+                        colOffset = 1;
+                        break;
+                    case FRONT:
+                        layerOffset = -1;
+                        break;
+                    case BACK:
+                        layerOffset = 1;
+                        break;
                 }
-            } catch (ArrayIndexOutOfBoundsException e) //edge
-            {
-                Log.d(TAG, "generatePathFrom: maze generation reached edge");
+                //create path to next cell if cell is not visited
+                try {
+                    if (maze3D[layer + layerOffset][row + rowOffset][col + colOffset] == null) {
+                        //initialize next cell
+                        maze3D[layer + layerOffset][row + rowOffset][col + colOffset] = new Cell();
+                        Cell nextCell = maze3D[layer + layerOffset][row + rowOffset][col + colOffset];
+                        //destroy walls
+                        switch (direction) {
+                            case UP:
+                                thisCell.setWallTop(false);
+                                nextCell.setWallBottom(false);
+                                break;
+                            case DOWN:
+                                thisCell.setWallBottom(false);
+                                nextCell.setWallTop(false);
+                                break;
+                            case LEFT:
+                                thisCell.setWallLeft(false);
+                                nextCell.setWallRight(false);
+                                break;
+                            case RIGHT:
+                                thisCell.setWallRight(false);
+                                nextCell.setWallLeft(false);
+                                break;
+                            case FRONT:
+                                thisCell.setWallFront(false);
+                                nextCell.setWallBack(false);
+                                break;
+                            case BACK:
+                                thisCell.setWallBack(false);
+                                nextCell.setWallFront(false);
+                                break;
+                        }
+                        generatePathFrom(layer + layerOffset,   row + rowOffset, col + colOffset, thisCell);
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) //edge
+                {
+                    Log.d(TAG, "generatePathFrom: maze generation reached edge");
+                }
             }
-        }
-        //checks when backtracking
-        if (fromCell != null) {
-            fromCell.setIsSolutionCell(thisCell.isSolutionCell() || fromCell.isSolutionCell());
-        }
-        //test
-        if (thisCell != null && thisCell.isSolutionCell())
-        {
-            Log.d(TAG, "generatePathFrom: debug " + layer + " " + row + " " +  col);
+            //checks when backtracking
+            if (fromCell != null) {
+                fromCell.setIsSolutionCell(thisCell.isSolutionCell() || fromCell.isSolutionCell());
+            }
+            //test
+            if (thisCell != null && thisCell.isSolutionCell())
+            {
+                Log.d(TAG, "generatePathFrom: debug " + layer + " " + row + " " +  col);
+            }
         }
     }
 
