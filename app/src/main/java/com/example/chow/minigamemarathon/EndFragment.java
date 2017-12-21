@@ -61,7 +61,7 @@ public class EndFragment extends Fragment {
                 saveDialog.setCancelable(false);
                 final AlertDialog alertDialog = saveDialog.create();
                 final EditText playerName = dialogView.findViewById(R.id.player_name_input);
-                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                final InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                 if (imm != null) {
                     imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                 }
@@ -87,12 +87,20 @@ public class EndFragment extends Fragment {
                         }
                         editor.putBoolean(PREVIOUS_SAVE_ONLINE_CHECKED_KEY, saveOnline.isChecked());
                         editor.apply();
+                        if (imm != null)
+                        {
+                            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                        }
                     }
                 });
                 cancelButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         alertDialog.dismiss();
+                        if (imm != null)
+                        {
+                            imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                        }
                     }
                 });
                 alertDialog.show();

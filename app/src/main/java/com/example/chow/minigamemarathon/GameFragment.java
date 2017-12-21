@@ -39,6 +39,7 @@ public abstract class GameFragment extends Fragment {
         View rootView = getView();
         if (rootView != null)
         {
+            rootView.setVisibility(View.GONE);
             rootView.setEnabled(false);
         }
         if (gameStateUpdateListener != null) {
