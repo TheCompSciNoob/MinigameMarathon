@@ -115,6 +115,16 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
         currentIndex = 0;
     }
 
+    @Override
+    public int getIconID() {
+        return R.drawable.ic_developer_board_black_24dp;
+    }
+
+    @Override
+    public String getInstructions() {
+        return "You are given two buttons at the bottom of the screen and a string of numbers in the center. Your goal is to accurately type the string of numbers, however, both the string of numbers in the center and the buttons at the bottom will switch around during the course of play.";
+    }
+
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

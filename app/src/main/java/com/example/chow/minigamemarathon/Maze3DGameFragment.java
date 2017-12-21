@@ -67,6 +67,16 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
     }
 
     @Override
+    public int getIconID() {
+        return R.drawable.ic_stairs_up;
+    }
+
+    @Override
+    public String getInstructions() {
+        return "Get to the bottom of a 3d maze by going up or down stairs.";
+    }
+
+    @Override
     public String getGameName() {
         return "Maze 3D";
     }

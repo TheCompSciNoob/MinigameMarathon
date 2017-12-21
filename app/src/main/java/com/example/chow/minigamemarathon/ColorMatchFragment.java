@@ -34,6 +34,17 @@ public class ColorMatchFragment extends GameFragment{
 
 
     }
+
+    @Override
+    public int getIconID() {
+        return R.drawable.ic_videogame_asset_black_24dp;
+    }
+
+    @Override
+    public String getInstructions() {
+        return "You are given three primary colors at the bottom of your screen and a secondary color in the center of your screen. Your goal is to make the secondary color with the primary colors provided.";
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
