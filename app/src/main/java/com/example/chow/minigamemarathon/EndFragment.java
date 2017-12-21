@@ -35,7 +35,6 @@ public class EndFragment extends Fragment {
     private BackendlessHandler backendlessDb;
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
-
     public EndFragment() {
         super();
         levelDataSets = new String[][]{};
