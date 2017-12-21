@@ -22,7 +22,7 @@ public class ColorMatchFragment extends GameFragment{
     private boolean redCheq=false, blueCheq=false, greenCheq=false;
     private TextView colorText;
     private View rootView;
-
+    private int questionsCorrect = 0,questionCount,questionsAttempted=0;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,51 +46,43 @@ public class ColorMatchFragment extends GameFragment{
         colorText=(TextView)rootView.findViewById(R.id.colorName);
         game.genAnswer();
         colorText.setText(game.getAnsweredStr());
+        colorText.setText(game.getAnsweredStr());
         enterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (redCheq)
-                {game.setColorInt1(0);}
-                if (greenCheq==true)
+                checkAnswer();
+                game.genAnswer();
+                colorText.setText(game.getAnsweredStr());
+                if (finished()==true)
                 {
-                    if (redCheq==true){game.setColorInt2(2);}
-                    else {game.setColorInt1(2);}
+                    notifyGameEnd();
 
                 }
-                if (blueCheq==true)
-                    if(redCheq==true||greenCheq==true){game.setColorInt2(4);}
-                    else
-                    {
-                        game.setColorInt1(4);
-                        game.setColorInt2(4);
-                    }
-                    game.checkAnswer();
-                    if (game.isFinished())
-                    {
-                        notifyGameEnd();
-                    }
-                    colorText.setText(game.getAnsweredStr());
-                    colorText.setText(game.getAnsweredStr());
-
-
             }
         });
         return rootView;
     }
 
+    public boolean finished()
+    {
+        if (questionsCorrect>=game.getQuestionCount())
+        {
+            return true;
+        }
+        else {return false;}
+    }
     @Override
     public String getGameName() {return "Color Match Challenge!";}
 
     @Override
     public double getPercentScore() {
-        Log.d("COMPLETE", "GetPercent score"+((double)(game.getQuestionsCorrect())/(game.getQuestionAttempted())));//HERE HERE HERE HERE HERE HERE
-        Log.d("COMPLETE", "Get score correct"+game.getQuestionsCorrect());
-        Log.d("COMPLETE", "GetAttempted"+game.getQuestionAttempted());
-        return ((double)(game.getQuestionsCorrect())/(game.getQuestionAttempted()));
+
+        return ((double)(questionsCorrect)/(questionsAttempted));
     }
 
     @Override
     public boolean isSolved() {
+
 
         return game.isFinished();
 
@@ -100,6 +92,7 @@ public class ColorMatchFragment extends GameFragment{
     public void setGameMode(GameMode gameMode) {
         this.gameMode = gameMode;
     }
+
 
 
 
@@ -131,5 +124,31 @@ public class ColorMatchFragment extends GameFragment{
             // TODO: Veggie sandwich
         }
     }
+
+    public void checkAnswer()
+    {
+        if(redCheck.isChecked()==true && blueCheck.isChecked()==true&&game.getAnswerInt()==5)
+        {
+            questionsCorrect++;
+            Log.d("HI", "correct");
+        }
+        else if(redCheck.isChecked()==true && greenCheck.isChecked()==true&&game.getAnswerInt()==1)
+        {
+            questionsCorrect++;
+            Log.d("HI", "correct");
+        }
+        else if (greenCheck.isChecked()&& blueCheck.isChecked()&&game.getAnswerInt()==3)
+        {
+            questionsCorrect++;
+            Log.d("HI", "correct");
+        }
+        else{Log.d("HI", "Wrong!");}
+        questionsAttempted++;
+        Log.d("HI","color"+game.getAnswerInt());
+        Log.d("HI","correct"+questionsCorrect);
+        Log.d("HI","attempt"+questionsAttempted);
+
+    }
+
 
 }
