@@ -1,6 +1,5 @@
 package com.example.chow.minigamemarathon;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -58,9 +57,10 @@ public class ColorMatchFragment extends GameFragment{
         colorText=(TextView)rootView.findViewById(R.id.colorName);
         game.genAnswer();
         setTextColor();
-        redCheck.setTextColor(Color.RED);
-        blueCheck.setTextColor(Color.BLUE);
-        greenCheck.setTextColor(Color.GREEN);
+        colorText.setTextColor(android.graphics.Color.WHITE);
+        //redCheck.setTextColor(Color.RED);
+        //blueCheck.setTextColor(Color.BLUE);
+        //greenCheck.setTextColor(Color.GREEN);
         colorText.setText(game.getAnsweredStr());
         colorText.setText(game.getAnsweredStr());
         enterButton.setOnClickListener(new View.OnClickListener() {
@@ -186,17 +186,23 @@ public class ColorMatchFragment extends GameFragment{
     {
         if (game.getAnswerInt()==0)
         {
-            colorText.setTextColor(android.graphics.Color.RED); //"red";
+            colorText.setBackgroundColor(android.graphics.Color.RED);; //"red";
+            colorText.setTextColor(android.graphics.Color.WHITE);
         }
         else if (game.getAnswerInt()==1)
-        {colorText.setTextColor(android.graphics.Color.YELLOW);}
+        {colorText.setBackgroundColor(android.graphics.Color.YELLOW);
+            colorText.setTextColor(android.graphics.Color.BLACK);}
         else if (game.getAnswerInt()==2)
-        {colorText.setTextColor(Color.GREEN);}
+        {colorText.setBackgroundColor(android.graphics.Color.GREEN);
+            colorText.setTextColor(android.graphics.Color.BLACK);}
         else if (game.getAnswerInt()==3)
-        {colorText.setTextColor(android.graphics.Color.CYAN);}
+        {colorText.setBackgroundColor(android.graphics.Color.CYAN);
+            colorText.setTextColor(android.graphics.Color.BLACK);}
         else if (game.getAnswerInt()==4)
-        {colorText.setTextColor(android.graphics.Color.BLUE);}
+        {colorText.setBackgroundColor(android.graphics.Color.BLUE);
+            colorText.setTextColor(android.graphics.Color.WHITE);}
         else if (game.getAnswerInt()==5)
-        {colorText.setTextColor(Color.MAGENTA);}
+        {colorText.setBackgroundColor(android.graphics.Color.MAGENTA);
+            colorText.setTextColor(android.graphics.Color.WHITE);}
     }
 }
