@@ -83,7 +83,7 @@ public abstract class GameFragment extends Fragment {
 
     public abstract int getIconID();
 
-    public abstract String getInstructions();
+    public abstract String getDescription();
 
     public interface OnGameStateUpdateListener {
         public void onGameSolved(GameFragment solvedFragment);

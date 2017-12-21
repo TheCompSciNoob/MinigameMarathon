@@ -21,11 +21,11 @@
             android:title="@string/train" />
         <item
             android:id="@+id/how_to_play"
-            android:icon="@drawable/ic_games_black_24dp"
+            android:icon="@drawable/ic_lightbulb_outline_black_24dp"
             android:title="@string/how_to_play" />
         <item
             android:id="@+id/about"
-            android:icon="@drawable/ic_games_black_24dp"
+            android:icon="@drawable/ic_developer_mode_black_24dp"
             android:title="@string/about_us" />
     </group>
 

@@ -41,7 +41,7 @@ public class ColorMatchFragment extends GameFragment{
     }
 
     @Override
-    public String getInstructions() {
+    public String getDescription() {
         return "You are given three primary colors at the bottom of your screen and a secondary color in the center of your screen. Your goal is to make the secondary color with the primary colors provided.";
     }
 
