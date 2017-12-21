@@ -1,6 +1,5 @@
 package com.example.chow.minigamemarathon;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -13,7 +12,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -132,9 +130,7 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
         int initialHeight = displayedLights.getMeasuredHeight();
         int initialWidth = displayedLights.getMeasuredWidth();
         Log.d(TAG, "onPreDraw: initialHeight: " + initialHeight + " initialWidth: " + initialWidth);
-        final int dimension = Math.min(initialHeight / game.getGrid()[0].length, initialWidth / game.getGrid().length);
-        displayedLights.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-        displayedLights.requestLayout();
+        final int dimension = Math.min(initialHeight / game.getGrid().length, initialWidth / game.getGrid()[0].length);
         //set up adapter after gridview is resized
         adapter = new BaseAdapter() {
             @Override

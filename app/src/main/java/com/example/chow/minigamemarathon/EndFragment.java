@@ -36,10 +36,9 @@ public class EndFragment extends Fragment {
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
 
-    public EndFragment()
-    {
+    public EndFragment() {
         super();
-        levelDataSets = new String[][] {};
+        levelDataSets = new String[][]{};
     }
 
     @Nullable
@@ -63,9 +62,8 @@ public class EndFragment extends Fragment {
                 final AlertDialog alertDialog = saveDialog.create();
                 final EditText playerName = dialogView.findViewById(R.id.player_name_input);
                 InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                if (imm != null)
-                {
-                    imm.showSoftInput(playerName, InputMethodManager.SHOW_IMPLICIT);
+                if (imm != null) {
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                 }
                 final CheckBox saveOnline = dialogView.findViewById(R.id.checkbox_save_online);
                 saveOnline.setChecked(preferences.getBoolean(PREVIOUS_SAVE_ONLINE_CHECKED_KEY, false));
@@ -75,8 +73,7 @@ public class EndFragment extends Fragment {
                 saveButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (!playerName.getText().toString().equals(""))
-                        {
+                        if (!playerName.getText().toString().equals("")) {
                             String playerNameInput = playerName.getText().toString();
                             editor.putString(PREVIOUS_NAME_ENTERED_KEY, playerNameInput);
                             editor.apply();
@@ -84,7 +81,7 @@ public class EndFragment extends Fragment {
                             alertDialog.dismiss();
                             saveRunButton.setEnabled(false);
                         }
-                        if(saveOnline.isChecked()){
+                        if (saveOnline.isChecked()) {
                             String playerNameInput = playerName.getText().toString();
                             storeGameDataOnline(playerNameInput);
                         }
@@ -125,22 +122,18 @@ public class EndFragment extends Fragment {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 LinearLayout displayLayout;
-                if (convertView == null)
-                {
+                if (convertView == null) {
                     LayoutInflater inflater = LayoutInflater.from(getActivity());
                     displayLayout = (LinearLayout) inflater.inflate(R.layout.game_end_status_display_layout, null);
                     TextView gameName = displayLayout.findViewById(R.id.game_name);
                     TextView gameTime = displayLayout.findViewById(R.id.game_time);
                     TextView gameScore = displayLayout.findViewById(R.id.game_score);
-                    if (position < levelDataSets.length)
-                    {
+                    if (position < levelDataSets.length) {
                         String[] levelData = levelDataSets[position];
                         gameName.setText(levelData[0]);
                         gameTime.append(GameFragment.formatMillisToMMSSMSMS(Long.parseLong(levelData[1])));
                         gameScore.append(levelData[2]);
-                    }
-                    else
-                    {
+                    } else {
                         gameName.setTypeface(null, Typeface.BOLD);
                         gameTime.setTypeface(null, Typeface.BOLD);
                         gameScore.setTypeface(null, Typeface.BOLD);
@@ -151,9 +144,7 @@ public class EndFragment extends Fragment {
                         gameTime.append(GameFragment.formatMillisToMMSSMSMS(getTotalTime()));
                         gameScore.append(getTotalScore() + "");
                     }
-                }
-                else
-                {
+                } else {
                     displayLayout = (LinearLayout) convertView;
                 }
                 return displayLayout;
@@ -168,33 +159,28 @@ public class EndFragment extends Fragment {
         db.addScore(score);
     }
 
-    private void storeGameDataOnline(String playerName){
+    private void storeGameDataOnline(String playerName) {
         Score score = new Score(playerName, getTotalScore() + "", getTotalTime() + "", gameMode.name());
         backendlessDb.saveScore(score);
     }
 
-    public void setArguments(String[][] levelDataSets, GameMode gameMode)
-    {
+    public void setArguments(String[][] levelDataSets, GameMode gameMode) {
         this.levelDataSets = levelDataSets;
         this.gameMode = gameMode;
         showResults();
     }
 
-    private int getTotalScore()
-    {
+    private int getTotalScore() {
         int sum = 0;
-        for (String[] s : levelDataSets)
-        {
+        for (String[] s : levelDataSets) {
             sum += Integer.parseInt(s[2]);
         }
         return sum;
     }
 
-    private long getTotalTime()
-    {
+    private long getTotalTime() {
         long sum = 0;
-        for (String[] s : levelDataSets)
-        {
+        for (String[] s : levelDataSets) {
             sum += Long.parseLong(s[1]);
         }
         return sum;

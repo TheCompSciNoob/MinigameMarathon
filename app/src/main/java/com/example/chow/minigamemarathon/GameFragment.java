@@ -36,6 +36,11 @@ public abstract class GameFragment extends Fragment {
     }
 
     public void notifyGameEnd() {
+        View rootView = getView();
+        if (rootView != null)
+        {
+            rootView.setEnabled(false);
+        }
         if (gameStateUpdateListener != null) {
             gameStateUpdateListener.onGameSolved(this);
         }
