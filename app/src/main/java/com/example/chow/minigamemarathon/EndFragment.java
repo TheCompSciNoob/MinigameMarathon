@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -61,6 +62,11 @@ public class EndFragment extends Fragment {
                 saveDialog.setCancelable(false);
                 final AlertDialog alertDialog = saveDialog.create();
                 final EditText playerName = dialogView.findViewById(R.id.player_name_input);
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                if (imm != null)
+                {
+                    imm.showSoftInput(playerName, InputMethodManager.SHOW_IMPLICIT);
+                }
                 final CheckBox saveOnline = dialogView.findViewById(R.id.checkbox_save_online);
                 saveOnline.setChecked(preferences.getBoolean(PREVIOUS_SAVE_ONLINE_CHECKED_KEY, false));
                 playerName.setText(preferences.getString(PREVIOUS_NAME_ENTERED_KEY, ""));

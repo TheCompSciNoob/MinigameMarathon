@@ -88,6 +88,7 @@ public class MazeView extends View {
         width = dimension;
         height = dimension;
         lineWidth = 3;
+        line.setStrokeWidth(lineWidth);
         cellWidth = (width - ((float) numCols * lineWidth)) / numCols;
         totalCellWidth = cellWidth + lineWidth;
         cellHeight = (height - ((float) numRows * lineWidth)) / numRows;

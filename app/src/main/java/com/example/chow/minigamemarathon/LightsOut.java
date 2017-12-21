@@ -38,31 +38,26 @@ public class LightsOut{
     public void randomize()
     {
         StringBuilder debugString = new StringBuilder("\n");
-        for (int row = 0; row < grid.length; row++)
-        {
-            for (int col = 0; col < grid[row].length; col++)
-            {
-                if (Math.random() < 0.5)
-                {
-                    flipSwitch(row, col);
-                    debugString.append("1");
-                    randomizeTimes++;
-                }
-                else {
-                    debugString.append("0");
-                }
-            }
-            debugString.append("\n");
-        }
-        //regenerate if randomize times is less than 1/2 the number of cells toggled
-        if (randomizeTimes < (grid.length + grid[0].length) / 2)
+        while (randomizeTimes < (grid.length + grid[0].length) / 2)
         {
             randomizeTimes = 0;
             grid = new boolean[grid.length][grid[0].length];
-            randomize();
-        }
-        else
-        {
+            for (int row = 0; row < grid.length; row++)
+            {
+                for (int col = 0; col < grid[row].length; col++)
+                {
+                    if (Math.random() < 0.5)
+                    {
+                        flipSwitch(row, col);
+                        debugString.append("1");
+                        randomizeTimes++;
+                    }
+                    else {
+                        debugString.append("0");
+                    }
+                }
+                debugString.append("\n");
+            }
             Log.d(TAG, "randomize: debug string" + debugString.toString());
         }
     }
