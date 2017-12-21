@@ -65,7 +65,7 @@ public class ColorMatchFragment extends GameFragment{
 
     public boolean finished()
     {
-        if (questionsCorrect>=game.getQuestionCount())
+        if (questionCount>=game.getQuestionCount())
         {
             return true;
         }
