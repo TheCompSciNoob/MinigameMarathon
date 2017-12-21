@@ -25,6 +25,8 @@
         android:id="@+id/redCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
+        android:background="#F44336"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -35,12 +37,16 @@
         app:layout_constraintHorizontal_bias="0.067"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.799" />
+        app:layout_constraintVertical_bias="0.799"
+        />
+
 
     <CheckBox
         android:id="@+id/greenCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
+        android:background="#4CAF50"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
@@ -56,6 +62,8 @@
         android:id="@+id/blueCheckBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+
+        android:background="#2196F3"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"

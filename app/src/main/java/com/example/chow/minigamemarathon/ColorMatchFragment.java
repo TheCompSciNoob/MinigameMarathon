@@ -1,5 +1,6 @@
 package com.example.chow.minigamemarathon;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -20,7 +21,7 @@ public class ColorMatchFragment extends GameFragment{
     private CheckBox redCheck, greenCheck, blueCheck;
     private Button enterButton;
     private boolean redCheq=false, blueCheq=false, greenCheq=false;
-    private TextView colorText;
+    TextView colorText;
     private View rootView;
     private int questionsCorrect = 0,questionCount,questionsAttempted=0;
     @Override
@@ -45,6 +46,7 @@ public class ColorMatchFragment extends GameFragment{
         enterButton=(Button) rootView.findViewById(R.id.enterB);
         colorText=(TextView)rootView.findViewById(R.id.colorName);
         game.genAnswer();
+        setTextColor();
         colorText.setText(game.getAnsweredStr());
         colorText.setText(game.getAnsweredStr());
         enterButton.setOnClickListener(new View.OnClickListener() {
@@ -52,6 +54,7 @@ public class ColorMatchFragment extends GameFragment{
             public void onClick(View view) {
                 checkAnswer();
                 game.genAnswer();
+                setTextColor();
                 colorText.setText(game.getAnsweredStr());
                 if (finished()==true)
                 {
@@ -165,5 +168,21 @@ public class ColorMatchFragment extends GameFragment{
 
     }
 
-
+    public void setTextColor()
+    {
+        if (game.getAnswerInt()==0)
+        {
+            colorText.setTextColor(android.graphics.Color.RED); //"red";
+        }
+        else if (game.getAnswerInt()==1)
+        {colorText.setTextColor(android.graphics.Color.YELLOW);}
+        else if (game.getAnswerInt()==2)
+        {colorText.setTextColor(Color.GREEN);}
+        else if (game.getAnswerInt()==3)
+        {colorText.setTextColor(android.graphics.Color.CYAN);}
+        else if (game.getAnswerInt()==4)
+        {colorText.setTextColor(android.graphics.Color.BLUE);}
+        else if (game.getAnswerInt()==5)
+        {colorText.setTextColor(Color.MAGENTA);}
+    }
 }
