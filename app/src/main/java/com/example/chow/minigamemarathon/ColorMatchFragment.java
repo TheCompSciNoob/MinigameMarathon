@@ -58,6 +58,9 @@ public class ColorMatchFragment extends GameFragment{
         colorText=(TextView)rootView.findViewById(R.id.colorName);
         game.genAnswer();
         setTextColor();
+        redCheck.setTextColor(Color.RED);
+        blueCheck.setTextColor(Color.BLUE);
+        greenCheck.setTextColor(Color.GREEN);
         colorText.setText(game.getAnsweredStr());
         colorText.setText(game.getAnsweredStr());
         enterButton.setOnClickListener(new View.OnClickListener() {
