@@ -7,7 +7,8 @@
     android:layout_height="match_parent">
 
     <TextView
-        style="@style/buttonStyle"
+        android:textColor="@color/navBarBackground"
+        android:textStyle="bold"
         android:textSize="36sp"
         android:layout_margin="8dp"
         android:text="@string/how_to_play"
@@ -15,6 +16,7 @@
         android:layout_height="wrap_content" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/how_to_play_recyclerview"
         android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="0dp" />

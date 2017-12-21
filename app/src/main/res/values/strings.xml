@@ -50,4 +50,5 @@
     <string name="world_leader_board">World Leader Board</string>
     <string name="how_to_play">How to Play</string>
     <string name="about_us">About Us</string>
+    <string name="game_description">Game Description</string>
 </resources>

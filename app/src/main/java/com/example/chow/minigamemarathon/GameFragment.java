@@ -67,7 +67,9 @@ public abstract class GameFragment extends Fragment {
         }
     }
 
-
+    public void finalizeArguments(GameMode gameMode) {
+        setGameMode(gameMode);
+    }
 
     public abstract String getGameName();
 
@@ -79,10 +81,9 @@ public abstract class GameFragment extends Fragment {
 
     public abstract void assignWidgetFunctions();
 
+    public abstract int getIconID();
 
-    public void finalizeArguments(GameMode gameMode) {
-        setGameMode(gameMode);
-    }
+    public abstract void getInstructions();
 
     public interface OnGameStateUpdateListener {
         public void onGameSolved(GameFragment solvedFragment);
