@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,14 @@ public class StartFragment extends Fragment {
                 {
                     listener.onStart(chosenGameMode);
                 }
+            }
+        });
+        Button howToPlayButton = rootView.findViewById(R.id.how_to_play_goto_button);
+        howToPlayButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                fm.beginTransaction().replace(R.id.display_frame, new HowToPlayFragment()).commit();
             }
         });
 
