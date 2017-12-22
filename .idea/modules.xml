@@ -2,9 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MinigameMarathon.iml" filepath="$PROJECT_DIR$/MinigameMarathon.iml" />
-      <module fileurl="file://$PROJECT_DIR$/MinigameMarathonMastrMayn.iml" filepath="$PROJECT_DIR$/MinigameMarathonMastrMayn.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/MinigameMarathon.iml" filepath="$PROJECT_DIR$/.idea/MinigameMarathon.iml" />
+      <module fileurl="file://C:\Users\Alex\StudioProjects\MinigameMarathon\MinigameMarathon.iml" filepath="C:\Users\Alex\StudioProjects\MinigameMarathon\MinigameMarathon.iml" />
+      <module fileurl="file://C:\Users\Alex\StudioProjects\MinigameMarathon\MinigameMarathonMastrMayn.iml" filepath="C:\Users\Alex\StudioProjects\MinigameMarathon\MinigameMarathonMastrMayn.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\Alex\StudioProjects\MinigameMarathon\app\app.iml" filepath="C:\Users\Alex\StudioProjects\MinigameMarathon\app\app.iml" />
     </modules>
   </component>
 </project>

@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatDelegate;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +43,7 @@ public class MazeView extends View {
     }
 
     public void setArguments(Maze3D maze3D, int backgroundColor) {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         this.maze3D = maze3D;
         //graphics
         line = new Paint();
