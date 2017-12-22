@@ -15,6 +15,7 @@ import android.widget.TextView;
  */
 
 public class ColorMatchFragment extends GameFragment{
+
     private GameMode gameMode;
     private ColorMatchAlgorithm game;
     private CheckBox redCheck, greenCheck, blueCheck;
@@ -23,40 +24,24 @@ public class ColorMatchFragment extends GameFragment{
     TextView colorText;
     private View rootView;
     private int questionsCorrect = 0,questionCount,questionsAttempted=0;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public void assignWidgetFunctions()
     {
 
         game = new ColorMatchAlgorithm(gameMode);
+        game.genAnswer();
         redCheck=(CheckBox)rootView.findViewById(R.id.redCheckBox);
         greenCheck=(CheckBox)rootView.findViewById(R.id.greenCheckBox);
         blueCheck=(CheckBox)rootView.findViewById(R.id.blueCheckBox);
         enterButton=(Button) rootView.findViewById(R.id.enterB);
         colorText=(TextView)rootView.findViewById(R.id.colorName);
 
-    }
-
-    @Override
-    public int getIconID() {
-        return R.drawable.ic_videogame_asset_black_24dp;
-    }
-
-    @Override
-    public String getDescription() {
-        return "You are given three primary colors at the bottom of your screen and a secondary color in the center of your screen. Your goal is to make the secondary color with the primary colors provided.";
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        rootView=inflater.inflate(R.layout.color_game, container, false);
-        assignWidgetFunctions();
-        game.genAnswer();
         setTextColor();
         colorText.setTextColor(android.graphics.Color.WHITE);
         //redCheck.setTextColor(Color.RED);
@@ -78,6 +63,23 @@ public class ColorMatchFragment extends GameFragment{
                 }
             }
         });
+    }
+
+    @Override
+    public int getIconID() {
+        return R.drawable.ic_videogame_asset_black_24dp;
+    }
+
+    @Override
+    public String getDescription() {
+        return "You are given three primary colors at the bottom of your screen and a secondary color in the center of your screen. Your goal is to make the secondary color with the primary colors provided.";
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        rootView=inflater.inflate(R.layout.color_game, container, false);
         return rootView;
     }
 
