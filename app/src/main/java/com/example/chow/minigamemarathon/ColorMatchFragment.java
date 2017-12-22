@@ -31,6 +31,12 @@ public class ColorMatchFragment extends GameFragment{
     public void assignWidgetFunctions()
     {
 
+        game = new ColorMatchAlgorithm(gameMode);
+        redCheck=(CheckBox)rootView.findViewById(R.id.redCheckBox);
+        greenCheck=(CheckBox)rootView.findViewById(R.id.greenCheckBox);
+        blueCheck=(CheckBox)rootView.findViewById(R.id.blueCheckBox);
+        enterButton=(Button) rootView.findViewById(R.id.enterB);
+        colorText=(TextView)rootView.findViewById(R.id.colorName);
 
     }
 
@@ -49,12 +55,7 @@ public class ColorMatchFragment extends GameFragment{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView=inflater.inflate(R.layout.color_game, container, false);
-        game = new ColorMatchAlgorithm(gameMode);
-        redCheck=(CheckBox)rootView.findViewById(R.id.redCheckBox);
-        greenCheck=(CheckBox)rootView.findViewById(R.id.greenCheckBox);
-        blueCheck=(CheckBox)rootView.findViewById(R.id.blueCheckBox);
-        enterButton=(Button) rootView.findViewById(R.id.enterB);
-        colorText=(TextView)rootView.findViewById(R.id.colorName);
+        assignWidgetFunctions();
         game.genAnswer();
         setTextColor();
         colorText.setTextColor(android.graphics.Color.WHITE);
