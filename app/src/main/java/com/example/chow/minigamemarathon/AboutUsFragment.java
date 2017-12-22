@@ -8,6 +8,7 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -17,7 +18,7 @@ import android.widget.TextView;
 public class AboutUsFragment extends Fragment {
 
     public static final String[] developersList = {"<b>Project Lead</b> <br>TheCompSciNoob *Shears*",
-            "<b>Databse engineer</b> <br>hedgy579 *Return before async callback*",
+            "<b>Databse Engineer</b> <br>hedgy579 *Return before async callback*",
             "<b>Colors</b> <br>Chrysopelea-Rc *Object-less*" };
 
     @Nullable
@@ -37,6 +38,14 @@ public class AboutUsFragment extends Fragment {
             }
             developersListTextView.append("\n");
         }
+        Button sourceCodeButton = rootView.findViewById(R.id.source_code_button);
+        sourceCodeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: open github repository
+                //TODO: Alex fix this
+            }
+        });
 
         return rootView;
     }
