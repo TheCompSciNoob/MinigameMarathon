@@ -1,5 +1,7 @@
 package com.example.chow.minigamemarathon;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -44,6 +46,8 @@ public class AboutUsFragment extends Fragment {
             public void onClick(View view) {
                 //TODO: open github repository
                 //TODO: Alex fix this
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/TheCompSciNoob/MinigameMarathon"));
+                startActivity(browserIntent);
             }
         });
 
