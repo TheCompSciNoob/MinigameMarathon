@@ -89,7 +89,7 @@ public class ColorMatchFragment extends GameFragment{
         else {return false;}
     }
     @Override
-    public String getGameName() {return "Color Match Challenge!";}
+    public String getGameName() {return "Color Match";}
 
     @Override
     public double getPercentScore() {

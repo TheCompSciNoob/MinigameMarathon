@@ -71,6 +71,11 @@ public abstract class GameFragment extends Fragment {
         setGameMode(gameMode);
     }
 
+    @Override
+    public String toString() {
+        return getGameName();
+    }
+
     public abstract String getGameName();
 
     public abstract double getPercentScore();
