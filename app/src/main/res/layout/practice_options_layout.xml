@@ -62,7 +62,7 @@
 
     <Button
         android:id="@+id/confirm_practice_option_button"
-        android:background="@drawable/theme_button_background"
+        style="@style/buttonStyle"
         android:text="@string/confirm"
         android:textSize="50sp"
         android:layout_width="wrap_content"
