@@ -2,6 +2,7 @@ package com.example.chow.minigamemarathon;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -160,14 +161,14 @@ public class LightsOutGameFragment extends GameFragment implements View.OnClickL
 
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
-                ImageView imageView;
+                AppCompatImageView imageView;
                 if (convertView == null) {
-                    imageView = new ImageView(getActivity());
+                    imageView = new AppCompatImageView(getActivity());
                     imageView.setLayoutParams(new GridView.LayoutParams(dimension, dimension));
                     imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
                     imageView.setPadding(2, 2, 2, 2);
                 } else {
-                    imageView = (ImageView) convertView;
+                    imageView = (AppCompatImageView) convertView;
                 }
                 //put appropriate image into ImageView
                 if (translatedList.get(position)) {
