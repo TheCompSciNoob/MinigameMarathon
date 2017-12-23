@@ -2,11 +2,11 @@ package com.example.chow.minigamemarathon;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,38 +19,61 @@ import android.widget.TextView;
 
 public class AboutUsFragment extends Fragment {
 
-    public static final String[] developersList = {"<b>Project Lead</b> <br>TheCompSciNoob *Shears*",
-            "<b>Databse Engineer</b> <br>hedgy579 *Return before async callback*",
-            "<b>Colors</b> <br>Chrysopelea-Rc *Object-less*" };
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout.about_us_layout, container, false);
         TextView developersListTextView = rootView.findViewById(R.id.develop_list_textview);
-        for (String developer : developersList) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-            {
-                developersListTextView.append(Html.fromHtml(developer, Html.FROM_HTML_MODE_COMPACT));
-            }
-            else
-            {
-                developersListTextView.append(Html.fromHtml(developer));
-            }
-            developersListTextView.append("\n");
+        Developer[] developers = {new Developer("Project Lead", "TheCompSciNoob *Shears*"),
+                new Developer("Database Engineer", "*hedgy579 Return Array Before Async Callback*"),
+                new Developer("Colors", "Chrysopelea-Rc *Object-less*")};
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        for (Developer dev : developers)
+        {
+            int startIndex = builder.length();
+            builder.append(dev.getDevTitle());
+            builder.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorAccent)), startIndex, builder.length(), 0);
+            builder.append("\n");
+            builder.append(dev.getDevDescription());
+            builder.append("\n");
         }
+        developersListTextView.setText(builder, TextView.BufferType.SPANNABLE);
+        //directs player to source code
         Button sourceCodeButton = rootView.findViewById(R.id.source_code_button);
         sourceCodeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: open github repository
-                //TODO: Alex fix this
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/TheCompSciNoob/MinigameMarathon"));
                 startActivity(browserIntent);
             }
         });
 
         return rootView;
+    }
+
+    private static class Developer {
+        private String devTitle, devDescription;
+
+        public Developer(String devName, String devDescription) {
+            this.devTitle = devName;
+            this.devDescription = devDescription;
+        }
+
+        public String getDevTitle() {
+            return devTitle;
+        }
+
+        public void setDevTitle(String devTitle) {
+            this.devTitle = devTitle;
+        }
+
+        public String getDevDescription() {
+            return devDescription;
+        }
+
+        public void setDevDescription(String devDescription) {
+            this.devDescription = devDescription;
+        }
     }
 }
