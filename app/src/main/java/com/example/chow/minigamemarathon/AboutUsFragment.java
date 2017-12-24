@@ -1,12 +1,15 @@
 package com.example.chow.minigamemarathon;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.SpannableStringBuilder;
+import android.text.method.ScrollingMovementMethod;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,8 +26,9 @@ public class AboutUsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.about_us_layout, container, false);
+        View rootView = inflater.inflate(R.layout.about_us_layout2, container, false);
         TextView developersListTextView = rootView.findViewById(R.id.develop_list_textview);
+        developersListTextView.setMovementMethod(new ScrollingMovementMethod());
         Developer[] developers = {new Developer("Project Lead", "TheCompSciNoob *Shears*"),
                 new Developer("Database Engineer", "*hedgy579 Return Array Before Async Callback*"),
                 new Developer("Colors", "Chrysopelea-Rc *Object-less*")};
@@ -33,7 +37,7 @@ public class AboutUsFragment extends Fragment {
         {
             int startIndex = builder.length();
             builder.append(dev.getDevTitle());
-            builder.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.colorAccent)), startIndex, builder.length(), 0);
+            builder.setSpan(new StyleSpan(Typeface.BOLD), startIndex, builder.length(), 0);
             builder.append("\n");
             builder.append(dev.getDevDescription());
             builder.append("\n");
