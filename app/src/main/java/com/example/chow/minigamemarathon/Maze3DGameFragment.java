@@ -108,26 +108,26 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
             case MotionEvent.ACTION_UP:
                 if (y > h / w * x && y > - h / w * x + h) //top quadrant
                 {
-                    tryMovePlayer(Maze3D.PathDirection.UP);
+                    tryMovePlayer(Maze3D.UP);
                 }
                 else if (y < h / w * x && y < - h / w * x + h) //bottom quadrant
                 {
-                    tryMovePlayer(Maze3D.PathDirection.DOWN);
+                    tryMovePlayer(Maze3D.DOWN);
                 }
                 else if (y < h / w * x && y > - h / w * x + h)
                 {
-                    tryMovePlayer(Maze3D.PathDirection.RIGHT);
+                    tryMovePlayer(Maze3D.RIGHT);
                 }
                 else if (y > h / w * x && y < - h / w * x + h) //left quadrant
                 {
-                    tryMovePlayer(Maze3D.PathDirection.LEFT);
+                    tryMovePlayer(Maze3D.LEFT);
                 }
                 break;
         }
         return true;
     }
 
-    private void tryMovePlayer(@NonNull Maze3D.PathDirection direction) {
+    private void tryMovePlayer(int direction) {
         //check if the player can move to new cell
         int layerOffset = 0, rowOffset = 0, colOffset = 0;
         boolean canMove = false;
@@ -136,32 +136,32 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
         try {
             switch (direction)
             {
-                case UP:
+                case Maze3D.UP:
                     nextCell = maze3D[playerLayer][playerRow - 1][playerCol];
                     canMove = !(currentCell.isWallTop() || nextCell.isWallBottom());
                     rowOffset = -1;
                     break;
-                case DOWN:
+                case Maze3D.DOWN:
                     nextCell = maze3D[playerLayer][playerRow + 1][playerCol];
                     canMove = !(currentCell.isWallBottom() || nextCell.isWallTop());
                     rowOffset = 1;
                     break;
-                case LEFT:
+                case Maze3D.LEFT:
                     nextCell = maze3D[playerLayer][playerRow][playerCol - 1];
                     canMove = !(currentCell.isWallLeft() || nextCell.isWallRight());
                     colOffset = -1;
                     break;
-                case RIGHT:
+                case Maze3D.RIGHT:
                     nextCell = maze3D[playerLayer][playerRow][playerCol + 1];
                     canMove = !(currentCell.isWallRight() || nextCell.isWallLeft());
                     colOffset = 1;
                     break;
-                case FRONT:
+                case Maze3D.FRONT:
                     nextCell = maze3D[playerLayer - 1][playerRow][playerCol];
                     canMove = !(currentCell.isWallFront() || nextCell.isWallBack());
                     layerOffset = -1;
                     break;
-                case BACK:
+                case Maze3D.BACK:
                     nextCell = maze3D[playerLayer + 1][playerRow][playerCol];
                     canMove = !(currentCell.isWallBack() || nextCell.isWallFront());
                     layerOffset = 1;
@@ -193,10 +193,10 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
         switch (view.getId())
         {
             case R.id.up_layer_option:
-                tryMovePlayer(Maze3D.PathDirection.FRONT);
+                tryMovePlayer(Maze3D.FRONT);
                 break;
             case R.id.down_layer_option:
-                tryMovePlayer(Maze3D.PathDirection.BACK);
+                tryMovePlayer(Maze3D.BACK);
                 break;
         }
     }
