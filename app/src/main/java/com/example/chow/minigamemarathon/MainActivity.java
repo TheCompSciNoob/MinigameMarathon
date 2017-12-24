@@ -10,20 +10,20 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, BinaryGameFragment.OnFragmentInteractionListener,
+        implements NavigationView.OnNavigationItemSelectedListener,
         DrawerLayout.DrawerListener {
 
-    private int currentIDSelected = R.id.game_new; //startup fragment
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
+    static {
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
     }
+
+    private int currentIDSelected = R.id.game_new; //startup fragment
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

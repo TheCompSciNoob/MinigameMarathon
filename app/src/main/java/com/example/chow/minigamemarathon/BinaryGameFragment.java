@@ -26,15 +26,8 @@ import android.widget.Toast;
  * create an instance of this fragment.
  */
 public class BinaryGameFragment extends GameFragment implements View.OnClickListener {
-    // TODO: Rename parameter arguments, choose names that match
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     private static final String TAG = "BinaryGameFragment";
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
-    private OnFragmentInteractionListener mListener;
     private char numberClicked;
     private static final char NUMBER_OPTION_1 = '0', NUMBER_OPTION_2 = '1';
     private char numberLeft = NUMBER_OPTION_1, numberRight = NUMBER_OPTION_2;
@@ -46,43 +39,6 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
     private ForegroundColorSpan textColor;
     private int currentIndex, errors;
     private GameMode gameMode;
-
-    public BinaryGameFragment() {
-        // Required empty public constructor
-        super();
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment BinaryGameFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static BinaryGameFragment newInstance(String param1, String param2) {
-        BinaryGameFragment fragment = new BinaryGameFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -123,30 +79,6 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
     @Override
     public String getDescription() {
         return "You are given two buttons at the bottom of the screen and a string of numbers in the center. Your goal is to accurately type the string of numbers, however, both the string of numbers in the center and the buttons at the bottom will switch around during the course of play.";
-    }
-
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
     }
 
     @Override
@@ -253,20 +185,5 @@ public class BinaryGameFragment extends GameFragment implements View.OnClickList
     @Override
     public boolean isSolved() {
         return currentIndex >= gameText.length();
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
     }
 }

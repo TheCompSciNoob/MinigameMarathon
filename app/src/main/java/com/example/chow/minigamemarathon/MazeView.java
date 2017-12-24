@@ -41,7 +41,7 @@ public class MazeView extends View {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setArguments(Maze3D maze3D, int backgroundColor) {
+    public void setArguments(Maze3D maze3D) {
         this.maze3D = maze3D;
         //graphics
         line = new Paint();

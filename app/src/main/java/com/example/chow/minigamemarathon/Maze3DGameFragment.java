@@ -57,7 +57,7 @@ public class Maze3DGameFragment extends GameFragment implements View.OnTouchList
         maze3D = mazeHandler.getMaze3D();
         //"if this works I'm gonna kill myself" - Chi,2017
         mazeView = rootView.findViewById(R.id.maze_view_3d);
-        mazeView.setArguments(mazeHandler, Color.TRANSPARENT);
+        mazeView.setArguments(mazeHandler);
         mazeView.setPlayerLocation(playerLayer, playerRow, playerCol);
         mazeView.setOnTouchListener(this);
         Button upLayerOption = rootView.findViewById(R.id.up_layer_option);
