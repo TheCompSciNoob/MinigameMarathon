@@ -138,7 +138,9 @@ public class EndFragment extends Fragment {
                     if (position < levelDataSets.length) {
                         String[] levelData = levelDataSets[position];
                         gameName.setText(levelData[0]);
+                        gameTime.append(" ");
                         gameTime.append(GameFragment.formatMillisToMMSSMSMS(Long.parseLong(levelData[1])));
+                        gameScore.append(" ");
                         gameScore.append(levelData[2]);
                     } else {
                         gameName.setTypeface(null, Typeface.BOLD);
@@ -148,7 +150,9 @@ public class EndFragment extends Fragment {
                         gameTime.setTextColor(Color.BLACK);
                         gameScore.setTextColor(Color.BLACK);
                         gameName.setText(R.string.total);
+                        gameTime.append(" ");
                         gameTime.append(GameFragment.formatMillisToMMSSMSMS(getTotalTime()));
+                        gameScore.append(" ");
                         gameScore.append(getTotalScore() + "");
                     }
                 } else {
